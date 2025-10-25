@@ -268,35 +268,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Hora de Saída</label>
-                            <input type="time" class="form-control hora-saida" 
-                                   name="pessoas[${pessoaId}][hora_saida]"
-                                   data-pessoa="${pessoaId}">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Horas Trabalhadas</label>
-                            <input type="number" class="form-control horas-trabalhadas" 
-                                   name="pessoas[${pessoaId}][horas_trabalhadas]"
-                                   data-pessoa="${pessoaId}"
-                                   min="0" max="24" step="0.5" readonly>
-                            <small class="form-text text-muted">Calculado automaticamente</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Tipo de Almoço</label>
-                            <select class="form-control tipo-almoco" name="pessoas[${pessoaId}][tipo_almoco]" data-pessoa="${pessoaId}">
-                                <option value="integral">Integral</option>
-                                <option value="reduzido">Reduzido</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label>Hora Saída Almoço</label>
                             <input type="time" class="form-control hora-saida-almoco" 
                                    name="pessoas[${pessoaId}][hora_saida_almoco]"
@@ -306,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora Retorno Almoço</label>
                             <input type="time" class="form-control hora-retorno-almoco" 
@@ -317,10 +288,39 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Hora de Saída</label>
+                            <input type="time" class="form-control hora-saida" 
+                                   name="pessoas[${pessoaId}][hora_saida]"
+                                   data-pessoa="${pessoaId}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Horas Trabalhadas</label>
+                            <input type="number" class="form-control horas-trabalhadas" 
+                                   name="pessoas[${pessoaId}][horas_trabalhadas]"
+                                   data-pessoa="${pessoaId}"
+                                   min="0" max="24" step="0.5" readonly>
+                            <small class="form-text text-muted">Calculado automaticamente</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Tipo de Almoço</label>
+                            <select class="form-control tipo-almoco" name="pessoas[${pessoaId}][tipo_almoco]" data-pessoa="${pessoaId}">
+                                <option value="integral">Integral</option>
+                                <option value="reduzido">Reduzido</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" 
+                        <input class="form-check-input" type="checkbox"
                                name="pessoas[${pessoaId}][presente]" value="1" checked>
                         <label class="form-check-label">
                             Funcionário presente
@@ -329,31 +329,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="form-group">
                     <label>Atividades Realizadas</label>
-                    <textarea class="form-control" rows="2" 
+                    <textarea class="form-control" rows="2"
                               name="pessoas[${pessoaId}][atividades_realizadas]"
                               placeholder="Descreva as atividades realizadas por ${nome}..."></textarea>
                 </div>
                 <div class="form-group">
                     <label>Observações</label>
-                    <textarea class="form-control" rows="2" 
+                    <textarea class="form-control" rows="2"
                               name="pessoas[${pessoaId}][observacoes]"
                               placeholder="Observações sobre ${nome}..."></textarea>
                 </div>
             </div>
         `;
         camposPessoas.appendChild(card);
-        
+
         // Adicionar event listeners para validação e cálculo
         adicionarEventListenersPessoa(pessoaId);
     }
-    
+
     function adicionarEventListenersPessoa(pessoaId) {
         const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`);
         const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`);
         const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
         const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
         const horasTrabalhadas = document.querySelector(`input[name="pessoas[${pessoaId}][horas_trabalhadas]"]`);
-        
+
         // Event listeners para validação e cálculo
         [horaEntrada, horaSaida, horaSaidaAlmoco, horaRetornoAlmoco].forEach(input => {
             if (input) {
@@ -364,15 +364,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     function validarHorasAlmoco(pessoaId) {
         const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`).value;
         const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`).value;
         const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
         const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
-        
+
         let isValid = true;
-        
+
         // Validar hora saída almoço
         if (horaSaidaAlmoco.value && horaEntrada && horaSaida) {
             if (horaSaidaAlmoco.value < horaEntrada || horaSaidaAlmoco.value > horaSaida) {
@@ -384,7 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 horaSaidaAlmoco.nextElementSibling.style.display = 'none';
             }
         }
-        
+
         // Validar hora retorno almoço
         if (horaRetornoAlmoco.value && horaSaidaAlmoco.value && horaSaida) {
             if (horaRetornoAlmoco.value < horaSaidaAlmoco.value || horaRetornoAlmoco.value > horaSaida) {
@@ -396,28 +396,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 horaRetornoAlmoco.nextElementSibling.style.display = 'none';
             }
         }
-        
+
         return isValid;
     }
-    
+
     function calcularHorasTrabalhadas(pessoaId) {
         const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`).value;
         const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`).value;
         const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`).value;
         const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`).value;
         const horasTrabalhadas = document.querySelector(`input[name="pessoas[${pessoaId}][horas_trabalhadas]"]`);
-        
+
         if (!horaEntrada || !horaSaida) {
             horasTrabalhadas.value = '';
             return;
         }
-        
+
         // Converter para minutos
         const entradaMinutos = timeToMinutes(horaEntrada);
         const saidaMinutos = timeToMinutes(horaSaida);
-        
+
         let totalMinutos = saidaMinutos - entradaMinutos;
-        
+
         // Subtrair tempo de almoço se informado
         if (horaSaidaAlmoco && horaRetornoAlmoco) {
             const saidaAlmocoMinutos = timeToMinutes(horaSaidaAlmoco);
@@ -425,12 +425,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const tempoAlmocoMinutos = retornoAlmocoMinutos - saidaAlmocoMinutos;
             totalMinutos -= tempoAlmocoMinutos;
         }
-        
+
         // Converter de volta para horas
         const horas = totalMinutos / 60;
         horasTrabalhadas.value = horas.toFixed(1);
     }
-    
+
     function timeToMinutes(timeString) {
         if (!timeString) return 0;
         const [hours, minutes] = timeString.split(':').map(Number);
