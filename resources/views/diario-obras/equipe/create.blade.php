@@ -74,23 +74,23 @@
 
                                 <!-- Seleção de Pessoas -->
                                 <div class="form-group">
-                                    <label for="pessoas_selecionadas">Pessoas da Equipe *</label>
-                                    <select class="form-control @error('pessoas_selecionadas') is-invalid @enderror" 
-                                            id="pessoas_selecionadas" name="pessoas_selecionadas[]" 
-                                            multiple required>
-                                        @foreach($pessoas as $pessoa)
-                                            <option value="{{ $pessoa->id }}" 
-                                                    {{ in_array($pessoa->id, old('pessoas_selecionadas', [])) ? 'selected' : '' }}>
-                                                {{ $pessoa->nome }} - {{ $pessoa->funcao ? $pessoa->funcao->nome : 'Sem função' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <label for="pessoa_select">Pessoas da Equipe *</label>
+                                    <div class="pessoa-select-container">
+                                        <div class="pessoa-chips" id="pessoa-chips">
+                                            <!-- Chips das pessoas selecionadas aparecerão aqui -->
+                                        </div>
+                                        <select class="form-control" id="pessoa_select">
+                                            <option value="">Selecione uma pessoa para adicionar</option>
+                                            @foreach($pessoas as $pessoa)
+                                                <option value="{{ $pessoa->id }}" data-nome="{{ $pessoa->nome }}" data-funcao="{{ $pessoa->funcao ? $pessoa->funcao->nome : 'Sem função' }}">
+                                                    {{ $pessoa->nome }} - {{ $pessoa->funcao ? $pessoa->funcao->nome : 'Sem função' }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <small class="form-text text-muted">
-                                        Segure Ctrl (Windows) ou Cmd (Mac) para selecionar múltiplas pessoas
+                                        Selecione uma pessoa para adicionar à equipe
                                     </small>
-                                    @error('pessoas_selecionadas')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                 </div>
 
                                 <!-- Campos para cada pessoa selecionada -->
@@ -118,121 +118,222 @@
 </div>
 @endsection
 
+@section('styles')
+<style>
+.pessoa-select-container {
+    position: relative;
+}
+
+.pessoa-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+    min-height: 40px;
+    padding: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.pessoa-chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    margin: 2px;
+}
+
+.pessoa-chip .remove-chip {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.pessoa-chip .remove-chip:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#pessoa_select {
+    border: none;
+    box-shadow: none;
+}
+
+#pessoa_select:focus {
+    border: none;
+    box-shadow: none;
+}
+</style>
+@endsection
+
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const pessoasSelect = document.getElementById('pessoas_selecionadas');
+    const pessoaSelect = document.getElementById('pessoa_select');
+    const pessoaChips = document.getElementById('pessoa-chips');
     const camposPessoas = document.getElementById('campos-pessoas');
     
     // Dados das pessoas (vindos do PHP)
     const pessoas = @json($pessoas);
+    let pessoasSelecionadas = [];
     
-    function atualizarCamposPessoas() {
-        const pessoasSelecionadas = Array.from(pessoasSelect.selectedOptions);
-        camposPessoas.innerHTML = '';
+    // Adicionar pessoa quando selecionada
+    pessoaSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value && !pessoasSelecionadas.includes(selectedOption.value)) {
+            adicionarPessoa(selectedOption.value, selectedOption.dataset.nome, selectedOption.dataset.funcao);
+            this.selectedIndex = 0; // Reset para primeira opção
+        }
+    });
+    
+    function adicionarPessoa(pessoaId, nome, funcao) {
+        pessoasSelecionadas.push(pessoaId);
         
-        pessoasSelecionadas.forEach(function(option) {
-            const pessoaId = option.value;
-            const pessoa = pessoas.find(p => p.id == pessoaId);
-            
-            if (pessoa) {
-                const card = document.createElement('div');
-                card.className = 'card mb-3';
-                card.innerHTML = `
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-user text-primary"></i>
-                            ${pessoa.nome} - ${pessoa.funcao ? pessoa.funcao.nome : 'Sem função'}
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Hora de Entrada</label>
-                                    <input type="time" class="form-control" 
-                                           name="pessoas[${pessoaId}][hora_entrada]"
-                                           value="{{ old('pessoas.${pessoaId}.hora_entrada') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Hora de Saída</label>
-                                    <input type="time" class="form-control" 
-                                           name="pessoas[${pessoaId}][hora_saida]"
-                                           value="{{ old('pessoas.${pessoaId}.hora_saida') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Horas Trabalhadas</label>
-                                    <input type="number" class="form-control" 
-                                           name="pessoas[${pessoaId}][horas_trabalhadas]"
-                                           value="{{ old('pessoas.${pessoaId}.horas_trabalhadas') }}"
-                                           min="0" max="24" step="0.5">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Tipo de Almoço</label>
-                                    <select class="form-control" name="pessoas[${pessoaId}][tipo_almoco]">
-                                        <option value="integral" {{ old('pessoas.${pessoaId}.tipo_almoco') == 'integral' ? 'selected' : '' }}>Integral</option>
-                                        <option value="reduzido" {{ old('pessoas.${pessoaId}.tipo_almoco') == 'reduzido' ? 'selected' : '' }}>Reduzido</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Hora Saída Almoço</label>
-                                    <input type="time" class="form-control" 
-                                           name="pessoas[${pessoaId}][hora_saida_almoco]"
-                                           value="{{ old('pessoas.${pessoaId}.hora_saida_almoco') }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Hora Retorno Almoço</label>
-                                    <input type="time" class="form-control" 
-                                           name="pessoas[${pessoaId}][hora_retorno_almoco]"
-                                           value="{{ old('pessoas.${pessoaId}.hora_retorno_almoco') }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" 
-                                       name="pessoas[${pessoaId}][presente]" value="1" checked>
-                                <label class="form-check-label">
-                                    Funcionário presente
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Atividades Realizadas</label>
-                            <textarea class="form-control" rows="2" 
-                                      name="pessoas[${pessoaId}][atividades_realizadas]"
-                                      placeholder="Descreva as atividades realizadas por ${pessoa.nome}...">{{ old('pessoas.${pessoaId}.atividades_realizadas') }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Observações</label>
-                            <textarea class="form-control" rows="2" 
-                                      name="pessoas[${pessoaId}][observacoes]"
-                                      placeholder="Observações sobre ${pessoa.nome}...">{{ old('pessoas.${pessoaId}.observacoes') }}</textarea>
-                        </div>
-                    </div>
-                `;
-                camposPessoas.appendChild(card);
-            }
-        });
+        // Criar chip
+        const chip = document.createElement('div');
+        chip.className = 'pessoa-chip';
+        chip.innerHTML = `
+            ${nome} - ${funcao}
+            <button type="button" class="remove-chip" onclick="removerPessoa('${pessoaId}')">
+                ×
+            </button>
+        `;
+        pessoaChips.appendChild(chip);
+        
+        // Criar campos para a pessoa
+        criarCamposPessoa(pessoaId, nome, funcao);
+        
+        // Remover opção do select
+        const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
+        if (option) {
+            option.style.display = 'none';
+        }
     }
     
-    // Atualizar campos quando a seleção mudar
-    pessoasSelect.addEventListener('change', atualizarCamposPessoas);
+    function removerPessoa(pessoaId) {
+        // Remover da lista
+        pessoasSelecionadas = pessoasSelecionadas.filter(id => id !== pessoaId);
+        
+        // Remover chip
+        const chip = pessoaChips.querySelector(`button[onclick="removerPessoa('${pessoaId}')"]`).parentElement;
+        chip.remove();
+        
+        // Remover campos
+        const campos = document.getElementById(`campos-pessoa-${pessoaId}`);
+        if (campos) {
+            campos.remove();
+        }
+        
+        // Mostrar opção no select novamente
+        const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
+        if (option) {
+            option.style.display = 'block';
+        }
+    }
     
-    // Atualizar campos na carga inicial
-    atualizarCamposPessoas();
+    function criarCamposPessoa(pessoaId, nome, funcao) {
+        const card = document.createElement('div');
+        card.className = 'card mb-3';
+        card.id = `campos-pessoa-${pessoaId}`;
+        card.innerHTML = `
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-user text-primary"></i>
+                    ${nome} - ${funcao}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Hora de Entrada</label>
+                            <input type="time" class="form-control" 
+                                   name="pessoas[${pessoaId}][hora_entrada]">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Hora de Saída</label>
+                            <input type="time" class="form-control" 
+                                   name="pessoas[${pessoaId}][hora_saida]">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Horas Trabalhadas</label>
+                            <input type="number" class="form-control" 
+                                   name="pessoas[${pessoaId}][horas_trabalhadas]"
+                                   min="0" max="24" step="0.5">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Tipo de Almoço</label>
+                            <select class="form-control" name="pessoas[${pessoaId}][tipo_almoco]">
+                                <option value="integral">Integral</option>
+                                <option value="reduzido">Reduzido</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Hora Saída Almoço</label>
+                            <input type="time" class="form-control" 
+                                   name="pessoas[${pessoaId}][hora_saida_almoco]">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Hora Retorno Almoço</label>
+                            <input type="time" class="form-control" 
+                                   name="pessoas[${pessoaId}][hora_retorno_almoco]">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               name="pessoas[${pessoaId}][presente]" value="1" checked>
+                        <label class="form-check-label">
+                            Funcionário presente
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Atividades Realizadas</label>
+                    <textarea class="form-control" rows="2" 
+                              name="pessoas[${pessoaId}][atividades_realizadas]"
+                              placeholder="Descreva as atividades realizadas por ${nome}..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Observações</label>
+                    <textarea class="form-control" rows="2" 
+                              name="pessoas[${pessoaId}][observacoes]"
+                              placeholder="Observações sobre ${nome}..."></textarea>
+                </div>
+            </div>
+        `;
+        camposPessoas.appendChild(card);
+    }
+    
+    // Tornar função global para o onclick
+    window.removerPessoa = removerPessoa;
 });
 </script>
 @endsection
