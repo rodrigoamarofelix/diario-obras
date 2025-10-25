@@ -173,11 +173,7 @@ class MedicaoController extends Controller
                 ->groupBy('status')
                 ->get(),
             'valor_total' => Medicao::sum('valor_total'),
-            'por_mes' => Medicao::select([
-                    DatabaseHelper::formatDateForMonthGrouping(),
-                    DB::raw('count(*) as total'),
-                    DB::raw('sum(valor_total) as valor')
-                ])
+            'por_mes' => Medicao::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, count(*) as total, sum(valor_total) as valor')
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->limit(12)

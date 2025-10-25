@@ -1,0 +1,4350 @@
+{
+    "atividade_obras": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "projeto_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_atividade",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "titulo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo",
+                "Type": "enum('construcao','demolicao','reforma','manutencao','limpeza','outros')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "construcao",
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('planejado','em_andamento','concluido','cancelado')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "planejado",
+                "Extra": ""
+            },
+            {
+                "Field": "hora_inicio",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "hora_fim",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tempo_gasto_minutos",
+                "Type": "int",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "problemas_encontrados",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "solucoes_aplicadas",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "responsavel_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_by",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "auditorias": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "modelo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "modelo_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "acao",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "dados_anteriores",
+                "Type": "json",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "dados_novos",
+                "Type": "json",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "usuario_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "ip_address",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "user_agent",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": null, \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"m2dHuDzdsRgsyy6PnZBVcTaLWaUQKY5odEeOD1EkItrV51W1Q4cAjDw775V0\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Safari\/537.36",
+                "observacoes": "Remember token alterado de nulo para m2dHuDzdsRgsyy6PnZBVcTaLWaUQKY5odEeOD1EkItrV51W1Q4...",
+                "created_at": "2025-10-24 22:28:25",
+                "updated_at": "2025-10-24 22:28:25"
+            },
+            {
+                "id": 2,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"m2dHuDzdsRgsyy6PnZBVcTaLWaUQKY5odEeOD1EkItrV51W1Q4cAjDw775V0\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"fZfndHYGCowoldOaqmnQyHznxE9VHBmrJ0pRYnOiCdnaKwyPzkhrzkdEg0XX\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Mobile Safari\/537.36",
+                "observacoes": "Remember token alterado de m2dHuDzdsRgsyy6PnZBVcTaLWaUQKY5odEeOD1EkItrV51W1Q4... para fZfndHYGCowoldOaqmnQyHznxE9VHBmrJ0pRYnOiCdnaKwyPzk...",
+                "created_at": "2025-10-24 22:40:30",
+                "updated_at": "2025-10-24 22:40:30"
+            },
+            {
+                "id": 3,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"fZfndHYGCowoldOaqmnQyHznxE9VHBmrJ0pRYnOiCdnaKwyPzkhrzkdEg0XX\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"NV6dZhjX2se1jIm9xO6sqFRGT72am79Eo6ii4xi0rYfB1cLeLRc6nJOCp9KM\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Mobile Safari\/537.36",
+                "observacoes": "Remember token alterado de fZfndHYGCowoldOaqmnQyHznxE9VHBmrJ0pRYnOiCdnaKwyPzk... para NV6dZhjX2se1jIm9xO6sqFRGT72am79Eo6ii4xi0rYfB1cLeLR...",
+                "created_at": "2025-10-24 22:51:19",
+                "updated_at": "2025-10-24 22:51:19"
+            },
+            {
+                "id": 4,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"NV6dZhjX2se1jIm9xO6sqFRGT72am79Eo6ii4xi0rYfB1cLeLRc6nJOCp9KM\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"oCHk3v4sHsuWyF7y2UAH5o8ml6rhHb1bxUubxcf8eGjSa8cYNUHWGI7cPEsF\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Mobile Safari\/537.36",
+                "observacoes": "Remember token alterado de NV6dZhjX2se1jIm9xO6sqFRGT72am79Eo6ii4xi0rYfB1cLeLR... para oCHk3v4sHsuWyF7y2UAH5o8ml6rhHb1bxUubxcf8eGjSa8cYNU...",
+                "created_at": "2025-10-24 23:03:32",
+                "updated_at": "2025-10-24 23:03:32"
+            },
+            {
+                "id": 5,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"oCHk3v4sHsuWyF7y2UAH5o8ml6rhHb1bxUubxcf8eGjSa8cYNUHWGI7cPEsF\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"vaAyom7rucPEokXzKlKQevAyAS7YztM8auLFMmnZK6soj3pipi0OXAqPn81X\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Mobile Safari\/537.36",
+                "observacoes": "Remember token alterado de oCHk3v4sHsuWyF7y2UAH5o8ml6rhHb1bxUubxcf8eGjSa8cYNU... para vaAyom7rucPEokXzKlKQevAyAS7YztM8auLFMmnZK6soj3pipi...",
+                "created_at": "2025-10-24 23:10:03",
+                "updated_at": "2025-10-24 23:10:03"
+            },
+            {
+                "id": 6,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"vaAyom7rucPEokXzKlKQevAyAS7YztM8auLFMmnZK6soj3pipi0OXAqPn81X\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"X0BUCk9mEZnKM8LBJbpe7l7MqbvlUl4qSUMr5kzPBmeB78jJeglYtYwASUn5\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Mobile Safari\/537.36",
+                "observacoes": "Remember token alterado de vaAyom7rucPEokXzKlKQevAyAS7YztM8auLFMmnZK6soj3pipi... para X0BUCk9mEZnKM8LBJbpe7l7MqbvlUl4qSUMr5kzPBmeB78jJeg...",
+                "created_at": "2025-10-24 23:17:30",
+                "updated_at": "2025-10-24 23:17:30"
+            },
+            {
+                "id": 7,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"X0BUCk9mEZnKM8LBJbpe7l7MqbvlUl4qSUMr5kzPBmeB78jJeglYtYwASUn5\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"8vJqq17nR84jXo5nlWz9dKAYIQfUgWiAVhmOEbKZyURPrEVQHJNJzmGkeBSJ\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Safari\/537.36",
+                "observacoes": "Remember token alterado de X0BUCk9mEZnKM8LBJbpe7l7MqbvlUl4qSUMr5kzPBmeB78jJeg... para 8vJqq17nR84jXo5nlWz9dKAYIQfUgWiAVhmOEbKZyURPrEVQHJ...",
+                "created_at": "2025-10-25 00:11:45",
+                "updated_at": "2025-10-25 00:11:45"
+            },
+            {
+                "id": 8,
+                "modelo": "User",
+                "modelo_id": 1,
+                "acao": "updated",
+                "dados_anteriores": "{\"id\": 1, \"name\": \"Administrador Master\", \"email\": \"admin@test.com\", \"profile\": \"master\", \"password\": \"$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi\", \"created_at\": \"2025-10-22T19:03:23.000000Z\", \"deleted_at\": null, \"updated_at\": \"2025-10-22T19:03:23.000000Z\", \"approved_at\": null, \"approved_by\": null, \"remember_token\": \"8vJqq17nR84jXo5nlWz9dKAYIQfUgWiAVhmOEbKZyURPrEVQHJNJzmGkeBSJ\", \"approval_status\": \"approved\", \"email_verified_at\": \"2025-10-22T19:03:23.000000Z\", \"two_factor_secret\": null, \"two_factor_enabled\": false, \"two_factor_enabled_at\": null, \"two_factor_backup_codes\": null}",
+                "dados_novos": "{\"remember_token\": \"7Srlkyf9tIUpNsjbEQK0kkAPyuTpgamEC5kqWyEoAK72qI8SsnvE4hnsNyiQ\"}",
+                "usuario_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Safari\/537.36",
+                "observacoes": "Remember token alterado de 8vJqq17nR84jXo5nlWz9dKAYIQfUgWiAVhmOEbKZyURPrEVQHJ... para 7Srlkyf9tIUpNsjbEQK0kkAPyuTpgamEC5kqWyEoAK72qI8Ssn...",
+                "created_at": "2025-10-25 01:53:12",
+                "updated_at": "2025-10-25 01:53:12"
+            }
+        ]
+    },
+    "cache": {
+        "columns": [
+            {
+                "Field": "key",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "value",
+                "Type": "mediumtext",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "expiration",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "cache_locks": {
+        "columns": [
+            {
+                "Field": "key",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "owner",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "expiration",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "catalogos": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "nome",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "codigo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_unitario",
+                "Type": "decimal(10,2)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "unidade_medida",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('ativo','inativo')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "ativo",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "contrato_anexos": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "contrato_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nome_original",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nome_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "caminho",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo_mime",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tamanho",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "usuario_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "contrato_responsaveis": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "contrato_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "gestor_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "fiscal_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_inicio",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_fim",
+                "Type": "date",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "contratos": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "numero",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_inicio",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_fim",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "gestor_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "fiscal_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('ativo','inativo','vencido','suspenso')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "ativo",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "empresas": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "nome",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "razao_social",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cnpj",
+                "Type": "varchar(18)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "email",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "telefone",
+                "Type": "varchar(20)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "whatsapp",
+                "Type": "varchar(20)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cep",
+                "Type": "varchar(10)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "endereco",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "numero",
+                "Type": "varchar(20)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "complemento",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "bairro",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cidade",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "estado",
+                "Type": "varchar(2)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "pais",
+                "Type": "varchar(50)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "Brasil",
+                "Extra": ""
+            },
+            {
+                "Field": "site",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "ativo",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "created_by",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "nome": "Construtora ABC Ltda",
+                "razao_social": "Construtora ABC Ltda",
+                "cnpj": "12345678000195",
+                "email": "contato@construtoraabc.com.br",
+                "telefone": "1133334444",
+                "whatsapp": "11999998888",
+                "cep": "01310100",
+                "endereco": "Av. Paulista",
+                "numero": "1000",
+                "complemento": "Sala 101",
+                "bairro": "Bela Vista",
+                "cidade": "S\u00e3o Paulo",
+                "estado": "SP",
+                "pais": "Brasil",
+                "site": "https:\/\/www.construtoraabc.com.br",
+                "observacoes": "Empresa especializada em constru\u00e7\u00e3o civil.",
+                "ativo": 1,
+                "created_by": 1,
+                "created_at": "2025-10-23 17:26:59",
+                "updated_at": "2025-10-23 17:26:59",
+                "deleted_at": null
+            },
+            {
+                "id": 2,
+                "nome": "Engenharia XYZ S.A.",
+                "razao_social": "Engenharia XYZ S.A.",
+                "cnpj": "98765432000123",
+                "email": "info@engenhariaxyz.com.br",
+                "telefone": "2133335555",
+                "whatsapp": "21988887777",
+                "cep": "20040020",
+                "endereco": "Rua da Carioca",
+                "numero": "500",
+                "complemento": "Andar 15",
+                "bairro": "Centro",
+                "cidade": "Rio de Janeiro",
+                "estado": "RJ",
+                "pais": "Brasil",
+                "site": "https:\/\/www.engenhariaxyz.com.br",
+                "observacoes": "Empresa focada em projetos de infraestrutura.",
+                "ativo": 1,
+                "created_by": 1,
+                "created_at": "2025-10-23 17:26:59",
+                "updated_at": "2025-10-23 17:52:21",
+                "deleted_at": null
+            },
+            {
+                "id": 3,
+                "nome": "Obras e Constru\u00e7\u00f5es MG",
+                "razao_social": "Obras e Constru\u00e7\u00f5es MG Ltda",
+                "cnpj": "11223344000156",
+                "email": "contato@obrasmg.com.br",
+                "telefone": "3133336666",
+                "whatsapp": "31977776666",
+                "cep": "30112000",
+                "endereco": "Av. Afonso Pena",
+                "numero": "2000",
+                "complemento": "Conjunto 301",
+                "bairro": "Centro",
+                "cidade": "Belo Horizonte",
+                "estado": "MG",
+                "pais": "Brasil",
+                "site": "https:\/\/www.obrasmg.com.br",
+                "observacoes": "Especializada em obras residenciais e comerciais.",
+                "ativo": 1,
+                "created_by": 1,
+                "created_at": "2025-10-23 17:26:59",
+                "updated_at": "2025-10-23 17:26:59",
+                "deleted_at": null
+            },
+            {
+                "id": 4,
+                "nome": "Construtora Sul Brasil",
+                "razao_social": "Construtora Sul Brasil Ltda",
+                "cnpj": "55667788000199",
+                "email": "vendas@sulbrasil.com.br",
+                "telefone": "5133337777",
+                "whatsapp": "51988889999",
+                "cep": "90020000",
+                "endereco": "Rua da Praia",
+                "numero": "150",
+                "complemento": "Loja 1",
+                "bairro": "Centro Hist\u00f3rico",
+                "cidade": "Porto Alegre",
+                "estado": "RS",
+                "pais": "Brasil",
+                "site": "https:\/\/www.sulbrasil.com.br",
+                "observacoes": "Empresa tradicional do sul do pa\u00eds, especializada em constru\u00e7\u00e3o de alto padr\u00e3o.",
+                "ativo": 1,
+                "created_by": 1,
+                "created_at": "2025-10-23 17:27:56",
+                "updated_at": "2025-10-23 17:27:56",
+                "deleted_at": null
+            },
+            {
+                "id": 5,
+                "nome": "Nordeste Construtora",
+                "razao_social": "Nordeste Construtora S.A.",
+                "cnpj": "99887766000144",
+                "email": "comercial@nordesteconstrutora.com.br",
+                "telefone": "8133338888",
+                "whatsapp": "81977778888",
+                "cep": "50000000",
+                "endereco": "Av. Boa Viagem",
+                "numero": "3000",
+                "complemento": "Torre A",
+                "bairro": "Boa Viagem",
+                "cidade": "Recife",
+                "estado": "PE",
+                "pais": "Brasil",
+                "site": "https:\/\/www.nordesteconstrutora.com.br",
+                "observacoes": "L\u00edder em constru\u00e7\u00e3o civil no nordeste brasileiro, com projetos inovadores.",
+                "ativo": 1,
+                "created_by": 1,
+                "created_at": "2025-10-23 17:27:56",
+                "updated_at": "2025-10-23 17:27:56",
+                "deleted_at": null
+            }
+        ]
+    },
+    "equipe_obras": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "projeto_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "atividade_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "funcionario_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "pessoa_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_trabalho",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "hora_entrada",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo_almoco",
+                "Type": "enum('integral','reduzido')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "integral",
+                "Extra": ""
+            },
+            {
+                "Field": "hora_saida_almoco",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "hora_retorno_almoco",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "hora_saida",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "horas_trabalhadas",
+                "Type": "int",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "funcao",
+                "Type": "enum('pedreiro','eletricista','encanador','pintor','carpinteiro','ajudante','engenheiro','arquiteto','supervisor','outros')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "ajudante",
+                "Extra": ""
+            },
+            {
+                "Field": "atividades_realizadas",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "presente",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "created_by",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "projeto_id": 1,
+                "atividade_id": null,
+                "funcionario_id": null,
+                "pessoa_id": 4,
+                "data_trabalho": "2025-10-23",
+                "hora_entrada": "07:30:00",
+                "tipo_almoco": "reduzido",
+                "hora_saida_almoco": "11:30:00",
+                "hora_retorno_almoco": "12:30:00",
+                "hora_saida": "16:30:00",
+                "horas_trabalhadas": 8,
+                "funcao": "supervisor",
+                "atividades_realizadas": "testes 1",
+                "observacoes": "testes 1",
+                "presente": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 22:45:28",
+                "updated_at": "2025-10-23 22:49:35"
+            },
+            {
+                "id": 2,
+                "projeto_id": 1,
+                "atividade_id": null,
+                "funcionario_id": null,
+                "pessoa_id": 10,
+                "data_trabalho": "2025-10-23",
+                "hora_entrada": "07:30:00",
+                "tipo_almoco": "integral",
+                "hora_saida_almoco": "11:30:00",
+                "hora_retorno_almoco": "13:30:00",
+                "hora_saida": "17:30:00",
+                "horas_trabalhadas": 8,
+                "funcao": "eletricista",
+                "atividades_realizadas": "testes 2",
+                "observacoes": "testes 2",
+                "presente": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 22:45:28",
+                "updated_at": "2025-10-23 22:46:18"
+            }
+        ]
+    },
+    "failed_jobs": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "uuid",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "connection",
+                "Type": "text",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "queue",
+                "Type": "text",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "payload",
+                "Type": "longtext",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "exception",
+                "Type": "longtext",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "failed_at",
+                "Type": "timestamp",
+                "Null": "NO",
+                "Key": "",
+                "Default": "CURRENT_TIMESTAMP",
+                "Extra": "DEFAULT_GENERATED"
+            }
+        ],
+        "data": []
+    },
+    "foto_obras": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "projeto_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "atividade_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "titulo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "caminho_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nome_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tamanho_arquivo",
+                "Type": "int",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "categoria",
+                "Type": "enum('antes','durante','depois','problema','solucao','documento','outros')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "durante",
+                "Extra": ""
+            },
+            {
+                "Field": "data_foto",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "hora_foto",
+                "Type": "time",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "localizacao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "fotografo_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_by",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "fotos_obras": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "projeto_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "atividade_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "equipe_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "user_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "titulo",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "caminho_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nome_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "mime_type",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tamanho_arquivo",
+                "Type": "bigint",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "hash_arquivo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "latitude",
+                "Type": "decimal(10,8)",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "longitude",
+                "Type": "decimal(11,8)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "altitude",
+                "Type": "decimal(8,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "precisao",
+                "Type": "decimal(8,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "camera_marca",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "camera_modelo",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "lente",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "aperture",
+                "Type": "decimal(4,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "shutter_speed",
+                "Type": "decimal(8,4)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "iso",
+                "Type": "int",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "focal_length",
+                "Type": "decimal(6,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tags",
+                "Type": "json",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "categoria",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "geral",
+                "Extra": ""
+            },
+            {
+                "Field": "publica",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "aprovada",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "0",
+                "Extra": ""
+            },
+            {
+                "Field": "data_captura",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_upload",
+                "Type": "timestamp",
+                "Null": "NO",
+                "Key": "",
+                "Default": "CURRENT_TIMESTAMP",
+                "Extra": "DEFAULT_GENERATED"
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "funcoes": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "nome",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "categoria",
+                "Type": "enum('construcao','tecnica','supervisao','administrativa','outros')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "outros",
+                "Extra": ""
+            },
+            {
+                "Field": "ativo",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "nome": "Pedreiro",
+                "descricao": "Profissional respons\u00e1vel pela constru\u00e7\u00e3o e reparos em alvenaria, concreto e estruturas b\u00e1sicas",
+                "categoria": "construcao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 2,
+                "nome": "Eletricista",
+                "descricao": "Profissional especializado em instala\u00e7\u00f5es el\u00e9tricas, manuten\u00e7\u00e3o e reparos el\u00e9tricos",
+                "categoria": "tecnica",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 3,
+                "nome": "Encanador",
+                "descricao": "Profissional respons\u00e1vel por instala\u00e7\u00f5es hidr\u00e1ulicas, reparos de encanamentos e sistemas de \u00e1gua",
+                "categoria": "tecnica",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 4,
+                "nome": "Pintor",
+                "descricao": "Profissional especializado em pintura de paredes, estruturas e acabamentos",
+                "categoria": "construcao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 5,
+                "nome": "Carpinteiro",
+                "descricao": "Profissional respons\u00e1vel por trabalhos em madeira, estruturas de madeira e acabamentos",
+                "categoria": "construcao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 21:58:46",
+                "deleted_at": null
+            },
+            {
+                "id": 6,
+                "nome": "Ajudante",
+                "descricao": "Profissional auxiliar que presta suporte aos demais profissionais da obra",
+                "categoria": "construcao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 7,
+                "nome": "Engenheiro",
+                "descricao": "Profissional respons\u00e1vel pelo planejamento, coordena\u00e7\u00e3o t\u00e9cnica e supervis\u00e3o de obras",
+                "categoria": "supervisao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 8,
+                "nome": "Arquiteto",
+                "descricao": "Profissional respons\u00e1vel pelo projeto arquitet\u00f4nico, design e coordena\u00e7\u00e3o de projetos",
+                "categoria": "supervisao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 21:58:09",
+                "deleted_at": null
+            },
+            {
+                "id": 9,
+                "nome": "Supervisor",
+                "descricao": "Profissional respons\u00e1vel pela supervis\u00e3o e coordena\u00e7\u00e3o das atividades da obra",
+                "categoria": "supervisao",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            },
+            {
+                "id": 10,
+                "nome": "Outros",
+                "descricao": "Outras fun\u00e7\u00f5es n\u00e3o especificadas nas categorias anteriores",
+                "categoria": "outros",
+                "ativo": 1,
+                "created_at": "2025-10-23 19:41:47",
+                "updated_at": "2025-10-23 19:41:47",
+                "deleted_at": null
+            }
+        ]
+    },
+    "job_batches": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "name",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "total_jobs",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "pending_jobs",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "failed_jobs",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "failed_job_ids",
+                "Type": "longtext",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "options",
+                "Type": "mediumtext",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cancelled_at",
+                "Type": "int",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "finished_at",
+                "Type": "int",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "jobs": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "queue",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "payload",
+                "Type": "longtext",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "attempts",
+                "Type": "tinyint unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "reserved_at",
+                "Type": "int unsigned",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "available_at",
+                "Type": "int unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "int unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "lotacoes": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "nome",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('ativo','inativo')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "ativo",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "nome": "Administra\u00e7\u00e3o",
+                "descricao": "Setor administrativo da empresa",
+                "status": "ativo",
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:04:31",
+                "deleted_at": null
+            },
+            {
+                "id": 2,
+                "nome": "Recursos Humanos",
+                "descricao": "Departamento de recursos humanos",
+                "status": "ativo",
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:04:31",
+                "deleted_at": null
+            },
+            {
+                "id": 3,
+                "nome": "Financeiro",
+                "descricao": "Setor financeiro e cont\u00e1bil",
+                "status": "ativo",
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:04:31",
+                "deleted_at": null
+            },
+            {
+                "id": 4,
+                "nome": "Comercial",
+                "descricao": "Departamento comercial",
+                "status": "ativo",
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:04:31",
+                "deleted_at": null
+            },
+            {
+                "id": 5,
+                "nome": "Operacional",
+                "descricao": "Setor operacional",
+                "status": "ativo",
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:04:31",
+                "deleted_at": null
+            }
+        ]
+    },
+    "material_obras": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "projeto_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "atividade_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nome_material",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "unidade_medida",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "quantidade",
+                "Type": "decimal(10,3)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_unitario",
+                "Type": "decimal(10,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_total",
+                "Type": "decimal(15,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo_movimento",
+                "Type": "enum('entrada','saida','transferencia')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "entrada",
+                "Extra": ""
+            },
+            {
+                "Field": "data_movimento",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "fornecedor",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nota_fiscal",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "responsavel_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_by",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "medicoes": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "catalogo_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "contrato_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "lotacao_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "numero_medicao",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_medicao",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "quantidade",
+                "Type": "decimal(10,3)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_unitario",
+                "Type": "decimal(10,2)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_total",
+                "Type": "decimal(10,2)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('pendente','aprovado','rejeitado')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "pendente",
+                "Extra": ""
+            },
+            {
+                "Field": "usuario_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "migrations": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "int unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "migration",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "batch",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "migration": "0001_01_01_000000_create_users_table",
+                "batch": 1
+            },
+            {
+                "id": 2,
+                "migration": "0001_01_01_000001_create_cache_table",
+                "batch": 1
+            },
+            {
+                "id": 3,
+                "migration": "0001_01_01_000002_create_jobs_table",
+                "batch": 1
+            },
+            {
+                "id": 4,
+                "migration": "2014_10_12_100000_create_password_reset_tokens_table",
+                "batch": 1
+            },
+            {
+                "id": 5,
+                "migration": "2019_08_19_000000_create_failed_jobs_table",
+                "batch": 1
+            },
+            {
+                "id": 6,
+                "migration": "2019_12_14_000001_create_personal_access_tokens_table",
+                "batch": 1
+            },
+            {
+                "id": 7,
+                "migration": "2025_01_15_000001_create_catalogos_table",
+                "batch": 2
+            },
+            {
+                "id": 8,
+                "migration": "2025_01_17_000000_add_two_factor_fields_to_users_table",
+                "batch": 2
+            },
+            {
+                "id": 9,
+                "migration": "2025_10_10_193207_add_profile_to_users_table",
+                "batch": 2
+            },
+            {
+                "id": 10,
+                "migration": "2025_10_10_193936_add_deleted_at_to_users_table",
+                "batch": 2
+            },
+            {
+                "id": 11,
+                "migration": "2025_10_10_195202_create_lotacoes_table",
+                "batch": 2
+            },
+            {
+                "id": 12,
+                "migration": "2025_10_10_201409_add_deleted_at_to_lotacoes_table",
+                "batch": 2
+            },
+            {
+                "id": 13,
+                "migration": "2025_10_13_140751_add_approval_status_to_users_table",
+                "batch": 2
+            },
+            {
+                "id": 14,
+                "migration": "2025_10_13_151348_create_pessoas_table",
+                "batch": 2
+            },
+            {
+                "id": 15,
+                "migration": "2025_10_13_151349_add_pending_fields_to_pessoas_table",
+                "batch": 2
+            },
+            {
+                "id": 16,
+                "migration": "2025_10_13_183010_create_contratos_table",
+                "batch": 2
+            },
+            {
+                "id": 17,
+                "migration": "2025_10_13_183011_create_medicoes_table",
+                "batch": 2
+            },
+            {
+                "id": 18,
+                "migration": "2025_10_13_183012_create_pagamentos_table",
+                "batch": 2
+            },
+            {
+                "id": 19,
+                "migration": "2025_10_13_184028_create_contrato_responsaveis_table",
+                "batch": 2
+            },
+            {
+                "id": 20,
+                "migration": "2025_10_13_185815_remove_unique_cpf_from_pessoas_table",
+                "batch": 2
+            },
+            {
+                "id": 21,
+                "migration": "2025_10_13_190354_create_auditorias_table",
+                "batch": 2
+            },
+            {
+                "id": 22,
+                "migration": "2025_10_13_192315_create_contrato_anexos_table",
+                "batch": 2
+            },
+            {
+                "id": 23,
+                "migration": "2025_10_16_231854_create_notificacaos_table",
+                "batch": 2
+            },
+            {
+                "id": 24,
+                "migration": "2025_10_16_235549_create_personal_access_tokens_table",
+                "batch": 2
+            },
+            {
+                "id": 25,
+                "migration": "2025_10_17_012214_create_workflow_aprovacoes_table",
+                "batch": 2
+            },
+            {
+                "id": 26,
+                "migration": "2025_10_17_173710_add_contrato_id_to_pagamentos_table",
+                "batch": 2
+            },
+            {
+                "id": 27,
+                "migration": "2025_10_22_192932_create_projetos_table",
+                "batch": 3
+            },
+            {
+                "id": 28,
+                "migration": "2025_10_22_192940_create_atividade_obras_table",
+                "batch": 3
+            },
+            {
+                "id": 29,
+                "migration": "2025_10_22_192941_create_equipe_obras_table",
+                "batch": 3
+            },
+            {
+                "id": 30,
+                "migration": "2025_10_22_192942_create_foto_obras_table",
+                "batch": 3
+            },
+            {
+                "id": 31,
+                "migration": "2025_10_22_192942_create_material_obras_table",
+                "batch": 3
+            },
+            {
+                "id": 32,
+                "migration": "2025_10_22_202840_add_bairro_to_projetos_table",
+                "batch": 4
+            },
+            {
+                "id": 33,
+                "migration": "2025_10_22_203227_add_complemento_to_projetos_table",
+                "batch": 5
+            },
+            {
+                "id": 34,
+                "migration": "2024_01_15_000000_create_empresas_table",
+                "batch": 6
+            },
+            {
+                "id": 35,
+                "migration": "2025_10_23_175614_create_projeto_empresa_table",
+                "batch": 7
+            },
+            {
+                "id": 36,
+                "migration": "2025_10_23_193915_create_funcoes_table",
+                "batch": 8
+            },
+            {
+                "id": 37,
+                "migration": "2025_10_23_194200_add_funcao_id_to_pessoas_table",
+                "batch": 9
+            },
+            {
+                "id": 38,
+                "migration": "2025_10_23_220512_add_pessoa_id_to_equipe_obras_table",
+                "batch": 10
+            },
+            {
+                "id": 39,
+                "migration": "2025_10_23_222329_add_almoco_fields_to_equipe_obras_table",
+                "batch": 11
+            },
+            {
+                "id": 40,
+                "migration": "2025_10_23_223102_add_tipo_almoco_to_equipe_obras_table",
+                "batch": 12
+            },
+            {
+                "id": 41,
+                "migration": "2025_10_23_223805_make_funcionario_id_nullable_in_equipe_obras_table",
+                "batch": 13
+            },
+            {
+                "id": 42,
+                "migration": "2025_10_23_225546_create_fotos_obras_table",
+                "batch": 14
+            }
+        ]
+    },
+    "notificacaos": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "user_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "titulo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "mensagem",
+                "Type": "text",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "icone",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cor",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "info",
+                "Extra": ""
+            },
+            {
+                "Field": "dados",
+                "Type": "json",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "lida",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "0",
+                "Extra": ""
+            },
+            {
+                "Field": "lida_em",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "acao",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "modelo",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "modelo_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "pagamentos": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "medicao_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "contrato_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "numero_pagamento",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_pagamento",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_pagamento",
+                "Type": "decimal(10,2)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "documento_redmine",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('pendente','aprovado','rejeitado','pago')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "pendente",
+                "Extra": ""
+            },
+            {
+                "Field": "usuario_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "password_reset_tokens": {
+        "columns": [
+            {
+                "Field": "email",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "token",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "personal_access_tokens": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "tokenable_type",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tokenable_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "name",
+                "Type": "text",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "token",
+                "Type": "varchar(64)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "abilities",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "last_used_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "expires_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    },
+    "pessoas": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "nome",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cpf",
+                "Type": "varchar(14)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "lotacao_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('ativo','inativo')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "ativo",
+                "Extra": ""
+            },
+            {
+                "Field": "status_validacao",
+                "Type": "enum('pendente','validado','rejeitado')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "pendente",
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes_validacao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_validacao",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_ultima_tentativa",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tentativas_validacao",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": "0",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "funcao_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "nome": "Jo\u00e3o Silva Santos",
+                "cpf": "111.444.777-35",
+                "lotacao_id": 1,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 3
+            },
+            {
+                "id": 2,
+                "nome": "Maria Oliveira Costa",
+                "cpf": "222.555.888-46",
+                "lotacao_id": 2,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 5
+            },
+            {
+                "id": 3,
+                "nome": "Pedro Henrique Almeida",
+                "cpf": "333.666.999-57",
+                "lotacao_id": 3,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 2
+            },
+            {
+                "id": 4,
+                "nome": "Ana Carolina Ferreira",
+                "cpf": "444.777.000-68",
+                "lotacao_id": 4,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 9
+            },
+            {
+                "id": 5,
+                "nome": "Carlos Eduardo Rodrigues",
+                "cpf": "555.888.111-79",
+                "lotacao_id": 5,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 7
+            },
+            {
+                "id": 6,
+                "nome": "Fernanda Lima Souza",
+                "cpf": "666.999.222-80",
+                "lotacao_id": 1,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 10
+            },
+            {
+                "id": 7,
+                "nome": "Rafael Mendes Pereira",
+                "cpf": "777.000.333-91",
+                "lotacao_id": 2,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 5
+            },
+            {
+                "id": 8,
+                "nome": "Juliana Barbosa Martins",
+                "cpf": "888.111.444-02",
+                "lotacao_id": 3,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 4
+            },
+            {
+                "id": 9,
+                "nome": "Lucas Gabriel Nascimento",
+                "cpf": "999.222.555-13",
+                "lotacao_id": 4,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 4
+            },
+            {
+                "id": 10,
+                "nome": "Camila Beatriz Rocha",
+                "cpf": "000.333.666-24",
+                "lotacao_id": 5,
+                "status": "ativo",
+                "status_validacao": "validado",
+                "observacoes_validacao": "CPF validado com sucesso",
+                "data_validacao": "2025-10-23 19:04:31",
+                "data_ultima_tentativa": null,
+                "tentativas_validacao": 1,
+                "created_at": "2025-10-23 19:04:31",
+                "updated_at": "2025-10-23 19:53:59",
+                "deleted_at": null,
+                "funcao_id": 2
+            }
+        ]
+    },
+    "projeto_empresa": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "projeto_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "empresa_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo_participacao",
+                "Type": "enum('construtora','fornecedor','subcontratada','consultoria','fiscalizacao','outros')",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "outros",
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "ativo",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "projeto_id": 1,
+                "empresa_id": 4,
+                "tipo_participacao": "outros",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 2,
+                "projeto_id": 2,
+                "empresa_id": 1,
+                "tipo_participacao": "subcontratada",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 3,
+                "projeto_id": 2,
+                "empresa_id": 2,
+                "tipo_participacao": "consultoria",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 4,
+                "projeto_id": 2,
+                "empresa_id": 4,
+                "tipo_participacao": "fiscalizacao",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 5,
+                "projeto_id": 3,
+                "empresa_id": 1,
+                "tipo_participacao": "fiscalizacao",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 6,
+                "projeto_id": 3,
+                "empresa_id": 2,
+                "tipo_participacao": "fornecedor",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 7,
+                "projeto_id": 3,
+                "empresa_id": 3,
+                "tipo_participacao": "fornecedor",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 8,
+                "projeto_id": 4,
+                "empresa_id": 2,
+                "tipo_participacao": "consultoria",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 9,
+                "projeto_id": 5,
+                "empresa_id": 3,
+                "tipo_participacao": "subcontratada",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            },
+            {
+                "id": 10,
+                "projeto_id": 5,
+                "empresa_id": 5,
+                "tipo_participacao": "outros",
+                "observacoes": "Associa\u00e7\u00e3o criada automaticamente pelo seeder",
+                "ativo": 1,
+                "created_at": "2025-10-23 18:00:26",
+                "updated_at": "2025-10-23 18:00:26"
+            }
+        ]
+    },
+    "projetos": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "nome",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "descricao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "endereco",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "complemento",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "bairro",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cidade",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "estado",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cep",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "cliente",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "contrato",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "valor_total",
+                "Type": "decimal(15,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_inicio",
+                "Type": "date",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_fim_prevista",
+                "Type": "date",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "data_fim_real",
+                "Type": "date",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('planejamento','em_andamento','pausado','concluido','cancelado')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "planejamento",
+                "Extra": ""
+            },
+            {
+                "Field": "prioridade",
+                "Type": "enum('baixa','media','alta','urgente')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "media",
+                "Extra": ""
+            },
+            {
+                "Field": "observacoes",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "responsavel_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_by",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "nome": "Residencial Jardim das Flores",
+                "descricao": "Constru\u00e7\u00e3o de condom\u00ednio residencial com 50 unidades",
+                "endereco": "Rua das Flores, 123",
+                "complemento": "Loteamento Jardim",
+                "bairro": "Jardim das Flores",
+                "cidade": "S\u00e3o Paulo",
+                "estado": "SP",
+                "cep": "01234-567",
+                "cliente": "Construtora ABC Ltda",
+                "contrato": "CT-2024-001",
+                "valor_total": "2500000.00",
+                "data_inicio": "2024-01-15",
+                "data_fim_prevista": "2024-12-15",
+                "data_fim_real": null,
+                "status": "em_andamento",
+                "prioridade": "alta",
+                "observacoes": "Projeto priorit\u00e1rio da empresa",
+                "responsavel_id": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 18:00:06",
+                "updated_at": "2025-10-23 18:00:06"
+            },
+            {
+                "id": 2,
+                "nome": "Shopping Center Norte",
+                "descricao": "Constru\u00e7\u00e3o de shopping center com 200 lojas",
+                "endereco": "Av. Paulista, 1000",
+                "complemento": "Torre Norte",
+                "bairro": "Bela Vista",
+                "cidade": "S\u00e3o Paulo",
+                "estado": "SP",
+                "cep": "01310-100",
+                "cliente": "Shopping Norte S\/A",
+                "contrato": "CT-2024-002",
+                "valor_total": "5000000.00",
+                "data_inicio": "2024-03-01",
+                "data_fim_prevista": "2025-06-30",
+                "data_fim_real": null,
+                "status": "planejamento",
+                "prioridade": "media",
+                "observacoes": "Projeto em fase de planejamento",
+                "responsavel_id": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 18:00:06",
+                "updated_at": "2025-10-23 18:00:06"
+            },
+            {
+                "id": 3,
+                "nome": "Hospital Municipal",
+                "descricao": "Constru\u00e7\u00e3o de hospital p\u00fablico com 100 leitos",
+                "endereco": "Rua da Sa\u00fade, 456",
+                "complemento": "Setor Hospitalar",
+                "bairro": "Centro",
+                "cidade": "Rio de Janeiro",
+                "estado": "RJ",
+                "cep": "20000-000",
+                "cliente": "Prefeitura Municipal",
+                "contrato": "CT-2024-003",
+                "valor_total": "8000000.00",
+                "data_inicio": "2024-02-01",
+                "data_fim_prevista": "2025-12-31",
+                "data_fim_real": null,
+                "status": "em_andamento",
+                "prioridade": "urgente",
+                "observacoes": "Projeto de interesse p\u00fablico",
+                "responsavel_id": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 18:00:06",
+                "updated_at": "2025-10-23 18:00:06"
+            },
+            {
+                "id": 4,
+                "nome": "Torre Empresarial",
+                "descricao": "Constru\u00e7\u00e3o de torre comercial com 30 andares",
+                "endereco": "Av. Faria Lima, 2000",
+                "complemento": "Torre Sul",
+                "bairro": "Itaim Bibi",
+                "cidade": "S\u00e3o Paulo",
+                "estado": "SP",
+                "cep": "04538-132",
+                "cliente": "Empresa XYZ Ltda",
+                "contrato": "CT-2024-004",
+                "valor_total": "12000000.00",
+                "data_inicio": "2024-04-01",
+                "data_fim_prevista": "2026-03-31",
+                "data_fim_real": null,
+                "status": "planejamento",
+                "prioridade": "media",
+                "observacoes": "Projeto de grande porte",
+                "responsavel_id": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 18:00:06",
+                "updated_at": "2025-10-23 18:00:06"
+            },
+            {
+                "id": 5,
+                "nome": "Escola Municipal",
+                "descricao": "Constru\u00e7\u00e3o de escola p\u00fablica para 500 alunos",
+                "endereco": "Rua da Educa\u00e7\u00e3o, 789",
+                "complemento": "Quadra 15",
+                "bairro": "Vila Nova",
+                "cidade": "Belo Horizonte",
+                "estado": "MG",
+                "cep": "30000-000",
+                "cliente": "Secretaria de Educa\u00e7\u00e3o",
+                "contrato": "CT-2024-005",
+                "valor_total": "1500000.00",
+                "data_inicio": "2024-01-01",
+                "data_fim_prevista": "2024-11-30",
+                "data_fim_real": null,
+                "status": "concluido",
+                "prioridade": "alta",
+                "observacoes": "Projeto conclu\u00eddo com sucesso",
+                "responsavel_id": 1,
+                "created_by": 1,
+                "deleted_at": null,
+                "created_at": "2025-10-23 18:00:06",
+                "updated_at": "2025-10-23 18:00:06"
+            }
+        ]
+    },
+    "sessions": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "user_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "ip_address",
+                "Type": "varchar(45)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "user_agent",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "payload",
+                "Type": "longtext",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "last_activity",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": "0bVMgqmkHeXq69biDvjGNDjGPWW1gKpusAdNV9A3",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Tunnel-Server\/1.0",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoiSDE4UzFWRVNZU1lXMXhWTDFpOXZkM3hnazE0Y0w2c2gwbFZWYXhCMiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=",
+                "last_activity": 1761342494
+            },
+            {
+                "id": "alAWlj2P6alY2lOuNCyzJ70JHnaGxosvXpwbmejy",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoiRUltZlFaQnFEOWFZYTlxTHN2RXlaM2Z0ZzROejRSRlpzeFR5YXNRMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xNzIuMzEuMTYzLjIxNTo4MDgxIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761343092
+            },
+            {
+                "id": "bl5vRr830UEH0VFx9YSB7MCh7PDQoznzysfSkWRC",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoiV1JjbmZOMVVnR0I1NzI2Z3d3aEVsT3JGY29yV1RIVGtoNFBHeFpRRSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=",
+                "last_activity": 1761342603
+            },
+            {
+                "id": "CaASDxOsdfysrktusLphCFzKnvfZI53wx5LKLdEQ",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/138.0.0.0 Mobile Safari\/537.36 (compatible; Google-Read-Aloud; +https:\/\/support.google.com\/webmasters\/answer\/1061943)",
+                "payload": "YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWXJXUTBJZTUyaHJ0VTZ5dFA1MGZCN0F2ZERlcTFUWGZwVll1NW1keiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czo4NToiaHR0cDovL21hcmlhbm8tYXBwb2ludGVkLW1hdHRlby5uZ3Jvay1mcmVlLmRldi9kaWFyaW8tb2JyYXMvZm90b3MvY3JlYXRlP3Byb2pldG9faWQ9MSI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjg1OiJodHRwOi8vbWFyaWFuby1hcHBvaW50ZWQtbWF0dGVvLm5ncm9rLWZyZWUuZGV2L2RpYXJpby1vYnJhcy9mb3Rvcy9jcmVhdGU\/cHJvamV0b19pZD0xIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761345682
+            },
+            {
+                "id": "F9lZlcgjWk5EKH7GblS3uPybOqcAlOZ2xfRU1rUm",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiSzVTU0dPeFpHcER1ZDA3ZEE2bnN0dXVWamlvdWVWNmFyQW5YN1JYRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761344768
+            },
+            {
+                "id": "fAGDAMGLTeA9o5qiS1KY9WXOJQ1DFALuv8swSSHP",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiQmcxYUZZcENJeUUyNDBabUhKMXlCWDQ1NGtMUXdYMmxkVVhIYVQ3RyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761346938
+            },
+            {
+                "id": "gC1it7yeCsCOtD2y5zT6FeKuiqiPMAIvqMixPr0v",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiTzM0WGcxVWxJT1BXVFdqaVU5UHA3RTdVSHJodGtFOTdSWGkwazd0UiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761343063
+            },
+            {
+                "id": "Jg2mYYWLuND7BvEC6k3BTGIlAPg7XzCvPtajRU83",
+                "user_id": null,
+                "ip_address": "172.31.163.215",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiaHF1RERvTFhTVTU1ZVVkUGNpQnZjaTVYeGxyM1lxM2wwZ2t0Mm9BbiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761347114
+            },
+            {
+                "id": "lA0mMqRc9CvW1uQgRRsH3mkERD1tGnydVpg3puSS",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoidmRzRTdROU1rd01PQTM5Vjk5UzNIN0Z3ODNuNzh3ZFhoaGcyejBZYSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761343146
+            },
+            {
+                "id": "LD7pLh0Gc6UPoxK1L3CsHDKwRTaMRj1Nd722WhfM",
+                "user_id": null,
+                "ip_address": "172.31.163.215",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoibDd3N2FxOUtkUTVvR1pCcExvbEFGSzlCMGxVVVA5cEREOGJsU05ZNCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761342776
+            },
+            {
+                "id": "o8LUYU88WppUQ3fUk4R5S749VXwCiu22SKYBzYYq",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiN0h5Smx0amxPNkNFaXhPWVRsZHp6Q0d5a0pjUHo0N1duTTltdTJkcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761346988
+            },
+            {
+                "id": "orNQ2HD4HRTT6Fcag0HsTlQ0eidKHYHA1Hij4DCv",
+                "user_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Mobile Safari\/537.36",
+                "payload": "YTo0OntzOjY6Il90b2tlbiI7czo0MDoiN1hlNm1RbkVIOGdzejlmV1lpdGh6RTA3OWViRTUxZlRGYVR3TjdlWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6ODU6Imh0dHA6Ly9tYXJpYW5vLWFwcG9pbnRlZC1tYXR0ZW8ubmdyb2stZnJlZS5kZXYvZGlhcmlvLW9icmFzL2ZvdG9zL2NyZWF0ZT9wcm9qZXRvX2lkPTIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=",
+                "last_activity": 1761349787
+            },
+            {
+                "id": "uvlB0vVQa8jOqIoApLWSkachI9a2ItZAqEt4jYkw",
+                "user_id": null,
+                "ip_address": "172.31.163.215",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiY2NISTZKY2lEOXhuYnY1S3FSZEdkSTI3NzBScDFCMGh6ZERWNW0wbCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761343146
+            },
+            {
+                "id": "ve1WvucvrVzsQmyyulv8THPZkerDEw5VVioCQaQK",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "WhatsApp\/2.2541.3 W",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoiZUpIV0JuRUF4OHg2TzBjbTloeDhMVkFrY2x1RGVacWNha05QSXVOVyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly9tYXJpYW5vLWFwcG9pbnRlZC1tYXR0ZW8ubmdyb2stZnJlZS5kZXYiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19",
+                "last_activity": 1761344560
+            },
+            {
+                "id": "WO1EkQzS7F7c6pFrE4X5N4BlMGcA7xDdkx23B3q1",
+                "user_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Safari\/537.36",
+                "payload": "YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSG5rUHo1NzJKWEw4Q2RvY3RubzE0MjB6QmRaSjJpQTBmU1RDSlMzNyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kYXNoYm9hcmQiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=",
+                "last_activity": 1761357297
+            },
+            {
+                "id": "xwU4jaQOArcvdMVG9v3COecZrJBlgGcpHE6vIGBH",
+                "user_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Safari\/537.36",
+                "payload": "YTo0OntzOjY6Il90b2tlbiI7czo0MDoib0lNczZIVDhiZzBjUndpTVBGV1NuZHpxTUV2Nlo3RUJId2dxRm83cCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NjM6Imh0dHA6Ly9tYXJpYW5vLWFwcG9pbnRlZC1tYXR0ZW8ubmdyb2stZnJlZS5kZXYvYXBpL29mZmxpbmUtZGF0YSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==",
+                "last_activity": 1761357549
+            },
+            {
+                "id": "YEBVIDbcXgNNzLaemxiZ42AZ0TziDVfD4xJ4lEk1",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoiam8xODFKeXFmWjliNUI5a0JJVXhjd01EM29tQ3laclY5OVA4QVQ0cCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=",
+                "last_activity": 1761342604
+            },
+            {
+                "id": "YEGoSRVMZRy0QSRHPQRLDQSXjJWrReXRNwJIVZj7",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Linux; Android 10; K) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/138.0.0.0 Mobile Safari\/537.36 (compatible; Google-Read-Aloud; +https:\/\/support.google.com\/webmasters\/answer\/1061943)",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoiQnQxdEYwSlRmS1F5Qjhya2tON01ScE1yRUZsUHl4QUhEeUt0QjBCdCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTI6Imh0dHA6Ly9tYXJpYW5vLWFwcG9pbnRlZC1tYXR0ZW8ubmdyb2stZnJlZS5kZXYvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19",
+                "last_activity": 1761345683
+            },
+            {
+                "id": "YS4YpNeHxxwLneCEWvYnkO9oN7HmIEHgN7C8JADZ",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YToyOntzOjY6Il90b2tlbiI7czo0MDoiRVYyNXEwdWxTV21UcnhSdE5HM0Q3UDk5cDBnbTlVV0ZzTTRDZGJUbSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761349605
+            },
+            {
+                "id": "z9jsJgvFlIsfjk0bpuKeSf0IzDhp6K9byGNedukN",
+                "user_id": null,
+                "ip_address": "172.21.0.1",
+                "user_agent": "curl\/7.81.0",
+                "payload": "YTozOntzOjY6Il90b2tlbiI7czo0MDoib1FZWXZJNDAydkJjNUM0czEyNHYybDZjb3FCUlRNOTR6ZjFLZ25MRiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xNzIuMzEuMTYzLjIxNTo4MDgxL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==",
+                "last_activity": 1761343119
+            },
+            {
+                "id": "ZgT0IqSscNbi2VrHKywUlAZ661mW9EqD7BiCryAt",
+                "user_id": 1,
+                "ip_address": "172.21.0.1",
+                "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/141.0.0.0 Safari\/537.36",
+                "payload": "YTo0OntzOjY6Il90b2tlbiI7czo0MDoiOU5IRTRuTUEzTUZhT0gzaThWSFg5WG1CMVNjNm9EUDhXQll2bjRCdSI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMToiaHR0cDovL2xvY2FsaG9zdDozMDAwL2Rhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=",
+                "last_activity": 1761423810
+            }
+        ]
+    },
+    "users": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "name",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "email",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "UNI",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "email_verified_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "profile",
+                "Type": "enum('user','admin','master')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "user",
+                "Extra": ""
+            },
+            {
+                "Field": "approval_status",
+                "Type": "enum('pending','approved','rejected')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "pending",
+                "Extra": ""
+            },
+            {
+                "Field": "approved_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "approved_by",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "two_factor_enabled",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "",
+                "Default": "0",
+                "Extra": ""
+            },
+            {
+                "Field": "two_factor_secret",
+                "Type": "varchar(255)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "two_factor_backup_codes",
+                "Type": "json",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "two_factor_enabled_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "password",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "remember_token",
+                "Type": "varchar(100)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "deleted_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": [
+            {
+                "id": 1,
+                "name": "Administrador Master",
+                "email": "admin@test.com",
+                "email_verified_at": "2025-10-22 19:03:23",
+                "profile": "master",
+                "approval_status": "approved",
+                "approved_at": null,
+                "approved_by": null,
+                "two_factor_enabled": 0,
+                "two_factor_secret": null,
+                "two_factor_backup_codes": null,
+                "two_factor_enabled_at": null,
+                "password": "$2y$12$0VVGPqX83L.PY9PYiTyZt.yckxHIqsEXdNPo7YD08FMxr8TnPyzAi",
+                "remember_token": "7Srlkyf9tIUpNsjbEQK0kkAPyuTpgamEC5kqWyEoAK72qI8SsnvE4hnsNyiQ",
+                "created_at": "2025-10-22 19:03:23",
+                "updated_at": "2025-10-22 19:03:23",
+                "deleted_at": null
+            }
+        ]
+    },
+    "workflow_aprovacoes": {
+        "columns": [
+            {
+                "Field": "id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "PRI",
+                "Default": null,
+                "Extra": "auto_increment"
+            },
+            {
+                "Field": "model_type",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "model_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "tipo",
+                "Type": "varchar(255)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "status",
+                "Type": "enum('pendente','em_analise','aprovado','rejeitado','suspenso')",
+                "Null": "NO",
+                "Key": "",
+                "Default": "pendente",
+                "Extra": ""
+            },
+            {
+                "Field": "solicitante_id",
+                "Type": "bigint unsigned",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "aprovador_id",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "aprovado_por",
+                "Type": "bigint unsigned",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "aprovado_em",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "comentarios",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "justificativa_rejeicao",
+                "Type": "text",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "nivel_aprovacao",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "nivel_maximo",
+                "Type": "int",
+                "Null": "NO",
+                "Key": "",
+                "Default": "1",
+                "Extra": ""
+            },
+            {
+                "Field": "valor",
+                "Type": "decimal(15,2)",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "dados_extras",
+                "Type": "json",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "prazo_aprovacao",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "MUL",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "urgente",
+                "Type": "tinyint(1)",
+                "Null": "NO",
+                "Key": "MUL",
+                "Default": "0",
+                "Extra": ""
+            },
+            {
+                "Field": "created_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            },
+            {
+                "Field": "updated_at",
+                "Type": "timestamp",
+                "Null": "YES",
+                "Key": "",
+                "Default": null,
+                "Extra": ""
+            }
+        ],
+        "data": []
+    }
+}

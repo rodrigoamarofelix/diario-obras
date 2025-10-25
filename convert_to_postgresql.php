@@ -31,22 +31,22 @@ $sql_content .= "-- Gerado automaticamente em " . date('Y-m-d H:i:s') . "\n\n";
 
 foreach ($export_data as $table => $table_data) {
     echo "📋 Processando tabela: $table\n";
-    
+
     $columns = $table_data['columns'];
     $data = $table_data['data'];
-    
+
     if (empty($data)) {
         echo "   ⚠️  Tabela vazia, pulando...\n";
         continue;
     }
-    
+
     // Converter tipos de dados MySQL para PostgreSQL
     $pg_columns = [];
     foreach ($columns as $column) {
         $pg_type = convert_mysql_to_pg_type($column['Type']);
         $pg_columns[] = "{$column['Field']} $pg_type";
     }
-    
+
     // Gerar INSERT statements
     foreach ($data as $row) {
         $values = [];
@@ -59,10 +59,10 @@ foreach ($export_data as $table => $table_data) {
                 $values[] = "'$escaped_value'";
             }
         }
-        
+
         $sql_content .= "INSERT INTO $table (" . implode(', ', array_keys($row)) . ") VALUES (" . implode(', ', $values) . ");\n";
     }
-    
+
     echo "   ✅ " . count($data) . " registros convertidos\n";
 }
 
@@ -76,7 +76,7 @@ echo "📊 Total de tabelas processadas: " . count($export_data) . "\n";
  */
 function convert_mysql_to_pg_type($mysql_type) {
     $mysql_type = strtolower($mysql_type);
-    
+
     // Mapeamento de tipos
     $type_map = [
         'tinyint(1)' => 'BOOLEAN',
@@ -107,14 +107,14 @@ function convert_mysql_to_pg_type($mysql_type) {
         'enum' => 'VARCHAR',
         'set' => 'VARCHAR'
     ];
-    
+
     // Extrair tipo base
     $base_type = preg_replace('/\([^)]*\)/', '', $mysql_type);
-    
+
     if (isset($type_map[$base_type])) {
         return $type_map[$base_type];
     }
-    
+
     // Se não encontrar, usar VARCHAR como padrão
     return 'VARCHAR';
 }

@@ -6,7 +6,7 @@
 
 // Configurações do MySQL (Docker)
 $mysql_config = [
-    'host' => 'localhost',  // ou 'mysql' se executar dentro do container
+    'host' => 'mysql',  // nome do serviço no Docker
     'port' => 3306,
     'database' => 'diarioobras',  // nome do banco no Docker
     'username' => 'laravel_user',  // usuário configurado no Docker

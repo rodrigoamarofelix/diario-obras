@@ -15,12 +15,12 @@ files=(
 fix_file() {
     local file="$1"
     echo "📝 Corrigindo $file..."
-    
+
     # Adicionar import do DatabaseHelper se não existir
     if ! grep -q "use App\\Helpers\\DatabaseHelper;" "$file"; then
         sed -i '/use App\\Http\\Controllers\\Controller;/a use App\\Helpers\\DatabaseHelper;' "$file"
     fi
-    
+
     # Substituir DATE_FORMAT por DatabaseHelper
     sed -i 's/DATE_FORMAT(created_at, "%Y-%m") as mes/DatabaseHelper::formatDateForMonthGrouping()/g' "$file"
     sed -i 's/DATE_FORMAT(created_at, "%Y") as ano/DatabaseHelper::formatDateForYearGrouping()/g' "$file"

@@ -15,12 +15,14 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libwebp-dev \
     libxpm-dev \
-    mysql-client
+    mysql-client \
+    postgresql-dev
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
     && docker-php-ext-install -j$(nproc) \
     pdo_mysql \
+    pdo_pgsql \
     mbstring \
     exif \
     pcntl \
@@ -51,6 +53,9 @@ WORKDIR /var/www/html
 # Create user
 RUN addgroup -g 1000 www && \
     adduser -u 1000 -G www -s /bin/sh -D www
+
+# Copy PHP-FPM configuration
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Copy application files
 COPY . /var/www/html
