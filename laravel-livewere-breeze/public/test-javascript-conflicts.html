@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Correção de Conflitos JavaScript - SGC</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-title {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-success {
+            background-color: #28a745;
+        }
+
+        .status-warning {
+            background-color: #ffc107;
+        }
+
+        .status-error {
+            background-color: #dc3545;
+        }
+
+        .console-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .btn-test {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-bug text-primary"></i>
+            Teste de Correção de Conflitos JavaScript
+        </h1>
+
+        <!-- Status dos Scripts -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-check-circle"></i> Status dos Scripts
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Bibliotecas JavaScript:</h5>
+                    <ul class="list-unstyled">
+                        <li><span class="status-indicator" id="jquery-status"></span> jQuery: <span
+                                id="jquery-version">Verificando...</span></li>
+                        <li><span class="status-indicator" id="bootstrap-status"></span> Bootstrap: <span
+                                id="bootstrap-version">Verificando...</span></li>
+                        <li><span class="status-indicator" id="chartjs-status"></span> Chart.js: <span
+                                id="chartjs-version">Verificando...</span></li>
+                        <li><span class="status-indicator" id="alpine-status"></span> Alpine.js: <span
+                                id="alpine-version">Verificando...</span></li>
+                        <li><span class="status-indicator" id="livewire-status"></span> Livewire: <span
+                                id="livewire-version">Verificando...</span></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Utilitários SGC:</h5>
+                    <ul class="list-unstyled">
+                        <li><span class="status-indicator" id="sgc-utils-status"></span> SGC Utils: <span
+                                id="sgc-utils-info">Verificando...</span></li>
+                        <li><span class="status-indicator" id="chart-manager-status"></span> Chart Manager: <span
+                                id="chart-manager-info">Verificando...</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Output -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-terminal"></i> Console Output
+            </h3>
+            <div class="console-output" id="console-output">Aguardando logs...</div>
+            <button class="btn btn-secondary btn-sm" onclick="limparConsole()">
+                <i class="fas fa-trash"></i> Limpar Console
+            </button>
+        </div>
+
+        <!-- Testes de Funcionalidade -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-flask"></i> Testes de Funcionalidade
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Testes de Gráficos:</h5>
+                    <button class="btn btn-primary btn-test" onclick="testarChartJS()">
+                        <i class="fas fa-chart-bar"></i> Testar Chart.js
+                    </button>
+                    <button class="btn btn-success btn-test" onclick="criarGraficoTeste()">
+                        <i class="fas fa-plus"></i> Criar Gráfico Teste
+                    </button>
+                    <button class="btn btn-warning btn-test" onclick="destruirGraficosTeste()">
+                        <i class="fas fa-trash"></i> Destruir Gráficos
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <h5>Testes de Eventos:</h5>
+                    <button class="btn btn-info btn-test" onclick="testarEventosLivewire()">
+                        <i class="fas fa-bolt"></i> Testar Eventos Livewire
+                    </button>
+                    <button class="btn btn-secondary btn-test" onclick="testarDebounce()">
+                        <i class="fas fa-clock"></i> Testar Debounce
+                    </button>
+                    <button class="btn btn-dark btn-test" onclick="testarThrottle()">
+                        <i class="fas fa-stopwatch"></i> Testar Throttle
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas para Gráficos de Teste -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-chart-line"></i> Gráficos de Teste
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <canvas id="testeChart1" width="400" height="200"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="testeChart2" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informações de Debug -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-info-circle"></i> Informações de Debug
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Variáveis Globais:</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>window.Alpine:</strong> <span id="alpine-global">Verificando...</span></li>
+                        <li><strong>window.Livewire:</strong> <span id="livewire-global">Verificando...</span></li>
+                        <li><strong>window.Chart:</strong> <span id="chart-global">Verificando...</span></li>
+                        <li><strong>window.SGCUtils:</strong> <span id="sgc-utils-global">Verificando...</span></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Event Listeners:</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>DOMContentLoaded:</strong> <span id="dom-listeners">Verificando...</span></li>
+                        <li><strong>Livewire Events:</strong> <span id="livewire-listeners">Verificando...</span></li>
+                        <li><strong>Alpine Events:</strong> <span id="alpine-listeners">Verificando...</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/sgc-conflicts-fix.js"></script>
+
+    <script>
+        // Capturar logs do console
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        function adicionarLog(tipo, mensagem) {
+            const consoleOutput = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${tipo.toUpperCase()}: ${mensagem}\n`;
+            consoleOutput.textContent += logEntry;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            adicionarLog('log', args.join(' '));
+        };
+
+        console.warn = function (...args) {
+            originalWarn.apply(console, args);
+            adicionarLog('warn', args.join(' '));
+        };
+
+        console.error = function (...args) {
+            originalError.apply(console, args);
+            adicionarLog('error', args.join(' '));
+        };
+
+        // Verificar status das bibliotecas
+        function verificarStatus() {
+            // jQuery
+            const jqueryStatus = document.getElementById('jquery-status');
+            const jqueryVersion = document.getElementById('jquery-version');
+            if (typeof $ !== 'undefined') {
+                jqueryStatus.className = 'status-indicator status-success';
+                jqueryVersion.textContent = $.fn.jquery;
+            } else {
+                jqueryStatus.className = 'status-indicator status-error';
+                jqueryVersion.textContent = 'Não encontrado';
+            }
+
+            // Bootstrap
+            const bootstrapStatus = document.getElementById('bootstrap-status');
+            const bootstrapVersion = document.getElementById('bootstrap-version');
+            if (typeof bootstrap !== 'undefined') {
+                bootstrapStatus.className = 'status-indicator status-success';
+                bootstrapVersion.textContent = 'Disponível';
+            } else {
+                bootstrapStatus.className = 'status-indicator status-warning';
+                bootstrapVersion.textContent = 'Verificando...';
+            }
+
+            // Chart.js
+            const chartjsStatus = document.getElementById('chartjs-status');
+            const chartjsVersion = document.getElementById('chartjs-version');
+            if (typeof Chart !== 'undefined') {
+                chartjsStatus.className = 'status-indicator status-success';
+                chartjsVersion.textContent = Chart.version;
+            } else {
+                chartjsStatus.className = 'status-indicator status-error';
+                chartjsVersion.textContent = 'Não encontrado';
+            }
+
+            // Alpine.js
+            const alpineStatus = document.getElementById('alpine-status');
+            const alpineVersion = document.getElementById('alpine-version');
+            if (typeof Alpine !== 'undefined') {
+                alpineStatus.className = 'status-indicator status-success';
+                alpineVersion.textContent = Alpine.version || 'Disponível';
+            } else {
+                alpineStatus.className = 'status-indicator status-warning';
+                alpineVersion.textContent = 'Aguardando...';
+            }
+
+            // Livewire
+            const livewireStatus = document.getElementById('livewire-status');
+            const livewireVersion = document.getElementById('livewire-version');
+            if (typeof Livewire !== 'undefined') {
+                livewireStatus.className = 'status-indicator status-success';
+                livewireVersion.textContent = 'Disponível';
+            } else {
+                livewireStatus.className = 'status-indicator status-warning';
+                livewireVersion.textContent = 'Aguardando...';
+            }
+
+            // SGC Utils
+            const sgcUtilsStatus = document.getElementById('sgc-utils-status');
+            const sgcUtilsInfo = document.getElementById('sgc-utils-info');
+            if (typeof SGCUtils !== 'undefined') {
+                sgcUtilsStatus.className = 'status-indicator status-success';
+                sgcUtilsInfo.textContent = 'Carregado';
+            } else {
+                sgcUtilsStatus.className = 'status-indicator status-error';
+                sgcUtilsInfo.textContent = 'Não encontrado';
+            }
+
+            // Chart Manager
+            const chartManagerStatus = document.getElementById('chart-manager-status');
+            const chartManagerInfo = document.getElementById('chart-manager-info');
+            if (typeof window.destruirGraficos === 'function') {
+                chartManagerStatus.className = 'status-indicator status-success';
+                chartManagerInfo.textContent = 'Disponível';
+            } else {
+                chartManagerStatus.className = 'status-indicator status-error';
+                chartManagerInfo.textContent = 'Não encontrado';
+            }
+        }
+
+        // Verificar variáveis globais
+        function verificarGlobais() {
+            document.getElementById('alpine-global').textContent = typeof window.Alpine !== 'undefined' ? 'Disponível' : 'Indisponível';
+            document.getElementById('livewire-global').textContent = typeof window.Livewire !== 'undefined' ? 'Disponível' : 'Indisponível';
+            document.getElementById('chart-global').textContent = typeof window.Chart !== 'undefined' ? 'Disponível' : 'Indisponível';
+            document.getElementById('sgc-utils-global').textContent = typeof window.SGCUtils !== 'undefined' ? 'Disponível' : 'Indisponível';
+        }
+
+        // Funções de teste
+        function testarChartJS() {
+            console.log('Testando Chart.js...');
+            if (typeof Chart !== 'undefined') {
+                console.log('✅ Chart.js disponível - Versão:', Chart.version);
+            } else {
+                console.error('❌ Chart.js não disponível');
+            }
+        }
+
+        function criarGraficoTeste() {
+            console.log('Criando gráfico de teste...');
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js não disponível');
+                return;
+            }
+
+            const ctx = document.getElementById('testeChart1');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                        datasets: [{
+                            label: 'Vendas',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log('✅ Gráfico de teste criado');
+            }
+        }
+
+        function destruirGraficosTeste() {
+            console.log('Destruindo gráficos de teste...');
+            if (window.destruirGraficos) {
+                window.destruirGraficos();
+                console.log('✅ Gráficos destruídos usando função global');
+            } else {
+                console.warn('⚠️ Função global destruirGraficos não disponível');
+            }
+        }
+
+        function testarEventosLivewire() {
+            console.log('Testando eventos Livewire...');
+            const eventos = ['livewire:init', 'livewire:update', 'livewire:updated'];
+            eventos.forEach(evento => {
+                console.log(`Evento ${evento}:`, typeof document.addEventListener);
+            });
+        }
+
+        function testarDebounce() {
+            console.log('Testando debounce...');
+            if (window.SGCUtils && window.SGCUtils.debounce) {
+                const debouncedFunction = window.SGCUtils.debounce(() => {
+                    console.log('Função debounced executada');
+                }, 1000);
+
+                console.log('Executando função debounced 5 vezes rapidamente...');
+                for (let i = 0; i < 5; i++) {
+                    debouncedFunction();
+                }
+                console.log('✅ Debounce testado');
+            } else {
+                console.error('❌ SGCUtils.debounce não disponível');
+            }
+        }
+
+        function testarThrottle() {
+            console.log('Testando throttle...');
+            if (window.SGCUtils && window.SGCUtils.throttle) {
+                const throttledFunction = window.SGCUtils.throttle(() => {
+                    console.log('Função throttled executada');
+                }, 1000);
+
+                console.log('Executando função throttled 5 vezes rapidamente...');
+                for (let i = 0; i < 5; i++) {
+                    throttledFunction();
+                }
+                console.log('✅ Throttle testado');
+            } else {
+                console.error('❌ SGCUtils.throttle não disponível');
+            }
+        }
+
+        function limparConsole() {
+            document.getElementById('console-output').textContent = 'Console limpo...\n';
+        }
+
+        // Executar verificações quando a página carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('Página carregada, iniciando verificações...');
+            verificarStatus();
+            verificarGlobais();
+
+            // Verificar novamente após um tempo para capturar scripts carregados dinamicamente
+            setTimeout(() => {
+                console.log('Verificações adicionais após 2 segundos...');
+                verificarStatus();
+                verificarGlobais();
+            }, 2000);
+        });
+
+        // Simular eventos Livewire para teste
+        setTimeout(() => {
+            console.log('Simulando eventos Livewire...');
+            document.dispatchEvent(new CustomEvent('livewire:init'));
+            document.dispatchEvent(new CustomEvent('livewire:update'));
+            document.dispatchEvent(new CustomEvent('livewire:updated'));
+        }, 3000);
+    </script>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Teste Simples</title>
+</head>
+
+<body>
+    <h1>Teste GPS e Camera</h1>
+
+    <button onclick="testGPS()">Testar GPS</button>
+    <div id="gps"></div>
+
+    <button onclick="testCamera()">Testar Camera</button>
+    <div id="camera"></div>
+
+    <video id="video" style="display:none;" autoplay muted></video>
+    <img id="photo" style="display:none;">
+
+    <button onclick="takePhoto()" id="btn" disabled>Tirar Foto</button>
+
+    <script>
+        function testGPS() {
+            document.getElementById('gps').innerHTML = 'Testando GPS...';
+
+            if (!navigator.geolocation) {
+                document.getElementById('gps').innerHTML = 'GPS nao suportado';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (pos) {
+                    document.getElementById('gps').innerHTML = 'GPS OK: ' + pos.coords.latitude + ', ' + pos.coords.longitude;
+                },
+                function (err) {
+                    document.getElementById('gps').innerHTML = 'Erro GPS: ' + err.message;
+                }
+            );
+        }
+
+        function testCamera() {
+            document.getElementById('camera').innerHTML = 'Testando Camera...';
+
+            if (!navigator.mediaDevices) {
+                document.getElementById('camera').innerHTML = 'Camera nao suportada';
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    document.getElementById('video').srcObject = stream;
+                    document.getElementById('video').style.display = 'block';
+                    document.getElementById('camera').innerHTML = 'Camera OK';
+                    document.getElementById('btn').disabled = false;
+                })
+                .catch(function (err) {
+                    document.getElementById('camera').innerHTML = 'Erro Camera: ' + err.message;
+                });
+        }
+
+        function takePhoto() {
+            var video = document.getElementById('video');
+            var photo = document.getElementById('photo');
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0);
+
+            photo.src = canvas.toDataURL();
+            photo.style.display = 'block';
+            video.style.display = 'none';
+
+            document.getElementById('camera').innerHTML = 'Foto tirada!';
+        }
+    </script>
+</body>
+
+</html>
+

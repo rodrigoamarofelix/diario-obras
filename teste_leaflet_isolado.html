@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Leaflet Isolado</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🗺️ Teste Leaflet Isolado</h1>
+
+        <div class="info">
+            <h3>📍 Teste de Geolocalização e Mapa</h3>
+            <p>Este teste verifica se o Leaflet funciona corretamente sem conflitos.</p>
+        </div>
+
+        <div id="status"></div>
+
+        <button class="btn" onclick="getLocation()">📍 Obter Localização</button>
+        <button class="btn" onclick="createMap()">🗺️ Criar Mapa</button>
+        <button class="btn" onclick="clearMap()">🗑️ Limpar Mapa</button>
+
+        <div id="map"></div>
+
+        <div id="locationInfo"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        let map = null;
+        let marker = null;
+        let currentLocation = null;
+
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="${type}">${message}</div>`;
+            console.log(message);
+        }
+
+        function getLocation() {
+            updateStatus('📍 Solicitando localização...', 'info');
+
+            if (!navigator.geolocation) {
+                updateStatus('❌ Geolocalização não suportada pelo navegador', 'error');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    currentLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+
+                    updateStatus('✅ Localização obtida com sucesso!', 'success');
+
+                    document.getElementById('locationInfo').innerHTML = `
+                        <div class="success">
+                            <h4>📍 Sua Localização:</h4>
+                            <p><strong>Latitude:</strong> ${currentLocation.latitude.toFixed(6)}</p>
+                            <p><strong>Longitude:</strong> ${currentLocation.longitude.toFixed(6)}</p>
+                            <p><strong>Precisão:</strong> ${Math.round(currentLocation.accuracy)}m</p>
+                        </div>
+                    `;
+                },
+                function (error) {
+                    let errorMessage = '❌ Erro ao obter localização: ';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage += 'Permissão negada';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage += 'Localização indisponível';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage += 'Timeout';
+                            break;
+                        default:
+                            errorMessage += 'Erro desconhecido';
+                            break;
+                    }
+                    updateStatus(errorMessage, 'error');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        function createMap() {
+            if (!currentLocation) {
+                updateStatus('❌ Obtenha a localização primeiro', 'error');
+                return;
+            }
+
+            updateStatus('🗺️ Criando mapa Leaflet...', 'info');
+
+            try {
+                // Limpar mapa existente
+                if (map) {
+                    map.remove();
+                    map = null;
+                    marker = null;
+                }
+
+                // Criar novo mapa
+                map = L.map('map').setView([currentLocation.latitude, currentLocation.longitude], 15);
+
+                // Adicionar tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 18
+                }).addTo(map);
+
+                // Adicionar marcador
+                marker = L.marker([currentLocation.latitude, currentLocation.longitude]).addTo(map);
+
+                // Adicionar popup
+                marker.bindPopup(`
+                    <strong>📍 Sua Localização</strong><br>
+                    <strong>Lat:</strong> ${currentLocation.latitude.toFixed(6)}<br>
+                    <strong>Lng:</strong> ${currentLocation.longitude.toFixed(6)}<br>
+                    <strong>Precisão:</strong> ${Math.round(currentLocation.accuracy)}m
+                `).openPopup();
+
+                // Adicionar círculo de precisão
+                L.circle([currentLocation.latitude, currentLocation.longitude], {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.2,
+                    radius: currentLocation.accuracy
+                }).addTo(map);
+
+                updateStatus('✅ Mapa criado com sucesso!', 'success');
+
+                // Forçar redimensionamento
+                setTimeout(() => {
+                    if (map) {
+                        map.invalidateSize();
+                        updateStatus('🔄 Mapa redimensionado', 'success');
+                    }
+                }, 100);
+
+            } catch (error) {
+                updateStatus(`❌ Erro ao criar mapa: ${error.message}`, 'error');
+                console.error('Erro:', error);
+            }
+        }
+
+        function clearMap() {
+            if (map) {
+                map.remove();
+                map = null;
+                marker = null;
+                updateStatus('🗑️ Mapa removido', 'info');
+            } else {
+                updateStatus('ℹ️ Nenhum mapa para remover', 'info');
+            }
+        }
+
+        // Teste automático ao carregar
+        window.addEventListener('load', function () {
+            updateStatus('🚀 Página carregada. Clique em "Obter Localização" para começar.', 'info');
+        });
+    </script>
+</body>
+
+</html>
+

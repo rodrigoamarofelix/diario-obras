@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Sistema de Fotos - Diário de Obras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        #preview {
+            max-width: 100%;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .coordinates {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📸 Teste Sistema de Fotos</h1>
+        <p><strong>Diário de Obras - Geolocalização</strong></p>
+
+        <div class="test-section">
+            <h3>🌍 Teste de Geolocalização</h3>
+            <button onclick="getLocation()">Obter Localização</button>
+            <div id="locationStatus" class="status info" style="display: none;">
+                Aguardando localização...
+            </div>
+            <div id="coordinates" class="coordinates" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📷 Teste de Câmera</h3>
+            <button onclick="openCamera()">Abrir Câmera</button>
+            <button onclick="takePhoto()" id="takePhotoBtn" disabled>Tirar Foto</button>
+            <div id="cameraStatus" class="status info" style="display: none;">
+                Aguardando câmera...
+            </div>
+            <img id="preview" style="display: none;">
+        </div>
+
+        <div class="test-section">
+            <h3>📊 Informações do Dispositivo</h3>
+            <div id="deviceInfo" class="coordinates"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🔗 URLs para Testar</h3>
+            <p>Teste estas URLs no navegador:</p>
+            <ul>
+                <li><a href="http://172.31.163.215:3000" target="_blank">http://172.31.163.215:3000</a></li>
+                <li><a href="http://172.31.163.215:8081" target="_blank">http://172.31.163.215:8081</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let currentLocation = null;
+        let stream = null;
+        let video = null;
+
+        // Mostrar informações do dispositivo
+        function showDeviceInfo() {
+            const info = {
+                'User Agent': navigator.userAgent,
+                'Plataforma': navigator.platform,
+                'Idioma': navigator.language,
+                'Cookies': navigator.cookieEnabled ? 'Habilitados' : 'Desabilitados',
+                'Geolocalização': navigator.geolocation ? 'Suportada' : 'Não suportada',
+                'Câmera': navigator.mediaDevices ? 'Suportada' : 'Não suportada'
+            };
+
+            const deviceInfoDiv = document.getElementById('deviceInfo');
+            deviceInfoDiv.innerHTML = Object.entries(info)
+                .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                .join('<br>');
+        }
+
+        // Obter localização
+        function getLocation() {
+            const statusDiv = document.getElementById('locationStatus');
+            const coordsDiv = document.getElementById('coordinates');
+
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Obtendo localização...';
+
+            if (!navigator.geolocation) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Geolocalização não suportada pelo navegador';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    currentLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        altitude: position.coords.altitude,
+                        accuracy: position.coords.accuracy
+                    };
+
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = `✅ Localização obtida! Precisão: ${Math.round(currentLocation.accuracy)}m`;
+
+                    coordsDiv.style.display = 'block';
+                    coordsDiv.innerHTML = `
+                        <strong>Coordenadas:</strong><br>
+                        Latitude: ${currentLocation.latitude}<br>
+                        Longitude: ${currentLocation.longitude}<br>
+                        Altitude: ${currentLocation.altitude || 'N/A'}<br>
+                        Precisão: ${Math.round(currentLocation.accuracy)}m
+                    `;
+                },
+                function (error) {
+                    let message = 'Erro ao obter localização: ';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            message += 'Permissão negada';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            message += 'Posição indisponível';
+                            break;
+                        case error.TIMEOUT:
+                            message += 'Timeout';
+                            break;
+                        default:
+                            message += 'Erro desconhecido';
+                            break;
+                    }
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = message;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 300000
+                }
+            );
+        }
+
+        // Abrir câmera
+        function openCamera() {
+            const statusDiv = document.getElementById('cameraStatus');
+            const takePhotoBtn = document.getElementById('takePhotoBtn');
+
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Abrindo câmera...';
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Câmera não suportada pelo navegador';
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
+
+                    // Criar elemento de vídeo se não existir
+                    if (!video) {
+                        video = document.createElement('video');
+                        video.style.width = '100%';
+                        video.style.maxWidth = '300px';
+                        video.style.borderRadius = '5px';
+                        video.autoplay = true;
+                        video.muted = true;
+
+                        const cameraSection = document.querySelector('.test-section:nth-child(2)');
+                        cameraSection.appendChild(video);
+                    }
+
+                    video.srcObject = stream;
+
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Câmera aberta com sucesso!';
+                    takePhotoBtn.disabled = false;
+                })
+                .catch(function (error) {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = `Erro ao abrir câmera: ${error.message}`;
+                });
+        }
+
+        // Tirar foto
+        function takePhoto() {
+            if (!video || !stream) {
+                alert('Abra a câmera primeiro!');
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            ctx.drawImage(video, 0, 0);
+
+            const preview = document.getElementById('preview');
+            preview.src = canvas.toDataURL('image/jpeg');
+            preview.style.display = 'block';
+
+            // Parar a câmera
+            stream.getTracks().forEach(track => track.stop());
+            video.style.display = 'none';
+
+            const statusDiv = document.getElementById('cameraStatus');
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '✅ Foto tirada com sucesso!';
+
+            document.getElementById('takePhotoBtn').disabled = true;
+        }
+
+        // Inicializar
+        window.onload = function () {
+            showDeviceInfo();
+        };
+    </script>
+</body>
+
+</html>
+

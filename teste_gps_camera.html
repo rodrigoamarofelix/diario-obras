@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste GPS e Câmera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        #camera {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .debug {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔧 Teste GPS e Câmera</h1>
+
+        <div class="debug" id="debug">Aguardando...</div>
+
+        <button onclick="testGPS()">Testar GPS</button>
+        <button onclick="testCamera()">Testar Câmera</button>
+
+        <div id="gpsStatus" class="status info" style="display:none;">Testando GPS...</div>
+        <div id="cameraStatus" class="status info" style="display:none;">Testando Câmera...</div>
+
+        <video id="camera" style="display:none;" autoplay muted playsinline></video>
+    </div>
+
+    <script>
+        function debug(message) {
+            const debugDiv = document.getElementById('debug');
+            debugDiv.innerHTML += '<br>' + new Date().toLocaleTimeString() + ': ' + message;
+        }
+
+        function testGPS() {
+            debug('Testando GPS...');
+
+            const statusDiv = document.getElementById('gpsStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Obtendo localização...';
+
+            if (!navigator.geolocation) {
+                debug('❌ GPS não suportado');
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'GPS não suportado pelo navegador';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    debug('✅ GPS OK: ' + position.coords.latitude + ', ' + position.coords.longitude);
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = 'GPS OK! Lat: ' + position.coords.latitude.toFixed(6) + ', Lng: ' + position.coords.longitude.toFixed(6);
+                },
+                function (error) {
+                    debug('❌ GPS Erro: ' + error.message);
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = 'Erro GPS: ' + error.message;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 300000
+                }
+            );
+        }
+
+        function testCamera() {
+            debug('Testando Câmera...');
+
+            const statusDiv = document.getElementById('cameraStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Acessando câmera...';
+
+            if (!navigator.mediaDevices) {
+                debug('❌ Câmera não suportada');
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Câmera não suportada pelo navegador';
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment' }
+            })
+                .then(function (stream) {
+                    debug('✅ Câmera OK');
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = 'Câmera OK!';
+
+                    const camera = document.getElementById('camera');
+                    camera.srcObject = stream;
+                    camera.style.display = 'block';
+                })
+                .catch(function (error) {
+                    debug('❌ Câmera Erro: ' + error.message);
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = 'Erro Câmera: ' + error.message;
+                });
+        }
+
+        // Auto-test on load
+        window.onload = function () {
+            debug('Página carregada');
+            testGPS();
+            setTimeout(testCamera, 2000);
+        };
+    </script>
+</body>
+
+</html>
+

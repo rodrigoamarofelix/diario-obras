@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Performance - SGC</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-title {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .performance-metric {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .metric-success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+
+        .metric-warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+
+        .metric-danger {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+
+        .metric-info {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .btn-test {
+            margin: 5px;
+        }
+
+        .console-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .lazy-element {
+            min-height: 200px;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .lazy-element.loaded {
+            background: linear-gradient(45deg, #d4edda, #c3e6cb);
+            border-color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-tachometer-alt text-primary"></i>
+            Dashboard de Performance - SGC
+        </h1>
+
+        <!-- Métricas de Performance -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-chart-line"></i> Métricas de Performance
+            </h3>
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="performance-metric metric-success">
+                        <h4 id="page-load-time">0ms</h4>
+                        <p>Tempo de Carregamento</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="performance-metric metric-info">
+                        <h4 id="cache-hit-rate">0%</h4>
+                        <p>Taxa de Cache Hit</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="performance-metric metric-warning">
+                        <h4 id="memory-usage">0MB</h4>
+                        <p>Uso de Memória</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="performance-metric metric-danger">
+                        <h4 id="db-queries">0</h4>
+                        <p>Consultas ao Banco</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testes de Cache -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-memory"></i> Testes de Cache
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Testes de Cache:</h5>
+                    <button class="btn btn-primary btn-test" onclick="testCacheWrite()">
+                        <i class="fas fa-save"></i> Testar Escrita
+                    </button>
+                    <button class="btn btn-success btn-test" onclick="testCacheRead()">
+                        <i class="fas fa-download"></i> Testar Leitura
+                    </button>
+                    <button class="btn btn-warning btn-test" onclick="testCacheClear()">
+                        <i class="fas fa-trash"></i> Limpar Cache
+                    </button>
+                    <button class="btn btn-info btn-test" onclick="testCacheStats()">
+                        <i class="fas fa-chart-bar"></i> Estatísticas
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <h5>Resultados:</h5>
+                    <div id="cache-results" class="console-output">Aguardando testes...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testes de Lazy Loading -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-lazy"></i> Testes de Lazy Loading
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Elementos Lazy:</h5>
+                    <button class="btn btn-primary btn-test" onclick="createLazyElement()">
+                        <i class="fas fa-plus"></i> Criar Elemento
+                    </button>
+                    <button class="btn btn-success btn-test" onclick="testLazyLoading()">
+                        <i class="fas fa-play"></i> Testar Loading
+                    </button>
+                    <button class="btn btn-warning btn-test" onclick="clearLazyElements()">
+                        <i class="fas fa-trash"></i> Limpar Elementos
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <h5>Estatísticas:</h5>
+                    <div id="lazy-stats" class="console-output">Aguardando testes...</div>
+                </div>
+            </div>
+
+            <!-- Container para elementos lazy -->
+            <div id="lazy-container" class="mt-3">
+                <!-- Elementos lazy serão criados aqui -->
+            </div>
+        </div>
+
+        <!-- Testes de Performance -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-stopwatch"></i> Testes de Performance
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Benchmarks:</h5>
+                    <button class="btn btn-primary btn-test" onclick="benchmarkCache()">
+                        <i class="fas fa-stopwatch"></i> Benchmark Cache
+                    </button>
+                    <button class="btn btn-success btn-test" onclick="benchmarkLazy()">
+                        <i class="fas fa-clock"></i> Benchmark Lazy
+                    </button>
+                    <button class="btn btn-info btn-test" onclick="benchmarkOverall()">
+                        <i class="fas fa-chart-line"></i> Benchmark Geral
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <h5>Resultados:</h5>
+                    <div id="benchmark-results" class="console-output">Aguardando benchmarks...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoramento em Tempo Real -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-eye"></i> Monitoramento em Tempo Real
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Métricas:</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="monitor-cache" checked>
+                        <label class="form-check-label" for="monitor-cache">
+                            Monitorar Cache
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="monitor-lazy" checked>
+                        <label class="form-check-label" for="monitor-lazy">
+                            Monitorar Lazy Loading
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="monitor-performance" checked>
+                        <label class="form-check-label" for="monitor-performance">
+                            Monitorar Performance
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5>Logs:</h5>
+                    <div id="monitor-logs" class="console-output">Monitoramento iniciado...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instruções -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-info-circle"></i> Como Usar
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>✅ O que Testar:</h5>
+                    <ul>
+                        <li>Performance de cache (escrita/leitura)</li>
+                        <li>Lazy loading de elementos</li>
+                        <li>Benchmarks de velocidade</li>
+                        <li>Monitoramento em tempo real</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>📊 Métricas Importantes:</h5>
+                    <ul>
+                        <li><strong>Tempo de carregamento:</strong>
+                            < 2 segundos</li>
+                        <li><strong>Taxa de cache hit:</strong> > 80%</li>
+                        <li><strong>Uso de memória:</strong>
+                            < 100MB</li>
+                        <li><strong>Consultas ao banco:</strong>
+                            < 50 por página</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="js/lazy-loading.js"></script>
+
+    <script>
+        // Variáveis globais
+        let performanceMetrics = {
+            pageLoadTime: 0,
+            cacheHitRate: 0,
+            memoryUsage: 0,
+            dbQueries: 0
+        };
+
+        let lazyElements = [];
+        let monitoringInterval = null;
+
+        // Inicializar métricas quando a página carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            performanceMetrics.pageLoadTime = performance.now();
+            updatePerformanceMetrics();
+            startMonitoring();
+
+            console.log('✅ Dashboard de Performance inicializado');
+        });
+
+        // Atualizar métricas de performance
+        function updatePerformanceMetrics() {
+            document.getElementById('page-load-time').textContent = Math.round(performanceMetrics.pageLoadTime) + 'ms';
+            document.getElementById('cache-hit-rate').textContent = performanceMetrics.cacheHitRate + '%';
+            document.getElementById('memory-usage').textContent = performanceMetrics.memoryUsage + 'MB';
+            document.getElementById('db-queries').textContent = performanceMetrics.dbQueries;
+        }
+
+        // Testes de Cache
+        function testCacheWrite() {
+            const startTime = performance.now();
+            const testData = { timestamp: Date.now(), data: 'test_data_' + Math.random() };
+
+            try {
+                localStorage.setItem('sgc_cache_test', JSON.stringify(testData));
+                const endTime = performance.now();
+
+                logCacheResult(`✅ Escrita de cache: ${Math.round(endTime - startTime)}ms`);
+            } catch (error) {
+                logCacheResult(`❌ Erro na escrita: ${error.message}`);
+            }
+        }
+
+        function testCacheRead() {
+            const startTime = performance.now();
+
+            try {
+                const data = localStorage.getItem('sgc_cache_test');
+                const endTime = performance.now();
+
+                if (data) {
+                    const parsedData = JSON.parse(data);
+                    logCacheResult(`✅ Leitura de cache: ${Math.round(endTime - startTime)}ms`);
+                    performanceMetrics.cacheHitRate = Math.min(100, performanceMetrics.cacheHitRate + 10);
+                } else {
+                    logCacheResult(`⚠️ Cache vazio`);
+                }
+            } catch (error) {
+                logCacheResult(`❌ Erro na leitura: ${error.message}`);
+            }
+
+            updatePerformanceMetrics();
+        }
+
+        function testCacheClear() {
+            try {
+                localStorage.removeItem('sgc_cache_test');
+                logCacheResult(`✅ Cache limpo com sucesso`);
+                performanceMetrics.cacheHitRate = 0;
+                updatePerformanceMetrics();
+            } catch (error) {
+                logCacheResult(`❌ Erro ao limpar cache: ${error.message}`);
+            }
+        }
+
+        function testCacheStats() {
+            const stats = {
+                localStorage: Object.keys(localStorage).length,
+                sessionStorage: Object.keys(sessionStorage).length,
+                memory: performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1024 / 1024) : 'N/A'
+            };
+
+            logCacheResult(`📊 Estatísticas:\n- LocalStorage: ${stats.localStorage} itens\n- SessionStorage: ${stats.sessionStorage} itens\n- Memória JS: ${stats.memory}MB`);
+        }
+
+        function logCacheResult(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const results = document.getElementById('cache-results');
+            results.textContent += `[${timestamp}] ${message}\n`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        // Testes de Lazy Loading
+        function createLazyElement() {
+            const container = document.getElementById('lazy-container');
+            const element = document.createElement('div');
+            element.className = 'lazy-element';
+            element.dataset.lazy = 'true';
+            element.innerHTML = `
+                <div>
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Elemento Lazy ${lazyElements.length + 1}</p>
+                    <small>Clique para carregar</small>
+                </div>
+            `;
+
+            element.addEventListener('click', function () {
+                loadLazyElement(this);
+            });
+
+            container.appendChild(element);
+            lazyElements.push(element);
+
+            updateLazyStats();
+        }
+
+        function loadLazyElement(element) {
+            const startTime = performance.now();
+
+            setTimeout(() => {
+                const endTime = performance.now();
+                element.classList.add('loaded');
+                element.innerHTML = `
+                    <div>
+                        <i class="fas fa-check text-success"></i>
+                        <p>Elemento Carregado</p>
+                        <small>${Math.round(endTime - startTime)}ms</small>
+                    </div>
+                `;
+
+                updateLazyStats();
+            }, Math.random() * 1000 + 500); // Simular carregamento
+        }
+
+        function testLazyLoading() {
+            if (lazyElements.length === 0) {
+                logLazyStats('⚠️ Crie elementos lazy primeiro');
+                return;
+            }
+
+            const startTime = performance.now();
+            let loadedCount = 0;
+
+            lazyElements.forEach((element, index) => {
+                setTimeout(() => {
+                    loadLazyElement(element);
+                    loadedCount++;
+
+                    if (loadedCount === lazyElements.length) {
+                        const endTime = performance.now();
+                        logLazyStats(`✅ Todos os elementos carregados em ${Math.round(endTime - startTime)}ms`);
+                    }
+                }, index * 100);
+            });
+        }
+
+        function clearLazyElements() {
+            const container = document.getElementById('lazy-container');
+            container.innerHTML = '';
+            lazyElements = [];
+            updateLazyStats();
+        }
+
+        function updateLazyStats() {
+            const stats = {
+                total: lazyElements.length,
+                loaded: lazyElements.filter(el => el.classList.contains('loaded')).length,
+                pending: lazyElements.filter(el => !el.classList.contains('loaded')).length
+            };
+
+            document.getElementById('lazy-stats').textContent =
+                `Total: ${stats.total}\nCarregados: ${stats.loaded}\nPendentes: ${stats.pending}`;
+        }
+
+        function logLazyStats(message) {
+            document.getElementById('lazy-stats').textContent = message;
+        }
+
+        // Benchmarks
+        function benchmarkCache() {
+            const iterations = 1000;
+            const startTime = performance.now();
+
+            for (let i = 0; i < iterations; i++) {
+                localStorage.setItem(`benchmark_${i}`, `data_${i}`);
+                localStorage.getItem(`benchmark_${i}`);
+            }
+
+            const endTime = performance.now();
+            const avgTime = (endTime - startTime) / iterations;
+
+            logBenchmark(`Cache Benchmark (${iterations} operações):\n- Tempo total: ${Math.round(endTime - startTime)}ms\n- Tempo médio: ${avgTime.toFixed(3)}ms por operação`);
+        }
+
+        function benchmarkLazy() {
+            const iterations = 100;
+            const startTime = performance.now();
+
+            for (let i = 0; i < iterations; i++) {
+                createLazyElement();
+            }
+
+            const endTime = performance.now();
+            const avgTime = (endTime - startTime) / iterations;
+
+            logBenchmark(`Lazy Loading Benchmark (${iterations} elementos):\n- Tempo total: ${Math.round(endTime - startTime)}ms\n- Tempo médio: ${avgTime.toFixed(3)}ms por elemento`);
+        }
+
+        function benchmarkOverall() {
+            const startTime = performance.now();
+
+            Promise.all([
+                new Promise(resolve => setTimeout(resolve, 100)),
+                new Promise(resolve => setTimeout(resolve, 200)),
+                new Promise(resolve => setTimeout(resolve, 150))
+            ]).then(() => {
+                const endTime = performance.now();
+                logBenchmark(`Benchmark Geral:\n- Tempo total: ${Math.round(endTime - startTime)}ms\n- Performance: ${endTime - startTime < 500 ? 'Excelente' : endTime - startTime < 1000 ? 'Boa' : 'Necessita otimização'}`);
+            });
+        }
+
+        function logBenchmark(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const results = document.getElementById('benchmark-results');
+            results.textContent += `[${timestamp}] ${message}\n`;
+            results.scrollTop = results.scrollHeight;
+        }
+
+        // Monitoramento em tempo real
+        function startMonitoring() {
+            if (monitoringInterval) {
+                clearInterval(monitoringInterval);
+            }
+
+            monitoringInterval = setInterval(() => {
+                updateMonitoring();
+            }, 2000);
+        }
+
+        function updateMonitoring() {
+            const monitorCache = document.getElementById('monitor-cache').checked;
+            const monitorLazy = document.getElementById('monitor-lazy').checked;
+            const monitorPerformance = document.getElementById('monitor-performance').checked;
+
+            let logs = [];
+
+            if (monitorCache) {
+                const cacheSize = Object.keys(localStorage).length;
+                logs.push(`Cache: ${cacheSize} itens`);
+            }
+
+            if (monitorLazy) {
+                const lazyStats = {
+                    total: lazyElements.length,
+                    loaded: lazyElements.filter(el => el.classList.contains('loaded')).length
+                };
+                logs.push(`Lazy: ${lazyStats.loaded}/${lazyStats.total} carregados`);
+            }
+
+            if (monitorPerformance) {
+                const memory = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1024 / 1024) : 'N/A';
+                logs.push(`Memória: ${memory}MB`);
+            }
+
+            if (logs.length > 0) {
+                const timestamp = new Date().toLocaleTimeString();
+                const monitorLogs = document.getElementById('monitor-logs');
+                monitorLogs.textContent += `[${timestamp}] ${logs.join(' | ')}\n`;
+                monitorLogs.scrollTop = monitorLogs.scrollHeight;
+
+                // Manter apenas as últimas 20 linhas
+                const lines = monitorLogs.textContent.split('\n');
+                if (lines.length > 20) {
+                    monitorLogs.textContent = lines.slice(-20).join('\n');
+                }
+            }
+        }
+
+        // Limpar logs
+        function clearLogs() {
+            document.getElementById('monitor-logs').textContent = 'Logs limpos...\n';
+        }
+    </script>
+</body>
+
+</html>
+
+

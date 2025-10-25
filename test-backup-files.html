@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Teste Backup de Arquivos</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
+<body>
+    <h1>Teste Backup de Arquivos</h1>
+
+    <button onclick="testBackupFiles()">Testar Backup de Arquivos</button>
+
+    <div id="result"></div>
+
+    <script>
+        function testBackupFiles() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testando backup de arquivos...</p>';
+
+            fetch('/backup/create', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ type: 'files' })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Resposta:', data);
+                    resultDiv.innerHTML = `
+                <h3>Resultado:</h3>
+                <p><strong>Sucesso:</strong> ${data.success}</p>
+                <p><strong>Mensagem:</strong> ${data.message}</p>
+                <p><strong>Tipo:</strong> ${data.type}</p>
+                <p><strong>Output:</strong></p>
+                <pre>${data.output || 'N/A'}</pre>
+            `;
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    resultDiv.innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
+                });
+        }
+    </script>
+</body>
+
+</html>
+
+

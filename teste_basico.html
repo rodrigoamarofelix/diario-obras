@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste GPS e Camera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        #preview {
+            max-width: 100%;
+            margin: 10px 0;
+        }
+
+        #camera {
+            max-width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Teste GPS e Camera</h1>
+
+        <button onclick="testGPS()">Testar GPS</button>
+        <div id="gpsResult" class="status info" style="display:none;">Testando GPS...</div>
+
+        <button onclick="testCamera()">Testar Camera</button>
+        <div id="cameraResult" class="status info" style="display:none;">Testando Camera...</div>
+
+        <video id="camera" style="display:none;" autoplay muted></video>
+        <img id="preview" style="display:none;">
+
+        <button onclick="takePhoto()" id="photoBtn" disabled>Tirar Foto</button>
+
+        <div id="finalResult" class="status info" style="display:none;"></div>
+    </div>
+
+    <script>
+        function testGPS() {
+            var result = document.getElementById('gpsResult');
+            result.style.display = 'block';
+            result.className = 'status info';
+            result.textContent = 'Obtendo localização...';
+
+            if (!navigator.geolocation) {
+                result.className = 'status error';
+                result.textContent = 'GPS não suportado';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    result.className = 'status success';
+                    result.textContent = 'GPS OK: ' + position.coords.latitude + ', ' + position.coords.longitude;
+                },
+                function (error) {
+                    result.className = 'status error';
+                    result.textContent = 'Erro GPS: ' + error.message;
+                }
+            );
+        }
+
+        function testCamera() {
+            var result = document.getElementById('cameraResult');
+            var camera = document.getElementById('camera');
+            var photoBtn = document.getElementById('photoBtn');
+
+            result.style.display = 'block';
+            result.className = 'status info';
+            result.textContent = 'Abrindo camera...';
+
+            if (!navigator.mediaDevices) {
+                result.className = 'status error';
+                result.textContent = 'Camera não suportada';
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    camera.srcObject = stream;
+                    camera.style.display = 'block';
+                    result.className = 'status success';
+                    result.textContent = 'Camera OK';
+                    photoBtn.disabled = false;
+                })
+                .catch(function (error) {
+                    result.className = 'status error';
+                    result.textContent = 'Erro Camera: ' + error.message;
+                });
+        }
+
+        function takePhoto() {
+            var camera = document.getElementById('camera');
+            var preview = document.getElementById('preview');
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+            ctx.drawImage(camera, 0, 0);
+
+            preview.src = canvas.toDataURL();
+            preview.style.display = 'block';
+            camera.style.display = 'none';
+
+            var result = document.getElementById('finalResult');
+            result.style.display = 'block';
+            result.className = 'status success';
+            result.textContent = 'Foto tirada com sucesso!';
+        }
+    </script>
+</body>
+
+</html>
+

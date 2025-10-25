@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGC API - Teste Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .token-display {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .endpoint-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .endpoint-btn {
+            padding: 8px;
+            font-size: 14px;
+            background: #6c757d;
+        }
+
+        .endpoint-btn.success {
+            background: #28a745;
+        }
+
+        .endpoint-btn.info {
+            background: #17a2b8;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔌 SGC API Test</h1>
+
+        <!-- Server Info -->
+        <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+            <strong>🌐 Servidor:</strong><br>
+            <span id="serverURL" style="font-family: monospace; font-size: 12px;"></span>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="master@test.com" placeholder="Digite seu email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" value="password" placeholder="Digite sua senha">
+            </div>
+
+            <button onclick="login()">🔐 Fazer Login</button>
+        </div>
+
+        <!-- Token Display -->
+        <div id="tokenDisplay" style="display: none;">
+            <h3>✅ Token Gerado:</h3>
+            <div class="token-display" id="tokenValue"></div>
+        </div>
+
+        <!-- API Endpoints -->
+        <div id="endpoints" style="display: none;">
+            <h3>📊 Testar Endpoints:</h3>
+            <div class="endpoint-buttons">
+                <button class="endpoint-btn info" onclick="testEndpoint('contratos')">📄 Contratos</button>
+                <button class="endpoint-btn info" onclick="testEndpoint('medicoes')">📊 Medições</button>
+                <button class="endpoint-btn info" onclick="testEndpoint('pagamentos')">💰 Pagamentos</button>
+                <button class="endpoint-btn info" onclick="testEndpoint('usuarios')">👥 Usuários</button>
+                <button class="endpoint-btn success" onclick="testEndpoint('relatorios/dashboard')">📈
+                    Dashboard</button>
+                <button class="endpoint-btn success" onclick="testEndpoint('relatorios/financeiro')">💹
+                    Financeiro</button>
+                <button class="endpoint-btn" onclick="testEndpoint('system/info')">ℹ️ Sistema</button>
+                <button class="endpoint-btn" onclick="testEndpoint('auth/me')">👤 Meu Perfil</button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="result" style="display: none;">
+            <h3>📋 Resultado:</h3>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentToken = '';
+
+        // Detectar automaticamente o IP do servidor
+        function getServerURL() {
+            const hostname = window.location.hostname;
+            const port = window.location.port || '8000';
+            return `http://${hostname}:${port}`;
+        }
+
+        const baseURL = getServerURL() + '/api';
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showResult('❌ Por favor, preencha email e senha', 'error');
+                return;
+            }
+
+            showLoading('🔐 Fazendo login...');
+
+            try {
+                const response = await fetch(`${baseURL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentToken = data.data.token;
+                    document.getElementById('tokenValue').textContent = currentToken;
+                    document.getElementById('tokenDisplay').style.display = 'block';
+                    document.getElementById('endpoints').style.display = 'block';
+                    showResult('✅ Login realizado com sucesso!', 'success');
+                } else {
+                    showResult(`❌ Erro: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Erro de conexão: ${error.message}`, 'error');
+            }
+        }
+
+        async function testEndpoint(endpoint) {
+            if (!currentToken) {
+                showResult('❌ Faça login primeiro', 'error');
+                return;
+            }
+
+            showLoading(`📡 Testando ${endpoint}...`);
+
+            try {
+                const response = await fetch(`${baseURL}/${endpoint}`, {
+                    headers: {
+                        'Authorization': `Bearer ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showResult(`✅ ${endpoint} - Sucesso!\n\n${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    showResult(`❌ ${endpoint} - Erro: ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ ${endpoint} - Erro: ${error.message}`, 'error');
+            }
+        }
+
+        function showLoading(message) {
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('resultContent').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    ${message}
+                </div>
+            `;
+        }
+
+        function showResult(message, type = 'success') {
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('resultContent').innerHTML = `
+                <div class="result ${type}">
+                    <pre style="white-space: pre-wrap; font-family: monospace; font-size: 12px;">${message}</pre>
+                </div>
+            `;
+        }
+
+        // Auto-focus no primeiro campo
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('email').focus();
+            // Mostrar URL do servidor
+            document.getElementById('serverURL').textContent = getServerURL();
+        });
+    </script>
+</body>
+
+</html>

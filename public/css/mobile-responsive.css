@@ -1,0 +1,402 @@
+/* === RESPONSIVIDADE MOBILE - SGC === */
+
+/* Melhorias gerais para mobile */
+@media (max-width: 768px) {
+
+    /* Sidebar mobile */
+    .main-sidebar {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        height: 100vh !important;
+        z-index: 1040;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-open .main-sidebar {
+        transform: translateX(0);
+    }
+
+    .content-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .navbar {
+        margin-left: 0 !important;
+    }
+
+    /* Overlay para sidebar */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1039;
+        display: none;
+    }
+
+    .sidebar-open .sidebar-overlay {
+        display: block;
+    }
+}
+
+/* Cards responsivos */
+@media (max-width: 576px) {
+    .small-box {
+        margin-bottom: 15px;
+        min-height: 80px;
+    }
+
+    .small-box .inner h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.25rem;
+    }
+
+    .small-box .inner p {
+        font-size: 0.9rem !important;
+        margin-bottom: 0;
+    }
+
+    .small-box .icon {
+        font-size: 2rem;
+    }
+}
+
+/* Tabelas responsivas */
+@media (max-width: 768px) {
+    .table-responsive {
+        border: none;
+        margin: 0 -15px;
+    }
+
+    .table {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.5rem 0.3rem;
+        vertical-align: middle;
+    }
+
+    .table th:first-child,
+    .table td:first-child {
+        padding-left: 15px;
+    }
+
+    .table th:last-child,
+    .table td:last-child {
+        padding-right: 15px;
+    }
+}
+
+/* Botões responsivos */
+@media (max-width: 576px) {
+    .btn-group-vertical .btn {
+        margin-bottom: 0.25rem;
+        width: 100%;
+    }
+
+    .btn-group-vertical .btn:last-child {
+        margin-bottom: 0;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        min-height: 44px;
+    }
+
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Formulários responsivos */
+@media (max-width: 576px) {
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-control {
+        font-size: 16px;
+        /* Evita zoom no iOS */
+        padding: 0.75rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-select {
+        font-size: 16px;
+        padding: 0.75rem;
+    }
+}
+
+/* Modais responsivos */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+
+    .modal-content {
+        border-radius: 0.5rem;
+    }
+
+    .modal-header {
+        padding: 1rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-footer {
+        padding: 1rem;
+    }
+}
+
+/* Cards de conteúdo responsivos */
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .card-header h3,
+    .card-header h5 {
+        font-size: 1rem;
+        margin: 0;
+    }
+}
+
+/* Dashboard responsivo */
+@media (max-width: 768px) {
+    .content-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .breadcrumb {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .content-header .breadcrumb {
+        padding: 0;
+    }
+}
+
+/* Notificações responsivas */
+@media (max-width: 576px) {
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+        min-width: 280px;
+        max-width: calc(100vw - 2rem);
+    }
+
+    .dropdown-item {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* Melhorias para landscape mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .small-box .inner h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .small-box .inner p {
+        font-size: 0.8rem !important;
+    }
+
+    .small-box .icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* Melhorias gerais para mobile */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .row {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    [class*="col-"] {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    /* Melhorar espaçamento */
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem !important;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 768px) {
+    .nav-link {
+        padding: 0.75rem 1rem;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-link i {
+        margin-right: 0.5rem;
+    }
+
+    /* Melhorar área de toque para links */
+    a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+/* Melhorias específicas para o SGC */
+@media (max-width: 576px) {
+
+    /* Workflow cards */
+    .workflow-card {
+        margin-bottom: 1rem;
+    }
+
+    .workflow-card .card-body {
+        padding: 0.75rem;
+    }
+
+    .workflow-card .btn-group {
+        width: 100%;
+    }
+
+    .workflow-card .btn {
+        flex: 1;
+        margin: 0 0.125rem;
+    }
+
+    /* Estatísticas do workflow */
+    .workflow-stats .small-box {
+        margin-bottom: 1rem;
+    }
+
+    /* Filtros do workflow */
+    .workflow-filters .form-group {
+        margin-bottom: 1rem;
+    }
+
+    /* Tabela do workflow */
+    .workflow-table .table th,
+    .workflow-table .table td {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.2rem;
+    }
+
+    .workflow-table .btn-group-vertical {
+        width: 100%;
+    }
+}
+
+/* Melhorias para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .small-box .inner h3 {
+        font-size: 1.8rem !important;
+    }
+
+    .small-box .inner p {
+        font-size: 1rem !important;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Melhorias para telas muito pequenas */
+@media (max-width: 360px) {
+    .small-box .inner h3 {
+        font-size: 1.3rem !important;
+    }
+
+    .small-box .inner p {
+        font-size: 0.8rem !important;
+    }
+
+    .table {
+        font-size: 0.75rem;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .card-body {
+        padding: 0.75rem;
+    }
+}
+
+/* Melhorias para impressão */
+@media print {
+
+    .sidebar,
+    .navbar,
+    .btn,
+    .dropdown-menu {
+        display: none !important;
+    }
+
+    .content-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .main-content {
+        width: 100% !important;
+    }
+}
+
+
+

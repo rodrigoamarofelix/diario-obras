@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Correção de Gráficos - SGC</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-title {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .console-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .btn-test {
+            margin: 5px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-chart-bar text-primary"></i>
+            Teste de Correção de Gráficos
+        </h1>
+
+        <!-- Status dos Gráficos -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-info-circle"></i> Status dos Gráficos
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Instâncias Ativas:</h5>
+                    <ul id="active-charts" class="list-unstyled">
+                        <li>Verificando...</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Canvas Status:</h5>
+                    <ul id="canvas-status" class="list-unstyled">
+                        <li>Verificando...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Output -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-terminal"></i> Console Output
+            </h3>
+            <div class="console-output" id="console-output">Aguardando logs...</div>
+            <button class="btn btn-secondary btn-sm" onclick="limparConsole()">
+                <i class="fas fa-trash"></i> Limpar Console
+            </button>
+        </div>
+
+        <!-- Testes de Funcionalidade -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-flask"></i> Testes de Funcionalidade
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Testes de Gráficos:</h5>
+                    <button class="btn btn-primary btn-test" onclick="criarGraficoTeste1()">
+                        <i class="fas fa-plus"></i> Criar Gráfico 1
+                    </button>
+                    <button class="btn btn-success btn-test" onclick="criarGraficoTeste2()">
+                        <i class="fas fa-plus"></i> Criar Gráfico 2
+                    </button>
+                    <button class="btn btn-warning btn-test" onclick="criarGraficoTeste3()">
+                        <i class="fas fa-plus"></i> Criar Gráfico 3
+                    </button>
+                    <button class="btn btn-danger btn-test" onclick="destruirTodosGraficos()">
+                        <i class="fas fa-trash"></i> Destruir Todos
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <h5>Testes de Conflito:</h5>
+                    <button class="btn btn-info btn-test" onclick="testarConflitoCanvas()">
+                        <i class="fas fa-exclamation-triangle"></i> Testar Conflito
+                    </button>
+                    <button class="btn btn-secondary btn-test" onclick="verificarStatus()">
+                        <i class="fas fa-search"></i> Verificar Status
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas para Gráficos de Teste -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-chart-line"></i> Gráficos de Teste
+            </h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Gráfico 1:</h5>
+                    <div class="chart-container">
+                        <canvas id="testeChart1"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Gráfico 2:</h5>
+                    <div class="chart-container">
+                        <canvas id="testeChart2"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Gráfico 3:</h5>
+                    <div class="chart-container">
+                        <canvas id="testeChart3"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instruções -->
+        <div class="test-section">
+            <h3 class="test-title">
+                <i class="fas fa-info-circle"></i> Como Testar
+            </h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>✅ Testes que Devem Funcionar:</h5>
+                    <ul>
+                        <li>Criar múltiplos gráficos</li>
+                        <li>Destruir gráficos sem erros</li>
+                        <li>Recriar gráficos no mesmo canvas</li>
+                        <li>Verificar status dos canvas</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>❌ Erros que Não Devem Aparecer:</h5>
+                    <ul>
+                        <li>"Canvas is already in use"</li>
+                        <li>"Chart with ID 'X' must be destroyed"</li>
+                        <li>Múltiplas instâncias Alpine</li>
+                        <li>Conflitos de renderização</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/sgc-conflicts-fix.js"></script>
+
+    <script>
+        // Capturar logs do console
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        function adicionarLog(tipo, mensagem) {
+            const consoleOutput = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${tipo.toUpperCase()}: ${mensagem}\n`;
+            consoleOutput.textContent += logEntry;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        console.log = function (...args) {
+            originalLog.apply(console, args);
+            adicionarLog('log', args.join(' '));
+        };
+
+        console.warn = function (...args) {
+            originalWarn.apply(console, args);
+            adicionarLog('warn', args.join(' '));
+        };
+
+        console.error = function (...args) {
+            originalError.apply(console, args);
+            adicionarLog('error', args.join(' '));
+        };
+
+        // Variáveis para controle
+        let chartInstances = {};
+        let isRendering = false;
+
+        // Função para verificar status dos gráficos
+        function verificarStatus() {
+            console.log('=== VERIFICAÇÃO DE STATUS ===');
+
+            // Verificar instâncias ativas
+            const activeChartsList = document.getElementById('active-charts');
+            activeChartsList.innerHTML = '';
+
+            Object.keys(chartInstances).forEach(key => {
+                if (chartInstances[key]) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check text-success"></i> ${key}: Ativo`;
+                    activeChartsList.appendChild(li);
+                }
+            });
+
+            if (Object.keys(chartInstances).length === 0) {
+                const li = document.createElement('li');
+                li.innerHTML = '<i class="fas fa-times text-danger"></i> Nenhum gráfico ativo';
+                activeChartsList.appendChild(li);
+            }
+
+            // Verificar status dos canvas
+            const canvasStatusList = document.getElementById('canvas-status');
+            canvasStatusList.innerHTML = '';
+
+            const canvasIds = ['testeChart1', 'testeChart2', 'testeChart3'];
+            canvasIds.forEach(canvasId => {
+                const canvas = document.getElementById(canvasId);
+                const existingChart = Chart.getChart(canvas);
+
+                const li = document.createElement('li');
+                if (existingChart) {
+                    li.innerHTML = `<i class="fas fa-check text-success"></i> ${canvasId}: Em uso`;
+                } else {
+                    li.innerHTML = `<i class="fas fa-circle text-secondary"></i> ${canvasId}: Livre`;
+                }
+                canvasStatusList.appendChild(li);
+            });
+
+            console.log('Status verificado com sucesso');
+        }
+
+        // Função para criar gráfico de teste
+        function criarGraficoTeste1() {
+            console.log('Criando gráfico de teste 1...');
+            const ctx = document.getElementById('testeChart1');
+
+            if (ctx) {
+                // Verificar se já existe um gráfico
+                const existingChart = Chart.getChart(ctx);
+                if (existingChart) {
+                    console.log('🗑️ Destruindo gráfico existente no canvas testeChart1');
+                    existingChart.destroy();
+                }
+
+                chartInstances.teste1 = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                        datasets: [{
+                            label: 'Vendas',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log('✅ Gráfico de teste 1 criado');
+            }
+        }
+
+        function criarGraficoTeste2() {
+            console.log('Criando gráfico de teste 2...');
+            const ctx = document.getElementById('testeChart2');
+
+            if (ctx) {
+                // Verificar se já existe um gráfico
+                const existingChart = Chart.getChart(ctx);
+                if (existingChart) {
+                    console.log('🗑️ Destruindo gráfico existente no canvas testeChart2');
+                    existingChart.destroy();
+                }
+
+                chartInstances.teste2 = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                        datasets: [{
+                            label: 'Crescimento',
+                            data: [2, 3, 10, 5, 2, 3],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                console.log('✅ Gráfico de teste 2 criado');
+            }
+        }
+
+        function criarGraficoTeste3() {
+            console.log('Criando gráfico de teste 3...');
+            const ctx = document.getElementById('testeChart3');
+
+            if (ctx) {
+                // Verificar se já existe um gráfico
+                const existingChart = Chart.getChart(ctx);
+                if (existingChart) {
+                    console.log('🗑️ Destruindo gráfico existente no canvas testeChart3');
+                    existingChart.destroy();
+                }
+
+                chartInstances.teste3 = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Ativo', 'Pendente', 'Concluído'],
+                        datasets: [{
+                            data: [30, 50, 20],
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.8)',
+                                'rgba(255, 206, 86, 0.8)',
+                                'rgba(75, 192, 192, 0.8)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+                console.log('✅ Gráfico de teste 3 criado');
+            }
+        }
+
+        function destruirTodosGraficos() {
+            console.log('Destruindo todos os gráficos...');
+
+            // Usar função global se disponível
+            if (window.destruirGraficos) {
+                window.destruirGraficos();
+            }
+
+            // Destruir gráficos locais
+            Object.keys(chartInstances).forEach(key => {
+                if (chartInstances[key] && typeof chartInstances[key].destroy === 'function') {
+                    try {
+                        chartInstances[key].destroy();
+                        console.log(`🗑️ Gráfico ${key} destruído`);
+                    } catch (error) {
+                        console.warn(`⚠️ Erro ao destruir gráfico ${key}:`, error);
+                    }
+                }
+            });
+
+            chartInstances = {};
+            console.log('✅ Todos os gráficos destruídos');
+        }
+
+        function testarConflitoCanvas() {
+            console.log('Testando conflito de canvas...');
+
+            // Tentar criar múltiplos gráficos no mesmo canvas rapidamente
+            const ctx = document.getElementById('testeChart1');
+
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    try {
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) {
+                            existingChart.destroy();
+                        }
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['A', 'B', 'C'],
+                                datasets: [{
+                                    data: [Math.random() * 10, Math.random() * 10, Math.random() * 10],
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false
+                            }
+                        });
+
+                        console.log(`✅ Gráfico ${i + 1} criado sem conflito`);
+                    } catch (error) {
+                        console.error(`❌ Erro ao criar gráfico ${i + 1}:`, error);
+                    }
+                }, i * 100);
+            }
+        }
+
+        function limparConsole() {
+            document.getElementById('console-output').textContent = 'Console limpo...\n';
+        }
+
+        // Executar verificações quando a página carregar
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('Página carregada, iniciando testes...');
+            verificarStatus();
+
+            // Verificar novamente após um tempo
+            setTimeout(() => {
+                console.log('Verificações adicionais após 2 segundos...');
+                verificarStatus();
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Camera Forçado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        #camera {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        #preview {
+            max-width: 100%;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .debug {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📷 Teste Camera Forçado</h1>
+
+        <div class="debug" id="debug">Aguardando...</div>
+
+        <button onclick="checkSupport()">Verificar Suporte</button>
+        <button onclick="requestCamera()">Solicitar Camera</button>
+        <button onclick="requestCameraUser()">Camera Frontal</button>
+        <button onclick="requestCameraEnvironment()">Camera Traseira</button>
+
+        <div id="status" class="status info" style="display:none;">Testando...</div>
+
+        <video id="camera" style="display:none;" autoplay muted playsinline></video>
+        <img id="preview" style="display:none;">
+
+        <button onclick="takePhoto()" id="photoBtn" disabled>Tirar Foto</button>
+    </div>
+
+    <script>
+        let stream = null;
+
+        function debug(message) {
+            const debugDiv = document.getElementById('debug');
+            debugDiv.innerHTML += '<br>' + new Date().toLocaleTimeString() + ': ' + message;
+        }
+
+        function checkSupport() {
+            debug('Verificando suporte...');
+
+            if (!navigator.mediaDevices) {
+                debug('❌ navigator.mediaDevices não existe');
+                return;
+            }
+
+            if (!navigator.mediaDevices.getUserMedia) {
+                debug('❌ getUserMedia não existe');
+                return;
+            }
+
+            debug('✅ Suporte básico OK');
+
+            // Verificar permissões
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'camera' }).then(function (result) {
+                    debug('Permissão camera: ' + result.state);
+                }).catch(function (err) {
+                    debug('Erro ao verificar permissão: ' + err.message);
+                });
+            }
+        }
+
+        function requestCamera() {
+            debug('Solicitando camera...');
+
+            const status = document.getElementById('status');
+            status.style.display = 'block';
+            status.className = 'status info';
+            status.textContent = 'Solicitando acesso à câmera...';
+
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (mediaStream) {
+                    debug('✅ Camera acessada com sucesso');
+                    stream = mediaStream;
+
+                    const camera = document.getElementById('camera');
+                    camera.srcObject = stream;
+                    camera.style.display = 'block';
+
+                    status.className = 'status success';
+                    status.textContent = '✅ Câmera aberta!';
+                    document.getElementById('photoBtn').disabled = false;
+                })
+                .catch(function (error) {
+                    debug('❌ Erro: ' + error.name + ' - ' + error.message);
+
+                    status.className = 'status error';
+                    let message = 'Erro: ';
+
+                    if (error.name === 'NotAllowedError') {
+                        message += 'Permissão negada pelo usuário';
+                    } else if (error.name === 'NotFoundError') {
+                        message += 'Câmera não encontrada';
+                    } else if (error.name === 'NotSupportedError') {
+                        message += 'Câmera não suportada';
+                    } else if (error.name === 'NotReadableError') {
+                        message += 'Câmera já em uso';
+                    } else {
+                        message += error.message;
+                    }
+
+                    status.textContent = message;
+                });
+        }
+
+        function requestCameraUser() {
+            debug('Solicitando camera frontal...');
+
+            const status = document.getElementById('status');
+            status.style.display = 'block';
+            status.className = 'status info';
+            status.textContent = 'Solicitando câmera frontal...';
+
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'user' }
+            })
+                .then(function (mediaStream) {
+                    debug('✅ Camera frontal acessada');
+                    stream = mediaStream;
+
+                    const camera = document.getElementById('camera');
+                    camera.srcObject = stream;
+                    camera.style.display = 'block';
+
+                    status.className = 'status success';
+                    status.textContent = '✅ Câmera frontal aberta!';
+                    document.getElementById('photoBtn').disabled = false;
+                })
+                .catch(function (error) {
+                    debug('❌ Erro camera frontal: ' + error.message);
+                    status.className = 'status error';
+                    status.textContent = 'Erro câmera frontal: ' + error.message;
+                });
+        }
+
+        function requestCameraEnvironment() {
+            debug('Solicitando camera traseira...');
+
+            const status = document.getElementById('status');
+            status.style.display = 'block';
+            status.className = 'status info';
+            status.textContent = 'Solicitando câmera traseira...';
+
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment' }
+            })
+                .then(function (mediaStream) {
+                    debug('✅ Camera traseira acessada');
+                    stream = mediaStream;
+
+                    const camera = document.getElementById('camera');
+                    camera.srcObject = stream;
+                    camera.style.display = 'block';
+
+                    status.className = 'status success';
+                    status.textContent = '✅ Câmera traseira aberta!';
+                    document.getElementById('photoBtn').disabled = false;
+                })
+                .catch(function (error) {
+                    debug('❌ Erro camera traseira: ' + error.message);
+                    status.className = 'status error';
+                    status.textContent = 'Erro câmera traseira: ' + error.message;
+                });
+        }
+
+        function takePhoto() {
+            if (!stream) {
+                alert('Abra a câmera primeiro!');
+                return;
+            }
+
+            debug('Tirando foto...');
+
+            const camera = document.getElementById('camera');
+            const preview = document.getElementById('preview');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+
+            ctx.drawImage(camera, 0, 0);
+
+            const photoData = canvas.toDataURL('image/jpeg', 0.8);
+            preview.src = photoData;
+            preview.style.display = 'block';
+            camera.style.display = 'none';
+
+            // Parar a câmera
+            stream.getTracks().forEach(function (track) {
+                track.stop();
+            });
+            stream = null;
+
+            debug('✅ Foto tirada com sucesso!');
+
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.textContent = '✅ Foto tirada com sucesso!';
+
+            document.getElementById('photoBtn').disabled = true;
+        }
+
+        // Auto-verificar suporte ao carregar
+        window.onload = function () {
+            debug('Página carregada');
+            checkSupport();
+        };
+    </script>
+</body>
+
+</html>
+

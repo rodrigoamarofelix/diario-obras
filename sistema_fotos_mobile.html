@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Fotos - Diário de Obras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        #preview {
+            max-width: 100%;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .coordinates {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .photo-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #camera {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📸 Sistema de Fotos</h1>
+        <p style="text-align: center; color: #666;">Diário de Obras - Geolocalização</p>
+
+        <form id="photoForm">
+            <div class="form-group">
+                <label for="titulo">Título da Foto:</label>
+                <input type="text" id="titulo" name="titulo" placeholder="Ex: Fundação da obra">
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" rows="3"
+                    placeholder="Descreva o que está sendo fotografado"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoria:</label>
+                <select id="categoria" name="categoria">
+                    <option value="antes">Antes</option>
+                    <option value="progresso">Progresso</option>
+                    <option value="depois">Depois</option>
+                    <option value="problema">Problema</option>
+                    <option value="solucao">Solução</option>
+                </select>
+            </div>
+
+            <div class="photo-section">
+                <button type="button" onclick="getLocation()">🌍 Obter Localização</button>
+                <div id="locationStatus" class="status info hidden">
+                    Obtendo localização...
+                </div>
+                <div id="coordinates" class="coordinates hidden"></div>
+            </div>
+
+            <div class="photo-section">
+                <button type="button" onclick="openCamera()">📷 Abrir Câmera</button>
+                <button type="button" onclick="takePhoto()" id="takePhotoBtn" disabled>Tirar Foto</button>
+                <div id="cameraStatus" class="status info hidden">
+                    Aguardando câmera...
+                </div>
+                <video id="camera" class="hidden" autoplay muted></video>
+                <img id="preview" class="hidden">
+            </div>
+
+            <button type="submit" id="submitBtn" disabled>💾 Salvar Foto</button>
+        </form>
+
+        <div id="result" class="status hidden"></div>
+    </div>
+
+    <script>
+        let currentLocation = null;
+        let stream = null;
+        let photoData = null;
+
+        // Obter localização
+        function getLocation() {
+            const statusDiv = document.getElementById('locationStatus');
+            const coordsDiv = document.getElementById('coordinates');
+
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Obtendo localização...';
+
+            if (!navigator.geolocation) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Geolocalização não suportada pelo navegador';
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    currentLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        altitude: position.coords.altitude,
+                        accuracy: position.coords.accuracy
+                    };
+
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = `✅ Localização obtida! Precisão: ${Math.round(currentLocation.accuracy)}m`;
+
+                    coordsDiv.classList.remove('hidden');
+                    coordsDiv.innerHTML = `
+                        <strong>📍 Coordenadas:</strong><br>
+                        Latitude: ${currentLocation.latitude}<br>
+                        Longitude: ${currentLocation.longitude}<br>
+                        Altitude: ${currentLocation.altitude || 'N/A'}<br>
+                        Precisão: ${Math.round(currentLocation.accuracy)}m
+                    `;
+
+                    checkFormReady();
+                },
+                function (error) {
+                    let message = 'Erro ao obter localização: ';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            message += 'Permissão negada';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            message += 'Posição indisponível';
+                            break;
+                        case error.TIMEOUT:
+                            message += 'Timeout';
+                            break;
+                        default:
+                            message += 'Erro desconhecido';
+                            break;
+                    }
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = message;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 300000
+                }
+            );
+        }
+
+        // Abrir câmera
+        function openCamera() {
+            const statusDiv = document.getElementById('cameraStatus');
+            const takePhotoBtn = document.getElementById('takePhotoBtn');
+            const camera = document.getElementById('camera');
+
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = 'status info';
+            statusDiv.textContent = 'Abrindo câmera...';
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Câmera não suportada pelo navegador';
+                return;
+            }
+
+            navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
+            })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
+                    camera.srcObject = stream;
+                    camera.classList.remove('hidden');
+
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ Câmera aberta com sucesso!';
+                    takePhotoBtn.disabled = false;
+                })
+                .catch(function (error) {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = `Erro ao abrir câmera: ${error.message}`;
+                });
+        }
+
+        // Tirar foto
+        function takePhoto() {
+            if (!stream) {
+                alert('Abra a câmera primeiro!');
+                return;
+            }
+
+            const camera = document.getElementById('camera');
+            const preview = document.getElementById('preview');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+
+            ctx.drawImage(camera, 0, 0);
+
+            photoData = canvas.toDataURL('image/jpeg', 0.8);
+            preview.src = photoData;
+            preview.classList.remove('hidden');
+            camera.classList.add('hidden');
+
+            // Parar a câmera
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+
+            const statusDiv = document.getElementById('cameraStatus');
+            statusDiv.className = 'status success';
+            statusDiv.textContent = '✅ Foto tirada com sucesso!';
+
+            document.getElementById('takePhotoBtn').disabled = true;
+            checkFormReady();
+        }
+
+        // Verificar se formulário está pronto
+        function checkFormReady() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (currentLocation && photoData) {
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Enviar formulário
+        document.getElementById('photoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (!currentLocation || !photoData) {
+                alert('Obtenha a localização e tire uma foto primeiro!');
+                return;
+            }
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('hidden');
+            resultDiv.className = 'status info';
+            resultDiv.textContent = 'Salvando foto...';
+
+            // Simular salvamento (aqui você integraria com o backend)
+            setTimeout(() => {
+                resultDiv.className = 'status success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>Foto salva com sucesso!</strong><br>
+                    📍 Localização: ${currentLocation.latitude}, ${currentLocation.longitude}<br>
+                    📸 Foto capturada com sucesso<br>
+                    💾 Dados prontos para envio ao servidor
+                `;
+
+                // Resetar formulário
+                document.getElementById('photoForm').reset();
+                document.getElementById('preview').classList.add('hidden');
+                document.getElementById('coordinates').classList.add('hidden');
+                document.getElementById('locationStatus').classList.add('hidden');
+                document.getElementById('cameraStatus').classList.add('hidden');
+                document.getElementById('submitBtn').disabled = true;
+
+                currentLocation = null;
+                photoData = null;
+            }, 2000);
+        });
+
+        // Auto-obter localização ao carregar
+        window.onload = function () {
+            getLocation();
+        };
+    </script>
+</body>
+
+</html>
+
