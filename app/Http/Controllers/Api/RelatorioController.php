@@ -7,6 +7,7 @@ use App\Models\Contrato;
 use App\Models\Medicao;
 use App\Models\Pagamento;
 use App\Models\User;
+use App\Helpers\DatabaseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -34,17 +35,28 @@ class RelatorioController extends Controller
             'contratos_por_status' => Contrato::selectRaw('status, count(*) as total')
                 ->groupBy('status')
                 ->get(),
-            'medicoes_por_mes' => Medicao::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, count(*) as total, sum(valor_total) as valor')
+            'medicoes_por_mes' => Medicao::select([
+                    DatabaseHelper::formatDateForMonthGrouping(),
+                    DB::raw('count(*) as total'),
+                    DB::raw('sum(valor_total) as valor')
+                ])
                 ->where('created_at', '>=', $dataInicio)
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->get(),
-            'pagamentos_por_mes' => Pagamento::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, count(*) as total, sum(valor) as valor')
+            'pagamentos_por_mes' => Pagamento::select([
+                    DatabaseHelper::formatDateForMonthGrouping(),
+                    DB::raw('count(*) as total'),
+                    DB::raw('sum(valor) as valor')
+                ])
                 ->where('created_at', '>=', $dataInicio)
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->get(),
-            'usuarios_por_mes' => User::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, count(*) as total')
+            'usuarios_por_mes' => User::select([
+                    DatabaseHelper::formatDateForMonthGrouping(),
+                    DB::raw('count(*) as total')
+                ])
                 ->where('created_at', '>=', $dataInicio)
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
@@ -79,11 +91,11 @@ class RelatorioController extends Controller
                     ->whereBetween('created_at', [$dataInicio, $dataFim])
                     ->sum('valor'),
             ],
-            'evolucao_mensal' => Medicao::selectRaw('
-                    DATE_FORMAT(created_at, "%Y-%m") as mes,
-                    count(*) as quantidade_medicoes,
-                    sum(valor_total) as valor_medicoes
-                ')
+            'evolucao_mensal' => Medicao::select([
+                    DatabaseHelper::formatDateForMonthGrouping(),
+                    DB::raw('count(*) as quantidade_medicoes'),
+                    DB::raw('sum(valor_total) as valor_medicoes')
+                ])
                 ->whereBetween('created_at', [$dataInicio, $dataFim])
                 ->groupBy('mes')
                 ->orderBy('mes', 'asc')

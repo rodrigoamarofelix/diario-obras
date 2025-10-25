@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Medicao;
+use App\Helpers\DatabaseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
@@ -172,7 +173,11 @@ class MedicaoController extends Controller
                 ->groupBy('status')
                 ->get(),
             'valor_total' => Medicao::sum('valor_total'),
-            'por_mes' => Medicao::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as mes, count(*) as total, sum(valor_total) as valor')
+            'por_mes' => Medicao::select([
+                    DatabaseHelper::formatDateForMonthGrouping(),
+                    DB::raw('count(*) as total'),
+                    DB::raw('sum(valor_total) as valor')
+                ])
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->limit(12)
