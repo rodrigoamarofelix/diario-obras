@@ -97,6 +97,9 @@
                                 <div id="campos-pessoas">
                                     <!-- Será preenchido dinamicamente via JavaScript -->
                                 </div>
+                                
+                                <!-- Campo oculto para enviar lista de pessoas selecionadas -->
+                                <input type="hidden" id="pessoas_selecionadas_input" name="pessoas_selecionadas" value="">
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-warning">
@@ -202,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function adicionarPessoa(pessoaId, nome, funcao) {
         pessoasSelecionadas.push(pessoaId);
-
+        
         // Criar chip
         const chip = document.createElement('div');
         chip.className = 'pessoa-chip';
@@ -213,10 +216,13 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         `;
         pessoaChips.appendChild(chip);
-
+        
         // Criar campos para a pessoa
         criarCamposPessoa(pessoaId, nome, funcao);
-
+        
+        // Atualizar campo oculto
+        atualizarCampoOculto();
+        
         // Remover opção do select
         const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
         if (option) {
@@ -227,22 +233,30 @@ document.addEventListener('DOMContentLoaded', function() {
     function removerPessoa(pessoaId) {
         // Remover da lista
         pessoasSelecionadas = pessoasSelecionadas.filter(id => id !== pessoaId);
-
+        
         // Remover chip
         const chip = pessoaChips.querySelector(`button[onclick="removerPessoa('${pessoaId}')"]`).parentElement;
         chip.remove();
-
+        
         // Remover campos
         const campos = document.getElementById(`campos-pessoa-${pessoaId}`);
         if (campos) {
             campos.remove();
         }
-
+        
+        // Atualizar campo oculto
+        atualizarCampoOculto();
+        
         // Mostrar opção no select novamente
         const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
         if (option) {
             option.style.display = 'block';
         }
+    }
+    
+    function atualizarCampoOculto() {
+        const campoOculto = document.getElementById('pessoas_selecionadas_input');
+        campoOculto.value = JSON.stringify(pessoasSelecionadas);
     }
 
     function criarCamposPessoa(pessoaId, nome, funcao) {
@@ -261,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora de Entrada</label>
-                            <input type="time" class="form-control hora-entrada" 
+                            <input type="time" class="form-control hora-entrada"
                                    name="pessoas[${pessoaId}][hora_entrada]"
                                    data-pessoa="${pessoaId}">
                         </div>
@@ -269,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora Saída Almoço</label>
-                            <input type="time" class="form-control hora-saida-almoco" 
+                            <input type="time" class="form-control hora-saida-almoco"
                                    name="pessoas[${pessoaId}][hora_saida_almoco]"
                                    data-pessoa="${pessoaId}">
                             <div class="invalid-feedback hora-saida-almoco-error" style="display: none;">
@@ -280,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora Retorno Almoço</label>
-                            <input type="time" class="form-control hora-retorno-almoco" 
+                            <input type="time" class="form-control hora-retorno-almoco"
                                    name="pessoas[${pessoaId}][hora_retorno_almoco]"
                                    data-pessoa="${pessoaId}">
                             <div class="invalid-feedback hora-retorno-almoco-error" style="display: none;">
@@ -291,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora de Saída</label>
-                            <input type="time" class="form-control hora-saida" 
+                            <input type="time" class="form-control hora-saida"
                                    name="pessoas[${pessoaId}][hora_saida]"
                                    data-pessoa="${pessoaId}">
                         </div>
@@ -301,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Horas Trabalhadas</label>
-                            <input type="number" class="form-control horas-trabalhadas" 
+                            <input type="number" class="form-control horas-trabalhadas"
                                    name="pessoas[${pessoaId}][horas_trabalhadas]"
                                    data-pessoa="${pessoaId}"
                                    min="0" max="24" step="0.5" readonly>

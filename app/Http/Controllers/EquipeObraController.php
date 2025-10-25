@@ -44,6 +44,12 @@ class EquipeObraController extends Controller
      */
     public function store(Request $request)
     {
+        // Processar pessoas_selecionadas se vier como JSON string
+        $pessoasSelecionadas = $request->pessoas_selecionadas;
+        if (is_string($pessoasSelecionadas)) {
+            $pessoasSelecionadas = json_decode($pessoasSelecionadas, true);
+        }
+        
         $request->validate([
             'projeto_id' => 'required|exists:projetos,id',
             'atividade_id' => 'nullable|exists:atividade_obras,id',
