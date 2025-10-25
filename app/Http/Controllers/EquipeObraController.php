@@ -49,7 +49,7 @@ class EquipeObraController extends Controller
         if (is_string($pessoasSelecionadas)) {
             $pessoasSelecionadas = json_decode($pessoasSelecionadas, true);
         }
-        
+
         $request->validate([
             'projeto_id' => 'required|exists:projetos,id',
             'atividade_id' => 'nullable|exists:atividade_obras,id',
@@ -86,7 +86,7 @@ class EquipeObraController extends Controller
                     'hora_retorno_almoco' => $dadosPessoa['hora_retorno_almoco'] ?? null,
                     'hora_saida' => $dadosPessoa['hora_saida'] ?? null,
                     'horas_trabalhadas' => $dadosPessoa['horas_trabalhadas'] ?? null,
-                    'funcao' => $pessoa->funcao ? $pessoa->funcao->nome : 'outros',
+                    'funcao' => $pessoa->funcao ? strtolower($pessoa->funcao->nome) : 'outros',
                     'atividades_realizadas' => $dadosPessoa['atividades_realizadas'] ?? null,
                     'observacoes' => $dadosPessoa['observacoes'] ?? null,
                     'presente' => isset($dadosPessoa['presente']) ? (bool)$dadosPessoa['presente'] : true,

@@ -97,7 +97,7 @@
                                 <div id="campos-pessoas">
                                     <!-- Será preenchido dinamicamente via JavaScript -->
                                 </div>
-                                
+
                                 <!-- Campo oculto para enviar lista de pessoas selecionadas -->
                                 <input type="hidden" id="pessoas_selecionadas_input" name="pessoas_selecionadas" value="">
 
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function adicionarPessoa(pessoaId, nome, funcao) {
         pessoasSelecionadas.push(pessoaId);
-        
+
         // Criar chip
         const chip = document.createElement('div');
         chip.className = 'pessoa-chip';
@@ -216,13 +216,13 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         `;
         pessoaChips.appendChild(chip);
-        
+
         // Criar campos para a pessoa
         criarCamposPessoa(pessoaId, nome, funcao);
-        
+
         // Atualizar campo oculto
         atualizarCampoOculto();
-        
+
         // Remover opção do select
         const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
         if (option) {
@@ -233,27 +233,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function removerPessoa(pessoaId) {
         // Remover da lista
         pessoasSelecionadas = pessoasSelecionadas.filter(id => id !== pessoaId);
-        
+
         // Remover chip
         const chip = pessoaChips.querySelector(`button[onclick="removerPessoa('${pessoaId}')"]`).parentElement;
         chip.remove();
-        
+
         // Remover campos
         const campos = document.getElementById(`campos-pessoa-${pessoaId}`);
         if (campos) {
             campos.remove();
         }
-        
+
         // Atualizar campo oculto
         atualizarCampoOculto();
-        
+
         // Mostrar opção no select novamente
         const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
         if (option) {
             option.style.display = 'block';
         }
     }
-    
+
     function atualizarCampoOculto() {
         const campoOculto = document.getElementById('pessoas_selecionadas_input');
         campoOculto.value = JSON.stringify(pessoasSelecionadas);
