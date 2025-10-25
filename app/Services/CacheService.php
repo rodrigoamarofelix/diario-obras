@@ -47,21 +47,21 @@ class CacheService
                     ->pluck('total', 'status')
                     ->toArray(),
 
-                'medicoes_por_mes' => \App\Models\Medicao::selectRaw('DatabaseHelper::formatDateForMonthGrouping(), COUNT(*) as total')
+                'medicoes_por_mes' => \App\Models\Medicao::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, COUNT(*) as total')
                     ->where('created_at', '>=', $dataInicio)
                     ->groupBy('mes')
                     ->orderBy('mes')
                     ->get()
                     ->toArray(),
 
-                'pagamentos_por_mes' => \App\Models\Pagamento::selectRaw('DatabaseHelper::formatDateForMonthGrouping(), COUNT(*) as total')
+                'pagamentos_por_mes' => \App\Models\Pagamento::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, COUNT(*) as total')
                     ->where('created_at', '>=', $dataInicio)
                     ->groupBy('mes')
                     ->orderBy('mes')
                     ->get()
                     ->toArray(),
 
-                'usuarios_por_mes' => \App\Models\User::selectRaw('DatabaseHelper::formatDateForMonthGrouping(), COUNT(*) as total')
+                'usuarios_por_mes' => \App\Models\User::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, COUNT(*) as total')
                     ->where('created_at', '>=', $dataInicio)
                     ->groupBy('mes')
                     ->orderBy('mes')

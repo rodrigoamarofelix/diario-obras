@@ -163,7 +163,7 @@ class PagamentoController extends Controller
                 ->groupBy('status')
                 ->get(),
             'valor_total' => Pagamento::sum('valor'),
-            'por_mes' => Pagamento::selectRaw('DatabaseHelper::formatDateForMonthGrouping(), count(*) as total, sum(valor) as valor')
+            'por_mes' => Pagamento::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, count(*) as total, sum(valor) as valor')
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->limit(12)

@@ -145,7 +145,7 @@ class DashboardComponent extends Component
 
         // Medições por Mês (últimos 6 meses)
         $this->medicoesPorMes = Medicao::select(
-                DB::raw('DatabaseHelper::formatDateForMonthGrouping()'),
+                DB::raw('TO_CHAR(created_at, \'YYYY-MM\') as mes'),
                 DB::raw('count(*) as total'),
                 DB::raw('sum(valor_total) as valor')
             )
@@ -157,7 +157,7 @@ class DashboardComponent extends Component
 
         // Pagamentos por Mês
         $this->pagamentosPorMes = Pagamento::select(
-                DB::raw('DatabaseHelper::formatDateForMonthGrouping()'),
+                DB::raw('TO_CHAR(created_at, \'YYYY-MM\') as mes'),
                 DB::raw('count(*) as total'),
                 DB::raw('sum(valor_pagamento) as valor')
             )
@@ -169,7 +169,7 @@ class DashboardComponent extends Component
 
         // Usuários por Mês
         $this->usuariosPorMes = User::select(
-                DB::raw('DatabaseHelper::formatDateForMonthGrouping()'),
+                DB::raw('TO_CHAR(created_at, \'YYYY-MM\') as mes'),
                 DB::raw('count(*) as total')
             )
             ->where('created_at', '>=', Carbon::now()->subMonths(6))

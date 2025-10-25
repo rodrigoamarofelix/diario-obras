@@ -227,7 +227,7 @@ class ContratoController extends Controller
             'por_status' => Contrato::selectRaw('status, count(*) as total')
                 ->groupBy('status')
                 ->get(),
-            'por_mes' => Contrato::selectRaw('DatabaseHelper::formatDateForMonthGrouping(), count(*) as total')
+            'por_mes' => Contrato::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, count(*) as total')
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->limit(12)

@@ -15,16 +15,16 @@ files=(
 fix_file() {
     local file="$1"
     echo "📝 Corrigindo $file..."
-    
+
     if [ -f "$file" ]; then
         # Substituir DATE_FORMAT por TO_CHAR diretamente
         sed -i 's/DATE_FORMAT(created_at, "%Y-%m") as mes/TO_CHAR(created_at, '\''YYYY-MM'\'') as mes/g' "$file"
         sed -i 's/DATE_FORMAT(created_at, "%Y") as ano/TO_CHAR(created_at, '\''YYYY'\'') as ano/g' "$file"
         sed -i 's/DATE_FORMAT(created_at, "%Y-%m-%d") as dia/TO_CHAR(created_at, '\''YYYY-MM-DD'\'') as dia/g' "$file"
-        
+
         # Remover imports do DatabaseHelper se existirem
         sed -i '/use App\\Helpers\\DatabaseHelper;/d' "$file"
-        
+
         echo "✅ $file corrigido"
     else
         echo "⚠️  Arquivo $file não encontrado"

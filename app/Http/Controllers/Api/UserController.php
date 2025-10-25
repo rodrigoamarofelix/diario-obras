@@ -205,7 +205,7 @@ class UserController extends Controller
                 ->groupBy('approval_status')
                 ->get(),
             'usuarios_ativos' => User::where('approval_status', 'aprovado')->count(),
-            'por_mes' => User::selectRaw('DatabaseHelper::formatDateForMonthGrouping(), count(*) as total')
+            'por_mes' => User::selectRaw('TO_CHAR(created_at, \'YYYY-MM\') as mes, count(*) as total')
                 ->groupBy('mes')
                 ->orderBy('mes', 'desc')
                 ->limit(12)
