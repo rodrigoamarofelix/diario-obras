@@ -61,25 +61,6 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="funcionario_id">Funcionário *</label>
-                                            <select class="form-control @error('funcionario_id') is-invalid @enderror" id="funcionario_id" name="funcionario_id" required>
-                                                <option value="">Selecione um funcionário</option>
-                                                @foreach($usuarios as $usuario)
-                                                    <option value="{{ $usuario->id }}" {{ old('funcionario_id') == $usuario->id ? 'selected' : '' }}>
-                                                        {{ $usuario->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('funcionario_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
                                             <label for="data_trabalho">Data do Trabalho *</label>
                                             <input type="date" class="form-control @error('data_trabalho') is-invalid @enderror"
                                                    id="data_trabalho" name="data_trabalho"
@@ -89,96 +70,32 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="funcao">Função *</label>
-                                            <select class="form-control @error('funcao') is-invalid @enderror" id="funcao" name="funcao" required>
-                                                <option value="">Selecione a função</option>
-                                                <option value="pedreiro" {{ old('funcao') == 'pedreiro' ? 'selected' : '' }}>Pedreiro</option>
-                                                <option value="eletricista" {{ old('funcao') == 'eletricista' ? 'selected' : '' }}>Eletricista</option>
-                                                <option value="encanador" {{ old('funcao') == 'encanador' ? 'selected' : '' }}>Encanador</option>
-                                                <option value="pintor" {{ old('funcao') == 'pintor' ? 'selected' : '' }}>Pintor</option>
-                                                <option value="carpinteiro" {{ old('funcao') == 'carpinteiro' ? 'selected' : '' }}>Carpinteiro</option>
-                                                <option value="ajudante" {{ old('funcao') == 'ajudante' ? 'selected' : '' }}>Ajudante</option>
-                                                <option value="engenheiro" {{ old('funcao') == 'engenheiro' ? 'selected' : '' }}>Engenheiro</option>
-                                                <option value="arquiteto" {{ old('funcao') == 'arquiteto' ? 'selected' : '' }}>Arquiteto</option>
-                                                <option value="supervisor" {{ old('funcao') == 'supervisor' ? 'selected' : '' }}>Supervisor</option>
-                                                <option value="outros" {{ old('funcao') == 'outros' ? 'selected' : '' }}>Outros</option>
-                                            </select>
-                                            @error('funcao')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="hora_entrada">Hora de Entrada</label>
-                                            <input type="time" class="form-control @error('hora_entrada') is-invalid @enderror"
-                                                   id="hora_entrada" name="hora_entrada"
-                                                   value="{{ old('hora_entrada') }}">
-                                            @error('hora_entrada')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="hora_saida">Hora de Saída</label>
-                                            <input type="time" class="form-control @error('hora_saida') is-invalid @enderror"
-                                                   id="hora_saida" name="hora_saida"
-                                                   value="{{ old('hora_saida') }}">
-                                            @error('hora_saida')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="horas_trabalhadas">Horas Trabalhadas</label>
-                                            <input type="number" class="form-control @error('horas_trabalhadas') is-invalid @enderror"
-                                                   id="horas_trabalhadas" name="horas_trabalhadas"
-                                                   value="{{ old('horas_trabalhadas') }}" min="0" max="24" step="0.5">
-                                            @error('horas_trabalhadas')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
+                                <!-- Seleção de Pessoas -->
                                 <div class="form-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="presente" name="presente" value="1"
-                                               {{ old('presente', true) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="presente">
-                                            Funcionário presente
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="atividades_realizadas">Atividades Realizadas</label>
-                                    <textarea class="form-control @error('atividades_realizadas') is-invalid @enderror"
-                                              id="atividades_realizadas" name="atividades_realizadas" rows="3"
-                                              placeholder="Descreva as atividades realizadas pelo funcionário...">{{ old('atividades_realizadas') }}</textarea>
-                                    @error('atividades_realizadas')
+                                    <label for="pessoas_selecionadas">Pessoas da Equipe *</label>
+                                    <select class="form-control @error('pessoas_selecionadas') is-invalid @enderror" 
+                                            id="pessoas_selecionadas" name="pessoas_selecionadas[]" 
+                                            multiple required>
+                                        @foreach($pessoas as $pessoa)
+                                            <option value="{{ $pessoa->id }}" 
+                                                    {{ in_array($pessoa->id, old('pessoas_selecionadas', [])) ? 'selected' : '' }}>
+                                                {{ $pessoa->nome }} - {{ $pessoa->funcao ? $pessoa->funcao->nome : 'Sem função' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="form-text text-muted">
+                                        Segure Ctrl (Windows) ou Cmd (Mac) para selecionar múltiplas pessoas
+                                    </small>
+                                    @error('pessoas_selecionadas')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="observacoes">Observações</label>
-                                    <textarea class="form-control @error('observacoes') is-invalid @enderror"
-                                              id="observacoes" name="observacoes" rows="3"
-                                              placeholder="Observações adicionais...">{{ old('observacoes') }}</textarea>
-                                    @error('observacoes')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                <!-- Campos para cada pessoa selecionada -->
+                                <div id="campos-pessoas">
+                                    <!-- Será preenchido dinamicamente via JavaScript -->
                                 </div>
 
                                 <div class="form-group">
@@ -199,5 +116,124 @@
         </div>
     </section>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const pessoasSelect = document.getElementById('pessoas_selecionadas');
+    const camposPessoas = document.getElementById('campos-pessoas');
+    
+    // Dados das pessoas (vindos do PHP)
+    const pessoas = @json($pessoas);
+    
+    function atualizarCamposPessoas() {
+        const pessoasSelecionadas = Array.from(pessoasSelect.selectedOptions);
+        camposPessoas.innerHTML = '';
+        
+        pessoasSelecionadas.forEach(function(option) {
+            const pessoaId = option.value;
+            const pessoa = pessoas.find(p => p.id == pessoaId);
+            
+            if (pessoa) {
+                const card = document.createElement('div');
+                card.className = 'card mb-3';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-user text-primary"></i>
+                            ${pessoa.nome} - ${pessoa.funcao ? pessoa.funcao.nome : 'Sem função'}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Hora de Entrada</label>
+                                    <input type="time" class="form-control" 
+                                           name="pessoas[${pessoaId}][hora_entrada]"
+                                           value="{{ old('pessoas.${pessoaId}.hora_entrada') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Hora de Saída</label>
+                                    <input type="time" class="form-control" 
+                                           name="pessoas[${pessoaId}][hora_saida]"
+                                           value="{{ old('pessoas.${pessoaId}.hora_saida') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Horas Trabalhadas</label>
+                                    <input type="number" class="form-control" 
+                                           name="pessoas[${pessoaId}][horas_trabalhadas]"
+                                           value="{{ old('pessoas.${pessoaId}.horas_trabalhadas') }}"
+                                           min="0" max="24" step="0.5">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Tipo de Almoço</label>
+                                    <select class="form-control" name="pessoas[${pessoaId}][tipo_almoco]">
+                                        <option value="integral" {{ old('pessoas.${pessoaId}.tipo_almoco') == 'integral' ? 'selected' : '' }}>Integral</option>
+                                        <option value="reduzido" {{ old('pessoas.${pessoaId}.tipo_almoco') == 'reduzido' ? 'selected' : '' }}>Reduzido</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Hora Saída Almoço</label>
+                                    <input type="time" class="form-control" 
+                                           name="pessoas[${pessoaId}][hora_saida_almoco]"
+                                           value="{{ old('pessoas.${pessoaId}.hora_saida_almoco') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Hora Retorno Almoço</label>
+                                    <input type="time" class="form-control" 
+                                           name="pessoas[${pessoaId}][hora_retorno_almoco]"
+                                           value="{{ old('pessoas.${pessoaId}.hora_retorno_almoco') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" 
+                                       name="pessoas[${pessoaId}][presente]" value="1" checked>
+                                <label class="form-check-label">
+                                    Funcionário presente
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Atividades Realizadas</label>
+                            <textarea class="form-control" rows="2" 
+                                      name="pessoas[${pessoaId}][atividades_realizadas]"
+                                      placeholder="Descreva as atividades realizadas por ${pessoa.nome}...">{{ old('pessoas.${pessoaId}.atividades_realizadas') }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Observações</label>
+                            <textarea class="form-control" rows="2" 
+                                      name="pessoas[${pessoaId}][observacoes]"
+                                      placeholder="Observações sobre ${pessoa.nome}...">{{ old('pessoas.${pessoaId}.observacoes') }}</textarea>
+                        </div>
+                    </div>
+                `;
+                camposPessoas.appendChild(card);
+            }
+        });
+    }
+    
+    // Atualizar campos quando a seleção mudar
+    pessoasSelect.addEventListener('change', atualizarCamposPessoas);
+    
+    // Atualizar campos na carga inicial
+    atualizarCamposPessoas();
+});
+</script>
 @endsection
 

@@ -49,10 +49,10 @@ foreach ($import_order as $tableName) {
     }
 
     echo "📋 Processando tabela: $tableName\n";
-    
+
     $rows = $data[$tableName];
     $record_count = count($rows);
-    
+
     if ($record_count === 0) {
         echo "   ⚠️  Tabela vazia, pulando...\n";
         continue;
@@ -85,7 +85,7 @@ foreach ($import_order as $tableName) {
         $pgValues = implode(', ', $values);
         $sqlOutput .= "INSERT INTO $pgTableName ($pgColumns) VALUES ($pgValues);\n";
     }
-    
+
     echo "   ✅ $record_count registros convertidos\n";
 }
 

@@ -22,7 +22,7 @@ try {
     // Tabelas específicas que você mencionou
     $tables_to_export = [
         'empresas',
-        'contratos', 
+        'contratos',
         'projetos',
         'equipe_obras',
         'pessoas',
@@ -36,14 +36,14 @@ try {
 
     foreach ($tables_to_export as $table) {
         echo "📤 Exportando tabela: $table\n";
-        
+
         $stmt = $pdo->query("SELECT * FROM `$table`");
         $table_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         $record_count = count($table_data);
         $data[$table] = $table_data;
         $total_records += $record_count;
-        
+
         echo "   ✅ $record_count registros exportados\n";
     }
 

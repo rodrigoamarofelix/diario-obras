@@ -47,6 +47,8 @@ class EquipeObraController extends Controller
         $request->validate([
             'projeto_id' => 'required|exists:projetos,id',
             'atividade_id' => 'nullable|exists:atividade_obras,id',
+            'pessoas_selecionadas' => 'required|array|min:1',
+            'pessoas_selecionadas.*' => 'exists:pessoas,id',
             'pessoas' => 'required|array|min:1',
             'pessoas.*' => 'required|array',
             'pessoas.*.hora_entrada' => 'nullable|date_format:H:i',
