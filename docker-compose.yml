@@ -117,6 +117,19 @@ services:
     networks:
       - laravel_network
 
+  # Adminer para gerenciar MySQL e PostgreSQL
+  adminer:
+    image: adminer:latest
+    container_name: laravel_adminer
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: mysql
+    depends_on:
+      - mysql
+    networks:
+      - laravel_network
+
   # Certbot para SSL (Produção)
   certbot:
     image: certbot/certbot
