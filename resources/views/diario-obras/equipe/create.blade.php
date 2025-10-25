@@ -186,11 +186,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const pessoaSelect = document.getElementById('pessoa_select');
     const pessoaChips = document.getElementById('pessoa-chips');
     const camposPessoas = document.getElementById('campos-pessoas');
-    
+
     // Dados das pessoas (vindos do PHP)
     const pessoas = @json($pessoas);
     let pessoasSelecionadas = [];
-    
+
     // Adicionar pessoa quando selecionada
     pessoaSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
@@ -199,10 +199,10 @@ document.addEventListener('DOMContentLoaded', function() {
             this.selectedIndex = 0; // Reset para primeira opção
         }
     });
-    
+
     function adicionarPessoa(pessoaId, nome, funcao) {
         pessoasSelecionadas.push(pessoaId);
-        
+
         // Criar chip
         const chip = document.createElement('div');
         chip.className = 'pessoa-chip';
@@ -213,38 +213,38 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         `;
         pessoaChips.appendChild(chip);
-        
+
         // Criar campos para a pessoa
         criarCamposPessoa(pessoaId, nome, funcao);
-        
+
         // Remover opção do select
         const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
         if (option) {
             option.style.display = 'none';
         }
     }
-    
+
     function removerPessoa(pessoaId) {
         // Remover da lista
         pessoasSelecionadas = pessoasSelecionadas.filter(id => id !== pessoaId);
-        
+
         // Remover chip
         const chip = pessoaChips.querySelector(`button[onclick="removerPessoa('${pessoaId}')"]`).parentElement;
         chip.remove();
-        
+
         // Remover campos
         const campos = document.getElementById(`campos-pessoa-${pessoaId}`);
         if (campos) {
             campos.remove();
         }
-        
+
         // Mostrar opção no select novamente
         const option = pessoaSelect.querySelector(`option[value="${pessoaId}"]`);
         if (option) {
             option.style.display = 'block';
         }
     }
-    
+
     function criarCamposPessoa(pessoaId, nome, funcao) {
         const card = document.createElement('div');
         card.className = 'card mb-3';
@@ -261,29 +261,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora de Entrada</label>
-                            <input type="time" class="form-control" 
-                                   name="pessoas[${pessoaId}][hora_entrada]">
+                            <input type="time" class="form-control hora-entrada" 
+                                   name="pessoas[${pessoaId}][hora_entrada]"
+                                   data-pessoa="${pessoaId}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Hora de Saída</label>
-                            <input type="time" class="form-control" 
-                                   name="pessoas[${pessoaId}][hora_saida]">
+                            <input type="time" class="form-control hora-saida" 
+                                   name="pessoas[${pessoaId}][hora_saida]"
+                                   data-pessoa="${pessoaId}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Horas Trabalhadas</label>
-                            <input type="number" class="form-control" 
+                            <input type="number" class="form-control horas-trabalhadas" 
                                    name="pessoas[${pessoaId}][horas_trabalhadas]"
-                                   min="0" max="24" step="0.5">
+                                   data-pessoa="${pessoaId}"
+                                   min="0" max="24" step="0.5" readonly>
+                            <small class="form-text text-muted">Calculado automaticamente</small>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Tipo de Almoço</label>
-                            <select class="form-control" name="pessoas[${pessoaId}][tipo_almoco]">
+                            <select class="form-control tipo-almoco" name="pessoas[${pessoaId}][tipo_almoco]" data-pessoa="${pessoaId}">
                                 <option value="integral">Integral</option>
                                 <option value="reduzido">Reduzido</option>
                             </select>
@@ -294,15 +298,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Hora Saída Almoço</label>
-                            <input type="time" class="form-control" 
-                                   name="pessoas[${pessoaId}][hora_saida_almoco]">
+                            <input type="time" class="form-control hora-saida-almoco" 
+                                   name="pessoas[${pessoaId}][hora_saida_almoco]"
+                                   data-pessoa="${pessoaId}">
+                            <div class="invalid-feedback hora-saida-almoco-error" style="display: none;">
+                                Deve estar entre entrada e saída
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Hora Retorno Almoço</label>
-                            <input type="time" class="form-control" 
-                                   name="pessoas[${pessoaId}][hora_retorno_almoco]">
+                            <input type="time" class="form-control hora-retorno-almoco" 
+                                   name="pessoas[${pessoaId}][hora_retorno_almoco]"
+                                   data-pessoa="${pessoaId}">
+                            <div class="invalid-feedback hora-retorno-almoco-error" style="display: none;">
+                                Deve estar entre saída do almoço e saída
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -330,8 +342,101 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         camposPessoas.appendChild(card);
+        
+        // Adicionar event listeners para validação e cálculo
+        adicionarEventListenersPessoa(pessoaId);
     }
     
+    function adicionarEventListenersPessoa(pessoaId) {
+        const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`);
+        const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`);
+        const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
+        const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
+        const horasTrabalhadas = document.querySelector(`input[name="pessoas[${pessoaId}][horas_trabalhadas]"]`);
+        
+        // Event listeners para validação e cálculo
+        [horaEntrada, horaSaida, horaSaidaAlmoco, horaRetornoAlmoco].forEach(input => {
+            if (input) {
+                input.addEventListener('change', () => {
+                    validarHorasAlmoco(pessoaId);
+                    calcularHorasTrabalhadas(pessoaId);
+                });
+            }
+        });
+    }
+    
+    function validarHorasAlmoco(pessoaId) {
+        const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`).value;
+        const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`).value;
+        const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
+        const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
+        
+        let isValid = true;
+        
+        // Validar hora saída almoço
+        if (horaSaidaAlmoco.value && horaEntrada && horaSaida) {
+            if (horaSaidaAlmoco.value < horaEntrada || horaSaidaAlmoco.value > horaSaida) {
+                horaSaidaAlmoco.classList.add('is-invalid');
+                horaSaidaAlmoco.nextElementSibling.style.display = 'block';
+                isValid = false;
+            } else {
+                horaSaidaAlmoco.classList.remove('is-invalid');
+                horaSaidaAlmoco.nextElementSibling.style.display = 'none';
+            }
+        }
+        
+        // Validar hora retorno almoço
+        if (horaRetornoAlmoco.value && horaSaidaAlmoco.value && horaSaida) {
+            if (horaRetornoAlmoco.value < horaSaidaAlmoco.value || horaRetornoAlmoco.value > horaSaida) {
+                horaRetornoAlmoco.classList.add('is-invalid');
+                horaRetornoAlmoco.nextElementSibling.style.display = 'block';
+                isValid = false;
+            } else {
+                horaRetornoAlmoco.classList.remove('is-invalid');
+                horaRetornoAlmoco.nextElementSibling.style.display = 'none';
+            }
+        }
+        
+        return isValid;
+    }
+    
+    function calcularHorasTrabalhadas(pessoaId) {
+        const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`).value;
+        const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`).value;
+        const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`).value;
+        const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`).value;
+        const horasTrabalhadas = document.querySelector(`input[name="pessoas[${pessoaId}][horas_trabalhadas]"]`);
+        
+        if (!horaEntrada || !horaSaida) {
+            horasTrabalhadas.value = '';
+            return;
+        }
+        
+        // Converter para minutos
+        const entradaMinutos = timeToMinutes(horaEntrada);
+        const saidaMinutos = timeToMinutes(horaSaida);
+        
+        let totalMinutos = saidaMinutos - entradaMinutos;
+        
+        // Subtrair tempo de almoço se informado
+        if (horaSaidaAlmoco && horaRetornoAlmoco) {
+            const saidaAlmocoMinutos = timeToMinutes(horaSaidaAlmoco);
+            const retornoAlmocoMinutos = timeToMinutes(horaRetornoAlmoco);
+            const tempoAlmocoMinutos = retornoAlmocoMinutos - saidaAlmocoMinutos;
+            totalMinutos -= tempoAlmocoMinutos;
+        }
+        
+        // Converter de volta para horas
+        const horas = totalMinutos / 60;
+        horasTrabalhadas.value = horas.toFixed(1);
+    }
+    
+    function timeToMinutes(timeString) {
+        if (!timeString) return 0;
+        const [hours, minutes] = timeString.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
+
     // Tornar função global para o onclick
     window.removerPessoa = removerPessoa;
 });
