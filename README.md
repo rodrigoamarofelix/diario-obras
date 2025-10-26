@@ -1,65 +1,286 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏗️ Sistema de Diário de Obras
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema completo para gerenciamento de obras, equipes, atividades e documentos para empresas de construção civil.
 
-## About Laravel
+## 📋 Índice
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Estrutura de Módulos](#estrutura-de-módulos)
+- [Guia de Uso](#guia-de-uso)
+- [Versões](#versões)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🎯 Sobre o Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+O **Sistema de Diário de Obras** foi desenvolvido para gerenciar todos os aspectos de uma obra, desde o registro de equipes até o controle de pagamentos e materiais. O sistema oferece uma interface completa para gestão de projetos de construção civil, com funcionalidades avançadas de auditoria, relatórios e exportação de dados.
 
-## Learning Laravel
+### Objetivo Principal
+Centralizar e automatizar o gerenciamento de obras, proporcionando:
+- Controle total de equipes e atividades
+- Registro detalhado do dia a dia da obra
+- Gestão de materiais e pagamentos
+- Sistema de auditoria completo
+- Relatórios personalizados
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## ✨ Funcionalidades
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🏢 Módulo Administrativo
+- **Usuários**: Gerenciamento completo de usuários do sistema
+- **Auditoria**: Rastreamento de todas as operações realizadas
+- **Backup**: Sistema de backup automático de dados
+- **Autenticação 2FA**: Segurança com dois fatores
+- **Perfil**: Gerenciamento de perfil do usuário
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### ⚙️ Parametrização
+- **Funções**: Cadastro de funções/cargos
+- **Empresas**: Gestão de empresas
+- **Lotações**: Controle de lotações
+- **Pessoas**: Cadastro de pessoas
+- **Contratos**: Gestão de contratos
+- **Catálogos**: Sistema de catálogos
+- **Medições**: Registro de medições
+- **Pagamentos**: Controle de pagamentos
+- **Relatórios**: Geração de relatórios
+- **Exportação**: Exportação de dados
+- **Busca Avançada**: Sistema de busca
+- **Workflow**: Gestão de workflow
 
-## Laravel Sponsors
+### 📝 Diário de Obras
+- **Projetos**: Gestão de projetos de obra
+- **Equipes**: Registro de equipes de trabalho
+- **Atividades**: Criação e acompanhamento de atividades
+- **Materiais**: Controle de materiais
+- **Fotos**: Sistema de fotos da obra
+- **Relatórios Detalhados**: Relatórios completos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Tecnologias
 
-### Premium Partners
+### Backend
+- **Laravel 10**: Framework PHP
+- **PHP 8.1+**: Linguagem de programação
+- **PostgreSQL**: Banco de dados
+- **Eloquent ORM**: ORM do Laravel
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Frontend
+- **Blade Templates**: Sistema de templates
+- **AdminLTE 3**: Interface administrativa
+- **Bootstrap 4**: Framework CSS
+- **jQuery**: Biblioteca JavaScript
+- **Font Awesome**: Ícones
+- **Select2**: Seleção avançada
+- **Chart.js**: Gráficos
 
-## Contributing
+### Segurança
+- **Autenticação Multi-fator (2FA)**
+- **Auditoria Completa**
+- **Soft Deletes**
+- **Backup Automático**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📦 Requisitos
 
-## Code of Conduct
+- PHP >= 8.1
+- Composer
+- PostgreSQL >= 13
+- Node.js e NPM
+- Git
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🚀 Instalação
 
-## Security Vulnerabilities
+### 1. Clone o repositório
+```bash
+git clone https://github.com/rodrigoamarofelix/diario-obras.git
+cd diario-obras
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. Instale as dependências
+```bash
+composer install
+npm install
+```
 
-## License
+### 3. Configure o ambiente
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Configure o banco de dados
+Edite o arquivo `.env`:
+```env
+DB_CONNECTION=pgsql
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=diario_obras
+DB_USERNAME=seu_usuario
+DB_PASSWORD=sua_senha
+```
 
+### 5. Execute as migrations
+```bash
+php artisan migrate
+php artisan db:seed
+```
 
+### 6. Compile os assets
+```bash
+npm run build
+```
 
+### 7. Inicie o servidor
+```bash
+php artisan serve
+```
 
+## 📂 Estrutura de Módulos
+
+### Módulo Administrativo
+```
+📁 app/Http/Controllers/
+├── UserController.php - Gerenciamento de usuários
+├── AuditoriaController.php - Sistema de auditoria
+├── BackupController.php - Sistema de backup
+└── TwoFactorController.php - Autenticação 2FA
+```
+
+### Módulo de Parametrização
+```
+📁 app/Http/Controllers/
+├── FuncaoController.php - Funções
+├── EmpresaController.php - Empresas
+├── LotacaoController.php - Lotações
+├── PessoaController.php - Pessoas
+├── ContratoController.php - Contratos
+├── CatalogoController.php - Catálogos
+├── MedicaoController.php - Medições
+└── PagamentoController.php - Pagamentos
+```
+
+### Módulo Diário de Obras
+```
+📁 app/Http/Controllers/
+├── ProjetoController.php - Projetos
+├── EquipeObraController.php - Equipes
+├── AtividadeObraController.php - Atividades
+├── MaterialObraController.php - Materiais
+└── FotoObraController.php - Fotos
+```
+
+## 📖 Guia de Uso
+
+### Cadastrando um Projeto
+1. Acesse **Diário de Obras > Projetos**
+2. Clique em **Novo Projeto**
+3. Preencha os dados do projeto
+4. Salve
+
+### Registrando Equipe
+1. Acesse **Diário de Obras > Equipe**
+2. Clique em **Registrar Equipe**
+3. Selecione o projeto
+4. Adicione os funcionários
+5. Informe horários e atividades
+6. Salve
+
+### Criando uma Atividade
+1. Acesse **Diário de Obras > Atividades**
+2. Clique em **Nova Atividade**
+3. Selecione projeto, data e responsável
+4. Defina tipo e status
+5. Salve
+
+### Visualizando Relatórios
+1. Acesse **Diário de Obras > Relatórios**
+2. Selecione o tipo de relatório
+3. Configure filtros
+4. Gere o relatório
+
+## 🎨 Recursos Avançados
+
+### Cálculo Automático de Horas
+O sistema calcula automaticamente as horas trabalhadas pela equipe:
+- **Horas da Manhã**: Entrada até saída para almoço
+- **Horas da Tarde**: Retorno do almoço até saída
+- **Total**: Soma das horas trabalhadas
+
+### Sistema de Agrupamento
+As equipes são agrupadas automaticamente por:
+- Projeto
+- Data
+- Exibição em cards expansíveis
+
+### Auditoria Completa
+Todas as ações são auditadas:
+- Criação de registros
+- Edição de dados
+- Exclusão (soft delete)
+- Alterações de status
+
+## 📊 Relatórios Disponíveis
+
+- **Relatório de Equipe**: Detalhes da equipe por período
+- **Relatório de Atividades**: Atividades realizadas
+- **Relatório de Materiais**: Controle de materiais
+- **Relatório de Pagamentos**: Controle financeiro
+- **Relatório Detalhado**: Visão completa da obra
+
+## 🔒 Segurança
+
+- Autenticação requerida em todas as páginas
+- Níveis de permissão por usuário
+- Autenticação 2FA disponível
+- Soft delete para recuperação de dados
+- Auditoria de todas as operações
+
+## 📝 Notas de Versão
+
+### Versão 1.0.0 Estável (v1.0.0-estavel)
+**Data**: 26/10/2025
+
+#### Correções Implementadas
+- ✅ Corrigido relacionamento de responsável em Atividades
+- ✅ Corrigido foreign key constraints no PostgreSQL
+- ✅ Adicionado botão Voltar em todas as telas
+- ✅ Cálculo automático de horas trabalhadas (manhã/tarde)
+- ✅ Agrupamento inteligente de equipes
+- ✅ Exibição correta de responsáveis em listagens
+- ✅ Cálculo automático de tempo gasto em atividades
+- ✅ Preenchimento correto de campos hora em edição
+- ✅ Ajuste de alinhamento de ícones
+- ✅ Correções de sequência PostgreSQL em todos os módulos
+- ✅ Validações e formatos de data/hora corrigidos
+- ✅ Melhoria na experiência do usuário em todos os módulos
+
+#### Funcionalidades Novas
+- 🌞 Cálculo de horas da manhã e tarde
+- 👥 Agrupamento de equipes por projeto e data
+- 🔄 Botões de navegação melhorados
+- 📊 Campos calculados automaticamente
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+1. Fazer Fork do projeto
+2. Criar uma branch para sua feature
+3. Fazer commit das mudanças
+4. Fazer Push para a branch
+5. Abrir um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👨‍💻 Autor
+
+**Rodrigo Amaral Felix**
+- GitHub: [@rodrigoamarofelix](https://github.com/rodrigoamarofelix)
+
+## 📞 Suporte
+
+Para suporte, envie um email para suporte@exemplo.com ou abra uma issue no GitHub.
+
+---
+
+**Desenvolvido com ❤️ usando Laravel**
