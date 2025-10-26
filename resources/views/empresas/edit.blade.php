@@ -28,7 +28,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form action="{{ route('empresas.update', $empresa) }}" method="POST">
+            <form action="{{ route('empresas.update', $empresa->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 

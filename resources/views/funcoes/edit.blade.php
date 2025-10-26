@@ -38,7 +38,7 @@
                             </h3>
                         </div>
 
-                        <form action="{{ route('funcoes.update', $funcao) }}" method="POST">
+                        <form action="{{ route('funcoes.update', $funcao->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
@@ -143,7 +143,7 @@
                                             <i class="fas fa-arrow-left"></i>
                                             Voltar
                                         </a>
-                                        <a href="{{ route('funcoes.show', $funcao) }}" class="btn btn-info">
+                                        <a href="{{ route('funcoes.show', $funcao->id) }}" class="btn btn-info">
                                             <i class="fas fa-eye"></i>
                                             Ver Detalhes
                                         </a>
@@ -186,7 +186,7 @@
                                 </div>
                                 <div class="col-6">
                                     <strong>Criada em:</strong><br>
-                                    <small>{{ $funcao->created_at->format('d/m/Y H:i') }}</small>
+                                    <small>{{ is_object($funcao->created_at) ? $funcao->created_at->format('d/m/Y H:i') : ($funcao->created_at ?? 'N/A') }}</small>
                                 </div>
                             </div>
 
@@ -195,7 +195,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <strong>Última atualização:</strong><br>
-                                    <small>{{ $funcao->updated_at->format('d/m/Y H:i') }}</small>
+                                    <small>{{ is_object($funcao->updated_at) ? $funcao->updated_at->format('d/m/Y H:i') : ($funcao->updated_at ?? 'N/A') }}</small>
                                 </div>
                             </div>
                             @endif
@@ -212,19 +212,19 @@
                         </div>
                         <div class="card-body">
                             <div class="btn-group-vertical w-100">
-                                <form action="{{ route('funcoes.toggle-status', $funcao) }}" method="GET" class="mb-2">
+                                <form action="{{ route('funcoes.toggle-status', $funcao->id) }}" method="GET" class="mb-2">
                                     <button type="submit" class="btn btn-{{ $funcao->ativo ? 'secondary' : 'success' }} btn-block">
                                         <i class="fas fa-{{ $funcao->ativo ? 'pause' : 'play' }}"></i>
                                         {{ $funcao->ativo ? 'Inativar' : 'Ativar' }} Função
                                     </button>
                                 </form>
 
-                                <a href="{{ route('funcoes.show', $funcao) }}" class="btn btn-info btn-block mb-2">
+                                <a href="{{ route('funcoes.show', $funcao->id) }}" class="btn btn-info btn-block mb-2">
                                     <i class="fas fa-eye"></i>
                                     Ver Detalhes
                                 </a>
 
-                                <form action="{{ route('funcoes.destroy', $funcao) }}" method="POST"
+                                <form action="{{ route('funcoes.destroy', $funcao->id) }}" method="POST"
                                       onsubmit="return confirm('Tem certeza que deseja excluir esta função? Ela poderá ser restaurada posteriormente.')">
                                     @csrf
                                     @method('DELETE')
@@ -277,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
 
 
 

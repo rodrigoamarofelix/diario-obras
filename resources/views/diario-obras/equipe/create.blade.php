@@ -28,6 +28,41 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            <!-- Alertas -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i>
+                    {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ session('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Erros de Validação:</h5>
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -42,7 +77,7 @@
                                 @csrf
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="projeto_id">Projeto *</label>
                                             <select class="form-control @error('projeto_id') is-invalid @enderror" id="projeto_id" name="projeto_id" required>
@@ -59,7 +94,24 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="atividade_id">Atividade</label>
+                                            <select class="form-control @error('atividade_id') is-invalid @enderror" id="atividade_id" name="atividade_id">
+                                                <option value="">Selecione uma atividade</option>
+                                                @foreach($atividades as $atividade)
+                                                    <option value="{{ $atividade->id }}" {{ old('atividade_id') == $atividade->id ? 'selected' : '' }}>
+                                                        {{ $atividade->titulo }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('atividade_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="data_trabalho">Data do Trabalho *</label>
                                             <input type="date" class="form-control @error('data_trabalho') is-invalid @enderror"
@@ -98,8 +150,8 @@
                                     <!-- Será preenchido dinamicamente via JavaScript -->
                                 </div>
 
-                                <!-- Campo oculto para enviar lista de pessoas selecionadas -->
-                                <input type="hidden" id="pessoas_selecionadas_input" name="pessoas_selecionadas" value="">
+                                <!-- Campos ocultos para enviar lista de pessoas selecionadas -->
+                                <div id="pessoas_selecionadas_container"></div>
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-warning">
@@ -189,10 +241,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const pessoaSelect = document.getElementById('pessoa_select');
     const pessoaChips = document.getElementById('pessoa-chips');
     const camposPessoas = document.getElementById('campos-pessoas');
+    const projetoSelect = document.getElementById('projeto_id');
+    const atividadeSelect = document.getElementById('atividade_id');
 
     // Dados das pessoas (vindos do PHP)
     const pessoas = @json($pessoas);
     let pessoasSelecionadas = [];
+
+    // Carregar atividades quando projeto for selecionado
+    if (projetoSelect && atividadeSelect) {
+        projetoSelect.addEventListener('change', function() {
+            const projetoId = this.value;
+            if (projetoId) {
+                carregarAtividades(projetoId);
+            } else {
+                atividadeSelect.innerHTML = '<option value="">Selecione uma atividade</option>';
+            }
+        });
+    }
+
+    function carregarAtividades(projetoId) {
+        fetch(`/diario-obras/api/atividades/projeto/${projetoId}`)
+            .then(response => response.json())
+            .then(data => {
+                atividadeSelect.innerHTML = '<option value="">Selecione uma atividade</option>';
+                data.forEach(atividade => {
+                    const option = document.createElement('option');
+                    option.value = atividade.id;
+                    option.textContent = atividade.titulo;
+                    atividadeSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar atividades:', error);
+            });
+    }
 
     // Adicionar pessoa quando selecionada
     pessoaSelect.addEventListener('change', function() {
@@ -255,8 +338,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function atualizarCampoOculto() {
-        const campoOculto = document.getElementById('pessoas_selecionadas_input');
-        campoOculto.value = JSON.stringify(pessoasSelecionadas);
+        const container = document.getElementById('pessoas_selecionadas_container');
+        container.innerHTML = '';
+
+        // Criar inputs hidden para cada pessoa selecionada
+        pessoasSelecionadas.forEach(pessoaId => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = `pessoas_selecionadas[]`;
+            input.value = pessoaId;
+            container.appendChild(input);
+        });
     }
 
     function criarCamposPessoa(pessoaId, nome, funcao) {
@@ -286,9 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <input type="time" class="form-control hora-saida-almoco"
                                    name="pessoas[${pessoaId}][hora_saida_almoco]"
                                    data-pessoa="${pessoaId}">
-                            <div class="invalid-feedback hora-saida-almoco-error" style="display: none;">
-                                Deve estar entre entrada e saída
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -297,9 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <input type="time" class="form-control hora-retorno-almoco"
                                    name="pessoas[${pessoaId}][hora_retorno_almoco]"
                                    data-pessoa="${pessoaId}">
-                            <div class="invalid-feedback hora-retorno-almoco-error" style="display: none;">
-                                Deve estar entre saída do almoço e saída
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -315,10 +401,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Horas Trabalhadas</label>
-                            <input type="number" class="form-control horas-trabalhadas"
+                            <input type="text" class="form-control horas-trabalhadas"
                                    name="pessoas[${pessoaId}][horas_trabalhadas]"
                                    data-pessoa="${pessoaId}"
-                                   min="0" max="24" step="0.5" readonly>
+                                   readonly>
                             <small class="form-text text-muted">Calculado automaticamente</small>
                         </div>
                     </div>
@@ -366,60 +452,66 @@ document.addEventListener('DOMContentLoaded', function() {
         const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`);
         const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
         const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
-        const horasTrabalhadas = document.querySelector(`input[name="pessoas[${pessoaId}][horas_trabalhadas]"]`);
 
         // Event listeners para validação e cálculo
-        [horaEntrada, horaSaida, horaSaidaAlmoco, horaRetornoAlmoco].forEach(input => {
-            if (input) {
-                input.addEventListener('change', () => {
-                    validarHorasAlmoco(pessoaId);
-                    calcularHorasTrabalhadas(pessoaId);
-                });
-            }
-        });
-    }
-
-    function validarHorasAlmoco(pessoaId) {
-        const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`).value;
-        const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`).value;
-        const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
-        const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
-
-        let isValid = true;
-
-        // Validar hora saída almoço
-        if (horaSaidaAlmoco.value && horaEntrada && horaSaida) {
-            if (horaSaidaAlmoco.value < horaEntrada || horaSaidaAlmoco.value > horaSaida) {
-                horaSaidaAlmoco.classList.add('is-invalid');
-                horaSaidaAlmoco.nextElementSibling.style.display = 'block';
-                isValid = false;
-            } else {
-                horaSaidaAlmoco.classList.remove('is-invalid');
-                horaSaidaAlmoco.nextElementSibling.style.display = 'none';
-            }
+        if (horaEntrada) {
+            horaEntrada.addEventListener('change', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
+            horaEntrada.addEventListener('input', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
         }
 
-        // Validar hora retorno almoço
-        if (horaRetornoAlmoco.value && horaSaidaAlmoco.value && horaSaida) {
-            if (horaRetornoAlmoco.value < horaSaidaAlmoco.value || horaRetornoAlmoco.value > horaSaida) {
-                horaRetornoAlmoco.classList.add('is-invalid');
-                horaRetornoAlmoco.nextElementSibling.style.display = 'block';
-                isValid = false;
-            } else {
-                horaRetornoAlmoco.classList.remove('is-invalid');
-                horaRetornoAlmoco.nextElementSibling.style.display = 'none';
-            }
+        if (horaSaida) {
+            horaSaida.addEventListener('change', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
+            horaSaida.addEventListener('input', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
         }
 
-        return isValid;
+        if (horaSaidaAlmoco) {
+            horaSaidaAlmoco.addEventListener('change', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
+            horaSaidaAlmoco.addEventListener('input', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
+        }
+
+        if (horaRetornoAlmoco) {
+            horaRetornoAlmoco.addEventListener('change', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
+            horaRetornoAlmoco.addEventListener('input', () => {
+                calcularHorasTrabalhadas(pessoaId);
+            });
+        }
     }
+
 
     function calcularHorasTrabalhadas(pessoaId) {
-        const horaEntrada = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`).value;
-        const horaSaida = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`).value;
-        const horaSaidaAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`).value;
-        const horaRetornoAlmoco = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`).value;
+        console.log('Calculando horas para pessoa:', pessoaId);
+
+        const horaEntradaEl = document.querySelector(`input[name="pessoas[${pessoaId}][hora_entrada]"]`);
+        const horaSaidaEl = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida]"]`);
+        const horaSaidaAlmocoEl = document.querySelector(`input[name="pessoas[${pessoaId}][hora_saida_almoco]"]`);
+        const horaRetornoAlmocoEl = document.querySelector(`input[name="pessoas[${pessoaId}][hora_retorno_almoco]"]`);
         const horasTrabalhadas = document.querySelector(`input[name="pessoas[${pessoaId}][horas_trabalhadas]"]`);
+
+        console.log('Elementos encontrados:', {horaEntradaEl, horaSaidaEl, horasTrabalhadas});
+
+        if (!horaEntradaEl || !horaSaidaEl || !horasTrabalhadas) {
+            console.log('Elementos não encontrados');
+            return;
+        }
+
+        const horaEntrada = horaEntradaEl.value;
+        const horaSaida = horaSaidaEl.value;
+
+        console.log('Valores:', {horaEntrada, horaSaida});
 
         if (!horaEntrada || !horaSaida) {
             horasTrabalhadas.value = '';
@@ -433,15 +525,16 @@ document.addEventListener('DOMContentLoaded', function() {
         let totalMinutos = saidaMinutos - entradaMinutos;
 
         // Subtrair tempo de almoço se informado
-        if (horaSaidaAlmoco && horaRetornoAlmoco) {
-            const saidaAlmocoMinutos = timeToMinutes(horaSaidaAlmoco);
-            const retornoAlmocoMinutos = timeToMinutes(horaRetornoAlmoco);
+        if (horaSaidaAlmocoEl && horaRetornoAlmocoEl && horaSaidaAlmocoEl.value && horaRetornoAlmocoEl.value) {
+            const saidaAlmocoMinutos = timeToMinutes(horaSaidaAlmocoEl.value);
+            const retornoAlmocoMinutos = timeToMinutes(horaRetornoAlmocoEl.value);
             const tempoAlmocoMinutos = retornoAlmocoMinutos - saidaAlmocoMinutos;
             totalMinutos -= tempoAlmocoMinutos;
         }
 
         // Converter de volta para horas
         const horas = totalMinutos / 60;
+        console.log('Horas calculadas:', horas);
         horasTrabalhadas.value = horas.toFixed(1);
     }
 

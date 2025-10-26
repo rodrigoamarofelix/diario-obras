@@ -78,8 +78,8 @@
                                             @endif
                                         </td>
                                         <td>{{ Str::limit($item->descricao, 50) }}</td>
-                                        <td>{{ $item->data_inicio->format('d/m/Y') }}</td>
-                                        <td>{{ $item->data_fim->format('d/m/Y') }}</td>
+                                        <td>{{ is_object($item->data_inicio) ? $item->data_inicio->format('d/m/Y') : ($item->data_inicio ?? 'N/A') }}</td>
+                                        <td>{{ is_object($item->data_fim) ? $item->data_fim->format('d/m/Y') : ($item->data_fim ?? 'N/A') }}</td>
                                         <td>
                                             @if($item->gestor_atual)
                                                 <span class="badge badge-success">{{ $item->gestor_atual->nome }}</span>

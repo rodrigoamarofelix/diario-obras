@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <th>Data:</th>
-                                    <td>{{ $pagamento->data_pagamento->format('d/m/Y') }}</td>
+                                    <td>{{ is_object($pagamento->data_pagamento) ? $pagamento->data_pagamento->format('d/m/Y') : ($pagamento->data_pagamento ?? 'N/A') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Valor:</th>
@@ -110,11 +110,11 @@
                             <table class="table table-borderless">
                                 <tr>
                                     <th width="30%">Criado em:</th>
-                                    <td>{{ $pagamento->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($pagamento->created_at) ? $pagamento->created_at->format('d/m/Y H:i') : ($pagamento->created_at ?? 'N/A') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Atualizado em:</th>
-                                    <td>{{ $pagamento->updated_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($pagamento->updated_at) ? $pagamento->updated_at->format('d/m/Y H:i') : ($pagamento->updated_at ?? 'N/A') }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -139,7 +139,7 @@
                                 </tr>
                                 <tr>
                                     <th>Data:</th>
-                                    <td>{{ $pagamento->medicao->data_medicao->format('d/m/Y') }}</td>
+                                    <td>{{ is_object($pagamento->medicao->data_medicao) ? $pagamento->medicao->data_medicao->format('d/m/Y') : ($pagamento->medicao->data_medicao ?? 'N/A') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Quantidade:</th>

@@ -68,6 +68,16 @@ class MedicaoController extends Controller
      */
     public function store(Request $request)
     {
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM medicoes");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('medicoes_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         $request->validate([
             'catalogo_id' => 'required|exists:catalogos,id',
             'contrato_id' => 'required|exists:contratos,id',

@@ -29,7 +29,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('lotacao.update', $lotacao) }}">
+                <form method="POST" action="{{ route('lotacao.update', $lotacao->id) }}">
                     @method('PATCH')
                     @csrf
                     @include ('lotacao.form', ['formMode' => 'edit'])

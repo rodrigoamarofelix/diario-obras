@@ -170,3 +170,4 @@ git push heroku main
 - **Monitore** logs para identificar problemas
 - **Use** domínio personalizado para profissionalismo
 
+

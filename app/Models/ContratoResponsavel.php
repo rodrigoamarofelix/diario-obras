@@ -83,9 +83,16 @@ class ContratoResponsavel extends Model
      */
     public function getPeriodoFormatadoAttribute(): string
     {
+        $dataInicio = is_string($this->data_inicio) ? \Carbon\Carbon::parse($this->data_inicio) : $this->data_inicio;
+        $dataInicioFormatada = is_object($dataInicio) ? $dataInicio->format('d/m/Y') : ($dataInicio ?? 'N/A');
+
         if ($this->esta_ativo) {
-            return "De {$this->data_inicio->format('d/m/Y')} até hoje";
+            return "De {$dataInicioFormatada} até hoje";
         }
-        return "De {$this->data_inicio->format('d/m/Y')} até {$this->data_fim->format('d/m/Y')}";
+
+        $dataFim = is_string($this->data_fim) ? \Carbon\Carbon::parse($this->data_fim) : $this->data_fim;
+        $dataFimFormatada = is_object($dataFim) ? $dataFim->format('d/m/Y') : ($dataFim ?? 'N/A');
+
+        return "De {$dataInicioFormatada} até {$dataFimFormatada}";
     }
 }

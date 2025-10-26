@@ -42,3 +42,4 @@ echo "💡 Dica: Teste primeiro a porta 3000 (Docker)"
 echo "Se não funcionar, teste as outras portas"
 
 
+

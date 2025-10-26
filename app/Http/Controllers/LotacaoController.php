@@ -35,6 +35,16 @@ class LotacaoController extends Controller
             'status' => 'required|in:ativo,inativo',
         ]);
 
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM lotacoes");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('lotacoes_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         Lotacao::create($request->all());
 
         return redirect()->route('lotacao.index')

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EquipeObra extends Model
 {
@@ -46,7 +47,7 @@ class EquipeObra extends Model
 
     public function atividade(): BelongsTo
     {
-        return $this->belongsTo(AtividadeObra::class);
+        return $this->belongsTo(AtividadeObra::class, 'atividade_id');
     }
 
     public function funcionario(): BelongsTo
@@ -56,12 +57,12 @@ class EquipeObra extends Model
 
     public function pessoa(): BelongsTo
     {
-        return $this->belongsTo(Pessoa::class);
+        return $this->belongsTo(Pessoa::class, 'pessoa_id');
     }
 
     public function fotos(): HasMany
     {
-        return $this->hasMany(FotoObra::class);
+        return $this->hasMany(FotoObra::class, 'equipe_id');
     }
 
     public function criadoPor(): BelongsTo

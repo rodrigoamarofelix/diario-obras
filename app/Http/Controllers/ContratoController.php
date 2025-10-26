@@ -96,6 +96,16 @@ class ContratoController extends Controller
 
         $requestData = $request->except(['anexar_arquivos', 'anexos']);
 
+        // Corrigir sequência do PostgreSQL antes de criar
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM contratos");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('contratos_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         $contrato = Contrato::create($requestData);
 
         // Criar registro inicial de responsáveis
@@ -108,8 +118,8 @@ class ContratoController extends Controller
         ]);
 
         // Processar anexos se solicitado
-        if ($request->has('anexar_arquivos') && $request->boolean('anexar_arquivos') && $request->hasFile('anexos')) {
-            $this->processarAnexos($contrato, $request->file('anexos'));
+        if ($request->hasFile('anexos')) {
+            $this->processarAnexos($contrato, $request->file('anexos'), $request->descricao ?? null);
         }
 
         return redirect()->route('contrato.index')->with('success', 'Contrato cadastrado com sucesso!');
@@ -138,8 +148,17 @@ class ContratoController extends Controller
      */
     public function edit($id)
     {
-        $contrato = Contrato::findOrFail($id);
+        $contrato = Contrato::with(['gestor', 'fiscal', 'responsaveis.gestor', 'responsaveis.fiscal'])->findOrFail($id);
         $pessoas = Pessoa::ativo()->orderBy('nome')->get();
+
+        // Determinar o gestor_id e fiscal_id corretos (podem vir de responsáveis ativos)
+        $responsavelAtual = $contrato->responsaveis()->ativo()->first();
+
+        if ($responsavelAtual) {
+            $contrato->gestor_id = $responsavelAtual->gestor_id;
+            $contrato->fiscal_id = $responsavelAtual->fiscal_id;
+        }
+
         return view('contrato.edit', compact('contrato', 'pessoas'));
     }
 
@@ -169,7 +188,7 @@ class ContratoController extends Controller
 
         $requestData = $request->except(['anexar_arquivos', 'anexos']);
 
-        $contrato = Contrato::findOrFail($id);
+        $contrato = Contrato::with(['gestor', 'fiscal'])->findOrFail($id);
 
         // Verificar se gestor ou fiscal mudaram
         $gestorMudou = $contrato->gestor_id != $request->gestor_id;
@@ -199,10 +218,14 @@ class ContratoController extends Controller
             // Auditar mudança de responsáveis
             $observacoes = [];
             if ($gestorMudou) {
-                $observacoes[] = "Gestor alterado de {$contrato->gestor->nome} para " . Pessoa::find($request->gestor_id)->nome;
+                $gestorAnterior = $contrato->gestor ? $contrato->gestor->nome : 'N/A';
+                $gestorNovo = Pessoa::find($request->gestor_id);
+                $observacoes[] = "Gestor alterado de {$gestorAnterior} para " . ($gestorNovo ? $gestorNovo->nome : 'N/A');
             }
             if ($fiscalMudou) {
-                $observacoes[] = "Fiscal alterado de {$contrato->fiscal->nome} para " . Pessoa::find($request->fiscal_id)->nome;
+                $fiscalAnterior = $contrato->fiscal ? $contrato->fiscal->nome : 'N/A';
+                $fiscalNovo = Pessoa::find($request->fiscal_id);
+                $observacoes[] = "Fiscal alterado de {$fiscalAnterior} para " . ($fiscalNovo ? $fiscalNovo->nome : 'N/A');
             }
 
             // Desabilitar auditoria automática temporariamente
@@ -227,8 +250,8 @@ class ContratoController extends Controller
         }
 
         // Processar anexos se solicitado
-        if ($request->has('anexar_arquivos') && $request->boolean('anexar_arquivos') && $request->hasFile('anexos')) {
-            $this->processarAnexos($contrato, $request->file('anexos'));
+        if ($request->hasFile('anexos')) {
+            $this->processarAnexos($contrato, $request->file('anexos'), $request->descricao ?? null);
         }
 
         return redirect()->route('contrato.index')->with('success', 'Contrato atualizado com sucesso!');

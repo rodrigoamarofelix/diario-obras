@@ -76,7 +76,7 @@
                                             @endif
                                             <br>
                                             <small class="text-muted">
-                                                Criado: {{ $item->created_at->format('d/m/Y H:i') }}
+                                                Criado: {{ is_object($item->created_at) ? $item->created_at->format('d/m/Y H:i') : ($item->created_at ?? 'N/A') }}
                                             </small>
                                         </td>
                                         <td>{{ $item->cpf_formatado }}</td>
@@ -105,8 +105,8 @@
                                                 <span class="badge badge-success">
                                                     <i class="fas fa-check"></i> Validado
                                                 </span>
-                                                @if($item->data_validacao)
-                                                    <br><small class="text-muted">{{ $item->data_validacao ? $item->data_validacao->format('d/m/Y') : '' }}</small>
+                                                @if($item->data_validacao && is_object($item->data_validacao))
+                                                    <br><small class="text-muted">{{ $item->data_validacao->format('d/m/Y') }}</small>
                                                 @endif
                                             @elseif($item->status_validacao === 'pendente')
                                                 <span class="badge badge-warning">
@@ -119,8 +119,8 @@
                                                 <span class="badge badge-danger">
                                                     <i class="fas fa-times"></i> Rejeitado
                                                 </span>
-                                                @if($item->data_validacao)
-                                                    <br><small class="text-muted">{{ $item->data_validacao ? $item->data_validacao->format('d/m/Y') : '' }}</small>
+                                                @if($item->data_validacao && is_object($item->data_validacao))
+                                                    <br><small class="text-muted">{{ $item->data_validacao->format('d/m/Y') }}</small>
                                                 @endif
                                             @else
                                                 <span class="badge badge-secondary">N/A</span>

@@ -56,7 +56,7 @@
                                                 {{ $catalogo->status_name }}
                                             </span>
                                         </td>
-                                        <td>{{ $catalogo->created_at->format('d/m/Y H:i') }}</td>
+                                        <td>{{ is_object($catalogo->created_at) ? $catalogo->created_at->format('d/m/Y H:i') : ($catalogo->created_at ?? 'N/A') }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 @if($catalogo->trashed())

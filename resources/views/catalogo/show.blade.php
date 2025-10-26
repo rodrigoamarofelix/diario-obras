@@ -58,11 +58,11 @@
                                 </tr>
                                 <tr>
                                     <th>Criado em:</th>
-                                    <td>{{ $catalogo->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($catalogo->created_at) ? $catalogo->created_at->format('d/m/Y H:i') : ($catalogo->created_at ?? 'N/A') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Atualizado em:</th>
-                                    <td>{{ $catalogo->updated_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($catalogo->updated_at) ? $catalogo->updated_at->format('d/m/Y H:i') : ($catalogo->updated_at ?? 'N/A') }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -106,7 +106,7 @@
                                     @foreach($catalogo->medicoes as $medicao)
                                         <tr>
                                             <td>{{ $medicao->numero_medicao }}</td>
-                                            <td>{{ $medicao->data_medicao->format('d/m/Y') }}</td>
+                                            <td>{{ is_object($medicao->data_medicao) ? $medicao->data_medicao->format('d/m/Y') : ($medicao->data_medicao ?? 'N/A') }}</td>
                                             <td>{{ $medicao->contrato->numero }}</td>
                                             <td>{{ $medicao->lotacao->nome }}</td>
                                             <td>{{ number_format($medicao->quantidade, 3, ',', '.') }} {{ $catalogo->unidade_medida }}</td>

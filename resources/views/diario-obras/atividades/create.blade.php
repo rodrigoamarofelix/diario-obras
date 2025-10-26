@@ -160,9 +160,12 @@
                                     <label for="responsavel_id">Responsável *</label>
                                     <select class="form-control @error('responsavel_id') is-invalid @enderror" id="responsavel_id" name="responsavel_id" required>
                                         <option value="">Selecione o responsável</option>
-                                        @foreach($usuarios as $usuario)
-                                            <option value="{{ $usuario->id }}" {{ old('responsavel_id') == $usuario->id ? 'selected' : '' }}>
-                                                {{ $usuario->name }}
+                                        @foreach($pessoas as $pessoa)
+                                            <option value="{{ $pessoa->id }}" {{ old('responsavel_id') == $pessoa->id ? 'selected' : '' }}>
+                                                {{ $pessoa->nome }}
+                                                @if($pessoa->funcao)
+                                                    - {{ $pessoa->funcao->nome }}
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>

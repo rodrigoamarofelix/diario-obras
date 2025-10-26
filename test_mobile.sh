@@ -45,3 +45,4 @@ echo "📸 Para testar fotos:"
 echo "http://172.31.163.215:3000/diario-obras/fotos/create"
 
 
+

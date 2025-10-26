@@ -197,11 +197,11 @@
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Data de Criação:</strong>
-                                    <p class="text-muted">{{ $empresa->created_at->format('d/m/Y H:i') }}</p>
+                                    <p class="text-muted">{{ is_object($empresa->created_at) ? $empresa->created_at->format('d/m/Y H:i') : ($empresa->created_at ?? 'N/A') }}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Última Atualização:</strong>
-                                    <p class="text-muted">{{ $empresa->updated_at->format('d/m/Y H:i') }}</p>
+                                    <p class="text-muted">{{ is_object($empresa->updated_at) ? $empresa->updated_at->format('d/m/Y H:i') : ($empresa->updated_at ?? 'N/A') }}</p>
                                 </div>
                                 <div class="col-md-3">
                                     <strong>Projetos:</strong>

@@ -61,3 +61,4 @@ echo "3. Conecte o PC no Wi-Fi em vez do cabo"
 
 
 
+

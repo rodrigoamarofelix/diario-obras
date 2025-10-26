@@ -73,7 +73,7 @@
                         <div class="form-group">
                             <label><strong>Data de Cadastro:</strong></label>
                             <p class="form-control-plaintext">
-                                {{ $pessoa->created_at->format('d/m/Y H:i') }}
+                                {{ is_object($pessoa->created_at) ? $pessoa->created_at->format('d/m/Y H:i') : ($pessoa->created_at ?? 'N/A') }}
                                 @if($pessoa->trashed())
                                     <span class="badge badge-danger ml-2">Registro Excluído</span>
                                 @else
@@ -86,7 +86,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label><strong>Última Atualização:</strong></label>
-                            <p class="form-control-plaintext">{{ $pessoa->updated_at->format('d/m/Y H:i') }}</p>
+                            <p class="form-control-plaintext">{{ is_object($pessoa->updated_at) ? $pessoa->updated_at->format('d/m/Y H:i') : ($pessoa->updated_at ?? 'N/A') }}</p>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label><strong>Excluído em (Soft Delete):</strong></label>
-                                <p class="form-control-plaintext text-danger">{{ $pessoa->deleted_at->format('d/m/Y H:i') }}</p>
+                                <p class="form-control-plaintext text-danger">{{ is_object($pessoa->deleted_at) ? $pessoa->deleted_at->format('d/m/Y H:i') : ($pessoa->deleted_at ?? 'N/A') }}</p>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                 @if($pessoa->foi_reativada && !$pessoa->trashed())
                     <div class="alert alert-info">
                         <h5><i class="icon fas fa-info-circle"></i> Pessoa Reativada!</h5>
-                        Esta pessoa foi reativada em {{ $pessoa->created_at->format('d/m/Y H:i') }}.
+                        Esta pessoa foi reativada em {{ is_object($pessoa->created_at) ? $pessoa->created_at->format('d/m/Y H:i') : ($pessoa->created_at ?? 'N/A') }}.
                         A data de criação foi atualizada para controlar o histórico de entrada/saída.
                     </div>
                 @endif

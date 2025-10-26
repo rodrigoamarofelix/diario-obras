@@ -40,7 +40,7 @@
                                 </tr>
                                 <tr>
                                     <th>Data:</th>
-                                    <td>{{ $medicao->data_medicao->format('d/m/Y') }}</td>
+                                    <td>{{ is_object($medicao->data_medicao) ? $medicao->data_medicao->format('d/m/Y') : ($medicao->data_medicao ?? 'N/A') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Catálogo:</th>
@@ -100,11 +100,11 @@
                                 </tr>
                                 <tr>
                                     <th>Criado em:</th>
-                                    <td>{{ $medicao->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($medicao->created_at) ? $medicao->created_at->format('d/m/Y H:i') : ($medicao->created_at ?? 'N/A') }}</td>
                                 </tr>
                                 <tr>
                                     <th>Atualizado em:</th>
-                                    <td>{{ $medicao->updated_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($medicao->updated_at) ? $medicao->updated_at->format('d/m/Y H:i') : ($medicao->updated_at ?? 'N/A') }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -137,7 +137,7 @@
                                     @foreach($medicao->pagamentos as $pagamento)
                                         <tr>
                                             <td>{{ $pagamento->numero_pagamento }}</td>
-                                            <td>{{ $pagamento->data_pagamento->format('d/m/Y') }}</td>
+                                            <td>{{ is_object($pagamento->data_pagamento) ? $pagamento->data_pagamento->format('d/m/Y') : ($pagamento->data_pagamento ?? 'N/A') }}</td>
                                             <td>{{ $pagamento->valor_pagamento_formatado }}</td>
                                             <td>
                                                 <span class="badge badge-{{ $pagamento->status == 'pago' ? 'success' : ($pagamento->status == 'rejeitado' ? 'danger' : 'warning') }}">

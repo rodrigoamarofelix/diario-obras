@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AtividadeObra;
 use App\Models\Projeto;
 use App\Models\User;
+use App\Models\Pessoa;
 use Illuminate\Http\Request;
 
 class AtividadeObraController extends Controller
@@ -14,7 +15,7 @@ class AtividadeObraController extends Controller
      */
     public function index()
     {
-        $atividades = AtividadeObra::with(['projeto', 'responsavel'])
+        $atividades = AtividadeObra::with(['projeto', 'responsavel.funcao'])
             ->latest('data_atividade')
             ->paginate(15);
 
@@ -27,9 +28,9 @@ class AtividadeObraController extends Controller
     public function create()
     {
         $projetos = Projeto::ativos()->get();
-        $usuarios = User::where('profile', '!=', 'pending')->get();
+        $pessoas = Pessoa::ativo()->orderBy('nome')->get();
 
-        return view('diario-obras.atividades.create', compact('projetos', 'usuarios'));
+        return view('diario-obras.atividades.create', compact('projetos', 'pessoas'));
     }
 
     /**
@@ -46,7 +47,7 @@ class AtividadeObraController extends Controller
             'status' => 'required|in:planejado,em_andamento,concluido,cancelado',
             'hora_inicio' => 'nullable|date_format:H:i',
             'hora_fim' => 'nullable|date_format:H:i|after:hora_inicio',
-            'responsavel_id' => 'required|exists:users,id',
+            'responsavel_id' => 'required|exists:pessoas,id',
         ]);
 
         $atividade = AtividadeObra::create([
@@ -75,7 +76,7 @@ class AtividadeObraController extends Controller
      */
     public function show(AtividadeObra $atividade)
     {
-        $atividade->load(['projeto', 'responsavel', 'equipe.funcionario', 'materiais', 'fotos']);
+        $atividade->load(['projeto', 'responsavel.funcao', 'equipe.funcionario', 'materiais', 'fotos']);
 
         return view('diario-obras.atividades.show', compact('atividade'));
     }
@@ -86,9 +87,9 @@ class AtividadeObraController extends Controller
     public function edit(AtividadeObra $atividade)
     {
         $projetos = Projeto::ativos()->get();
-        $usuarios = User::where('profile', '!=', 'pending')->get();
+        $pessoas = Pessoa::ativo()->orderBy('nome')->get();
 
-        return view('diario-obras.atividades.edit', compact('atividade', 'projetos', 'usuarios'));
+        return view('diario-obras.atividades.edit', compact('atividade', 'projetos', 'pessoas'));
     }
 
     /**
@@ -105,7 +106,7 @@ class AtividadeObraController extends Controller
             'status' => 'required|in:planejado,em_andamento,concluido,cancelado',
             'hora_inicio' => 'nullable|date_format:H:i',
             'hora_fim' => 'nullable|date_format:H:i|after:hora_inicio',
-            'responsavel_id' => 'required|exists:users,id',
+            'responsavel_id' => 'required|exists:pessoas,id',
         ]);
 
         $atividade->update([
@@ -150,5 +151,15 @@ class AtividadeObraController extends Controller
             ->paginate(15);
 
         return view('diario-obras.atividades.por-projeto', compact('atividades', 'projeto'));
+    }
+
+    public function getByProjeto(Projeto $projeto)
+    {
+        $atividades = $projeto->atividades()
+            ->whereIn('status', ['planejado', 'em_andamento'])
+            ->orderBy('titulo')
+            ->get(['id', 'titulo']);
+
+        return response()->json($atividades);
     }
 }

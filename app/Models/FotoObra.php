@@ -64,12 +64,12 @@ class FotoObra extends Model
 
     public function atividade(): BelongsTo
     {
-        return $this->belongsTo(AtividadeObra::class);
+        return $this->belongsTo(AtividadeObra::class, 'atividade_id');
     }
 
     public function equipe(): BelongsTo
     {
-        return $this->belongsTo(EquipeObra::class);
+        return $this->belongsTo(EquipeObra::class, 'equipe_id');
     }
 
     public function usuario(): BelongsTo

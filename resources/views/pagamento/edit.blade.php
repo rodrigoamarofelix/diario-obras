@@ -12,7 +12,7 @@
                         <i class="fas fa-edit"></i> Editar Pagamento
                     </h3>
                 </div>
-                <form action="{{ route('pagamento.update', $pagamento) }}" method="POST">
+                <form action="{{ route('pagamento.update', $pagamento->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card-body">
@@ -70,7 +70,7 @@
                                 <div class="form-group">
                                     <label for="data_pagamento">Data do Pagamento:</label>
                                     <input type="date" class="form-control" id="data_pagamento" name="data_pagamento"
-                                           value="{{ old('data_pagamento', $pagamento->data_pagamento->format('Y-m-d')) }}" required>
+                                           value="{{ old('data_pagamento', is_object($pagamento->data_pagamento) ? $pagamento->data_pagamento->format('Y-m-d') : $pagamento->data_pagamento) }}" required>
                                 </div>
                             </div>
                             <div class="col-md-6">

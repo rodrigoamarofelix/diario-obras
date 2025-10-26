@@ -266,6 +266,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('equipe/projeto/{projeto}', [App\Http\Controllers\EquipeObraController::class, 'porProjeto'])->name('equipe.por-projeto');
         Route::patch('equipe/{id}/restore', [App\Http\Controllers\EquipeObraController::class, 'restore'])->name('equipe.restore');
         Route::delete('equipe/{id}/force-delete', [App\Http\Controllers\EquipeObraController::class, 'forceDelete'])->name('equipe.force-delete');
+        Route::get('api/atividades/projeto/{projeto}', [App\Http\Controllers\AtividadeObraController::class, 'getByProjeto'])->name('api.atividades.por-projeto');
 
         // Materiais de Obra
         Route::resource('materiais', App\Http\Controllers\MaterialObraController::class);
@@ -307,7 +308,7 @@ Route::middleware(['auth'])->group(function () {
     // ===== FUNÇÕES =====
     Route::middleware('auth')->group(function () {
         Route::resource('funcoes', App\Http\Controllers\FuncaoController::class);
-        Route::get('funcoes/{funcao}/toggle-status', [App\Http\Controllers\FuncaoController::class, 'toggleStatus'])->name('funcoes.toggle-status');
+        Route::get('funcoes/{id}/toggle-status', [App\Http\Controllers\FuncaoController::class, 'toggleStatus'])->name('funcoes.toggle-status');
         Route::patch('funcoes/{id}/restore', [App\Http\Controllers\FuncaoController::class, 'restore'])->name('funcoes.restore');
         Route::delete('funcoes/{id}/force-delete', [App\Http\Controllers\FuncaoController::class, 'forceDelete'])->name('funcoes.force-delete');
     });

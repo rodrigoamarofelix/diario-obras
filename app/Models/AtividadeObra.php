@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Pessoa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,7 +43,7 @@ class AtividadeObra extends Model
 
     public function responsavel(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'responsavel_id');
+        return $this->belongsTo(Pessoa::class, 'responsavel_id');
     }
 
     public function criadoPor(): BelongsTo
@@ -52,17 +53,17 @@ class AtividadeObra extends Model
 
     public function equipe(): HasMany
     {
-        return $this->hasMany(EquipeObra::class);
+        return $this->hasMany(EquipeObra::class, 'atividade_id');
     }
 
     public function materiais(): HasMany
     {
-        return $this->hasMany(MaterialObra::class);
+        return $this->hasMany(MaterialObra::class, 'atividade_id');
     }
 
     public function fotos(): HasMany
     {
-        return $this->hasMany(FotoObra::class);
+        return $this->hasMany(FotoObra::class, 'atividade_id');
     }
 
     // Scopes

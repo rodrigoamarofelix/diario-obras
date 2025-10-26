@@ -37,6 +37,10 @@
                                 {{ $atividade->titulo }}
                             </h3>
                             <div class="card-tools">
+                                <a href="{{ route('diario-obras.atividades.index') }}" class="btn btn-secondary btn-sm mr-2">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Voltar
+                                </a>
                                 <a href="{{ route('diario-obras.atividades.edit', $atividade) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                     Editar
@@ -75,7 +79,16 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Responsável:</strong></td>
-                                            <td>{{ $atividade->responsavel->name ?? 'N/A' }}</td>
+                                            <td>
+                                                @if($atividade->responsavel)
+                                                    {{ $atividade->responsavel->nome }}
+                                                    @if($atividade->responsavel->funcao)
+                                                        <br><small class="text-muted">{{ $atividade->responsavel->funcao->nome }}</small>
+                                                    @endif
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -94,11 +107,37 @@
                                         <tr>
                                             <td><strong>Tempo Gasto:</strong></td>
                                             <td>
-                                                @if($atividade->tempo_gasto_minutos)
-                                                    {{ $atividade->tempo_gasto_minutos }} minutos
-                                                @else
-                                                    N/A
-                                                @endif
+                                                @php
+                                                    $tempoGasto = null;
+                                                    if ($atividade->hora_inicio && $atividade->hora_fim) {
+                                                        $inicio = is_string($atividade->hora_inicio) ? strtotime($atividade->hora_inicio) : strtotime($atividade->hora_inicio->format('H:i:s'));
+                                                        $fim = is_string($atividade->hora_fim) ? strtotime($atividade->hora_fim) : strtotime($atividade->hora_fim->format('H:i:s'));
+                                                        $diferenca = $fim - $inicio;
+                                                        $horas = floor($diferenca / 3600);
+                                                        $minutos = floor(($diferenca % 3600) / 60);
+
+                                                        if ($horas > 0 && $minutos > 0) {
+                                                            $tempoGasto = $horas . 'h ' . $minutos . 'min';
+                                                        } elseif ($horas > 0) {
+                                                            $tempoGasto = $horas . 'h';
+                                                        } elseif ($minutos > 0) {
+                                                            $tempoGasto = $minutos . 'min';
+                                                        } else {
+                                                            $tempoGasto = $atividade->tempo_gasto_minutos ? $atividade->tempo_gasto_minutos . ' minutos' : 'N/A';
+                                                        }
+                                                    } elseif ($atividade->tempo_gasto_minutos) {
+                                                        $horas = floor($atividade->tempo_gasto_minutos / 60);
+                                                        $minutos = $atividade->tempo_gasto_minutos % 60;
+                                                        if ($horas > 0 && $minutos > 0) {
+                                                            $tempoGasto = $horas . 'h ' . $minutos . 'min';
+                                                        } elseif ($horas > 0) {
+                                                            $tempoGasto = $horas . 'h';
+                                                        } else {
+                                                            $tempoGasto = $minutos . 'min';
+                                                        }
+                                                    }
+                                                @endphp
+                                                {{ $tempoGasto ?? 'N/A' }}
                                             </td>
                                         </tr>
                                         <tr>

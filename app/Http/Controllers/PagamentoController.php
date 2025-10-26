@@ -97,6 +97,16 @@ class PagamentoController extends Controller
                 ->withErrors(['medicao_id' => 'Só é possível criar pagamentos para medições aprovadas.']);
         }
 
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM pagamentos");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('pagamentos_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         // Verificar se a medição já foi paga
         if ($medicao->foiPaga()) {
             return redirect()->back()

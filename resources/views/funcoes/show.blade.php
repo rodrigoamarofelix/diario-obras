@@ -104,12 +104,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <h5><i class="fas fa-calendar-plus text-success"></i> Data de Criação</h5>
-                                    <p class="text-muted">{{ $funcao->created_at->format('d/m/Y H:i') }}</p>
+                                    <p class="text-muted">{{ is_object($funcao->created_at) ? $funcao->created_at->format('d/m/Y H:i') : ($funcao->created_at ?? 'N/A') }}</p>
                                 </div>
                                 @if($funcao->updated_at != $funcao->created_at)
                                 <div class="col-md-6">
                                     <h5><i class="fas fa-calendar-edit text-warning"></i> Última Atualização</h5>
-                                    <p class="text-muted">{{ $funcao->updated_at->format('d/m/Y H:i') }}</p>
+                                    <p class="text-muted">{{ is_object($funcao->updated_at) ? $funcao->updated_at->format('d/m/Y H:i') : ($funcao->updated_at ?? 'N/A') }}</p>
                                 </div>
                                 @endif
                             </div>
@@ -141,18 +141,18 @@
                                         </form>
                                     @else
                                         <!-- Função ativa -->
-                                        <a href="{{ route('funcoes.edit', $funcao) }}" class="btn btn-warning">
+                                        <a href="{{ route('funcoes.edit', $funcao->id) }}" class="btn btn-warning">
                                             <i class="fas fa-edit"></i>
                                             Editar Função
                                         </a>
-                                        <form action="{{ route('funcoes.toggle-status', $funcao) }}" method="GET" class="d-inline">
+                                        <form action="{{ route('funcoes.toggle-status', $funcao->id) }}" method="GET" class="d-inline">
                                             <button type="submit" class="btn btn-{{ $funcao->ativo ? 'secondary' : 'success' }}"
                                                     onclick="return confirm('Tem certeza que deseja {{ $funcao->ativo ? 'inativar' : 'ativar' }} esta função?')">
                                                 <i class="fas fa-{{ $funcao->ativo ? 'pause' : 'play' }}"></i>
                                                 {{ $funcao->ativo ? 'Inativar' : 'Ativar' }}
                                             </button>
                                         </form>
-                                        <form action="{{ route('funcoes.destroy', $funcao) }}" method="POST" class="d-inline"
+                                        <form action="{{ route('funcoes.destroy', $funcao->id) }}" method="POST" class="d-inline"
                                               onsubmit="return confirm('Tem certeza que deseja excluir esta função? Ela poderá ser restaurada posteriormente.')">
                                             @csrf
                                             @method('DELETE')
@@ -275,7 +275,7 @@
                                 @if($funcao->trashed())
                                 <tr>
                                     <td><strong>Excluída em:</strong></td>
-                                    <td>{{ $funcao->deleted_at->format('d/m/Y H:i') }}</td>
+                                    <td>{{ is_object($funcao->deleted_at) ? $funcao->deleted_at->format('d/m/Y H:i') : ($funcao->deleted_at ?? 'N/A') }}</td>
                                 </tr>
                                 @endif
                             </table>
@@ -304,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endpush
+
 
 
 

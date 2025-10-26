@@ -39,6 +39,16 @@ class FuncaoController extends Controller
             'ativo' => 'boolean',
         ]);
 
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM funcoes");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('funcoes_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         Funcao::create($request->all());
 
         return redirect()->route('funcoes.index')
@@ -48,8 +58,9 @@ class FuncaoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Funcao $funcao)
+    public function show($id)
     {
+        $funcao = Funcao::withTrashed()->findOrFail($id);
         $funcao->load('pessoas');
         return view('funcoes.show', compact('funcao'));
     }
@@ -57,16 +68,19 @@ class FuncaoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Funcao $funcao)
+    public function edit($id)
     {
+        $funcao = Funcao::findOrFail($id);
         return view('funcoes.edit', compact('funcao'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Funcao $funcao)
+    public function update(Request $request, $id)
     {
+        $funcao = Funcao::findOrFail($id);
+
         $request->validate([
             'nome' => 'required|string|max:255|unique:funcoes,nome,' . $funcao->id,
             'descricao' => 'nullable|string',
@@ -83,8 +97,9 @@ class FuncaoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Funcao $funcao)
+    public function destroy($id)
     {
+        $funcao = Funcao::findOrFail($id);
         $funcao->delete();
 
         return redirect()->back()
@@ -94,8 +109,9 @@ class FuncaoController extends Controller
     /**
      * Toggle status of the specified resource.
      */
-    public function toggleStatus(Funcao $funcao)
+    public function toggleStatus($id)
     {
+        $funcao = Funcao::findOrFail($id);
         $funcao->update(['ativo' => !$funcao->ativo]);
 
         $status = $funcao->ativo ? 'ativada' : 'inativada';

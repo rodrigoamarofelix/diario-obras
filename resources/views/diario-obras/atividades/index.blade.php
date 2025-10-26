@@ -87,7 +87,13 @@
                                                         {{ ucfirst(str_replace('_', ' ', $atividade->status)) }}
                                                     </span>
                                                 </td>
-                                                <td>{{ $atividade->responsavel->name ?? 'N/A' }}</td>
+                                                <td>
+                                                    @if($atividade->responsavel)
+                                                        {{ $atividade->responsavel->nome }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <a href="{{ route('diario-obras.atividades.show', $atividade) }}" class="btn btn-sm btn-primary" title="Ver detalhes">

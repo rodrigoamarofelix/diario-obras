@@ -82,10 +82,10 @@
                                             @endif
                                             <br>
                                             <small class="text-muted">
-                                                Criado: {{ $item->created_at->format('d/m/Y H:i') }}
+                                                Criado: {{ is_object($item->created_at) ? $item->created_at->format('d/m/Y H:i') : ($item->created_at ?? 'N/A') }}
                                             </small>
                                         </td>
-                                        <td>{{ $item->data_medicao->format('d/m/Y') }}</td>
+                                        <td>{{ is_object($item->data_medicao) ? $item->data_medicao->format('d/m/Y') : ($item->data_medicao ?? 'N/A') }}</td>
                                         <td>{{ $item->catalogo->nome }}</td>
                                         <td>{{ $item->contrato->numero }}</td>
                                         <td>{{ $item->lotacao->nome }}</td>

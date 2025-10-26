@@ -50,13 +50,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Data de Início:</label>
-                            <p class="form-control-static">{{ $contrato->data_inicio->format('d/m/Y') }}</p>
+                            <p class="form-control-static">{{ is_object($contrato->data_inicio) ? $contrato->data_inicio->format('d/m/Y') : ($contrato->data_inicio ?? 'N/A') }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Data de Fim:</label>
-                            <p class="form-control-static">{{ $contrato->data_fim->format('d/m/Y') }}</p>
+                            <p class="form-control-static">{{ is_object($contrato->data_fim) ? $contrato->data_fim->format('d/m/Y') : ($contrato->data_fim ?? 'N/A') }}</p>
                         </div>
                     </div>
                 </div>
@@ -66,8 +66,12 @@
                         <div class="form-group">
                             <label>Gestor Atual:</label>
                             <p class="form-control-static">
-                                @if($contrato->gestor_atual)
-                                    <span class="badge badge-success">{{ $contrato->gestor_atual->nome }}</span>
+                                @php
+                                    $gestorAtual = $contrato->gestor_atual ?? null;
+                                    $gestorNome = $gestorAtual ? ($gestorAtual->nome ?? null) : null;
+                                @endphp
+                                @if($gestorNome)
+                                    <span class="badge badge-success">{{ $gestorNome }}</span>
                                 @else
                                     N/A
                                 @endif
@@ -78,8 +82,12 @@
                         <div class="form-group">
                             <label>Fiscal Atual:</label>
                             <p class="form-control-static">
-                                @if($contrato->fiscal_atual)
-                                    <span class="badge badge-success">{{ $contrato->fiscal_atual->nome }}</span>
+                                @php
+                                    $fiscalAtual = $contrato->fiscal_atual ?? null;
+                                    $fiscalNome = $fiscalAtual ? ($fiscalAtual->nome ?? null) : null;
+                                @endphp
+                                @if($fiscalNome)
+                                    <span class="badge badge-success">{{ $fiscalNome }}</span>
                                 @else
                                     N/A
                                 @endif
@@ -92,13 +100,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Criado em:</label>
-                            <p class="form-control-static">{{ $contrato->created_at->format('d/m/Y H:i:s') }}</p>
+                            <p class="form-control-static">{{ is_object($contrato->created_at) ? $contrato->created_at->format('d/m/Y H:i:s') : ($contrato->created_at ?? 'N/A') }}</p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Última Atualização:</label>
-                            <p class="form-control-static">{{ $contrato->updated_at->format('d/m/Y H:i:s') }}</p>
+                            <p class="form-control-static">{{ is_object($contrato->updated_at) ? $contrato->updated_at->format('d/m/Y H:i:s') : ($contrato->updated_at ?? 'N/A') }}</p>
                         </div>
                     </div>
                 </div>
@@ -106,19 +114,19 @@
                 @if($contrato->deleted_at)
                     <div class="form-group">
                         <label>Excluído em (Soft Delete):</label>
-                        <p class="form-control-static text-danger">{{ $contrato->deleted_at->format('d/m/Y H:i:s') }}</p>
+                        <p class="form-control-static text-danger">{{ is_object($contrato->deleted_at) ? $contrato->deleted_at->format('d/m/Y H:i:s') : ($contrato->deleted_at ?? 'N/A') }}</p>
                     </div>
                 @endif
 
                 @if($contrato->esta_vencido)
                     <div class="alert alert-warning">
                         <h5><i class="icon fas fa-exclamation-triangle"></i> Contrato Vencido!</h5>
-                        Este contrato está vencido desde {{ $contrato->data_fim->format('d/m/Y') }}.
+                        Este contrato está vencido desde {{ is_object($contrato->data_fim) ? $contrato->data_fim->format('d/m/Y') : ($contrato->data_fim ?? 'N/A') }}.
                     </div>
                 @elseif($contrato->dias_restantes <= 30)
                     <div class="alert alert-info">
                         <h5><i class="icon fas fa-info-circle"></i> Contrato Próximo do Vencimento!</h5>
-                        Este contrato vence em {{ $contrato->dias_restantes }} dias ({{ $contrato->data_fim->format('d/m/Y') }}).
+                        Este contrato vence em {{ $contrato->dias_restantes }} dias ({{ is_object($contrato->data_fim) ? $contrato->data_fim->format('d/m/Y') : ($contrato->data_fim ?? 'N/A') }}).
                     </div>
                 @endif
             </div>
@@ -169,7 +177,7 @@
                                         <div class="text-muted mb-3 flex-grow-1">
                                             <small>
                                                 <i class="fas fa-weight-hanging"></i> {{ $anexo->tamanho_formatado }}<br>
-                                                <i class="fas fa-calendar"></i> {{ $anexo->created_at->format('d/m/Y H:i') }}<br>
+                                                <i class="fas fa-calendar"></i> {{ is_object($anexo->created_at) ? $anexo->created_at->format('d/m/Y H:i') : ($anexo->created_at ?? 'N/A') }}<br>
                                                 @if($anexo->descricao)
                                                     <i class="fas fa-comment"></i> {{ Str::limit($anexo->descricao, 30) }}
                                                 @endif
@@ -236,21 +244,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="anexos">Arquivos para Anexar:</label>
-
-                        <!-- Área de Drag & Drop -->
-                        <div id="drop-zone-modal" class="drop-zone" style="border: 2px dashed #ccc; padding: 30px; text-align: center; margin-bottom: 15px; border-radius: 8px; background-color: #f8f9fa; transition: all 0.3s ease;">
-                            <i class="fas fa-cloud-upload-alt fa-4x text-muted mb-3"></i>
-                            <h5 class="mb-2">Arraste e solte os arquivos aqui</h5>
-                            <p class="text-muted mb-3">ou</p>
-                            <button type="button" class="btn btn-primary" onclick="document.getElementById('anexos').click()">
-                                <i class="fas fa-folder-open"></i> Selecionar Arquivos
-                            </button>
-                            <input type="file" class="form-control-file d-none" id="anexos" name="anexos[]" multiple required accept="*/*">
-                        </div>
-
-                        <!-- Lista de arquivos selecionados -->
-                        <div id="file-list-modal" class="file-list"></div>
-
+                        <input type="file" class="form-control-file" id="anexos" name="anexos[]" multiple required accept="*/*">
                         <small class="form-text text-muted">
                             Tamanho máximo: 10MB por arquivo
                         </small>
@@ -299,15 +293,23 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $responsavel->periodo_formatado }}</td>
                                     <td>
-                                        @if($responsavel->gestor)
-                                            <span class="badge badge-info">{{ $responsavel->gestor->nome }}</span>
+                                        @php
+                                            $gestor = $responsavel->gestor ?? null;
+                                            $gestorNome = $gestor ? ($gestor->nome ?? null) : null;
+                                        @endphp
+                                        @if($gestorNome)
+                                            <span class="badge badge-info">{{ $gestorNome }}</span>
                                         @else
                                             <span class="badge badge-secondary">N/A</span>
                                         @endif
                                     </td>
                                     <td>
-                                        @if($responsavel->fiscal)
-                                            <span class="badge badge-info">{{ $responsavel->fiscal->nome }}</span>
+                                        @php
+                                            $fiscal = $responsavel->fiscal ?? null;
+                                            $fiscalNome = $fiscal ? ($fiscal->nome ?? null) : null;
+                                        @endphp
+                                        @if($fiscalNome)
+                                            <span class="badge badge-info">{{ $fiscalNome }}</span>
                                         @else
                                             <span class="badge badge-secondary">N/A</span>
                                         @endif
@@ -370,218 +372,6 @@ setTimeout(function() {
     });
 }, 3000);
 
-// Drag & Drop functionality for modal - versão simplificada e robusta
-let modalSelectedFiles = [];
-
-// Initialize modal drag & drop when modal is shown
-$(document).ready(function() {
-    $('#uploadModal').on('shown.bs.modal', function() {
-        console.log('Modal opened, initializing drag & drop');
-
-    const dropZoneModal = document.getElementById('drop-zone-modal');
-    const fileInputModal = document.getElementById('anexos');
-    const fileListModal = document.getElementById('file-list-modal');
-
-    // Reset files when modal opens
-    modalSelectedFiles = [];
-    fileListModal.innerHTML = '';
-    fileInputModal.value = '';
-
-    // Função para prevenir comportamentos padrão
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
-
-    // Função para destacar a área de drop
-    function highlight(e) {
-        dropZoneModal.classList.add('dragover');
-    }
-
-    // Função para remover destaque
-    function unhighlight(e) {
-        dropZoneModal.classList.remove('dragover');
-    }
-
-    // Função para processar arquivos
-    function handleFiles(files) {
-        console.log('=== HANDLE FILES ===');
-        console.log('Files received:', files.length);
-
-        const fileArray = Array.from(files);
-        console.log('File array:', fileArray);
-
-        // Filtrar arquivos válidos (máximo 10MB)
-        const validFiles = fileArray.filter(file => {
-            console.log(`Checking file: ${file.name}, size: ${file.size} bytes`);
-            if (file.size > 10 * 1024 * 1024) {
-                alert(`Arquivo "${file.name}" é muito grande. Tamanho máximo: 10MB`);
-                return false;
-            }
-            return true;
-        });
-
-        console.log('Valid files:', validFiles.length);
-
-        // Adicionar arquivos válidos à lista
-        modalSelectedFiles = [...modalSelectedFiles, ...validFiles];
-        console.log('Total selected files:', modalSelectedFiles.length);
-
-        updateFileList();
-        updateFileInput();
-    }
-
-    // Função para atualizar a lista visual de arquivos
-    function updateFileList() {
-        fileListModal.innerHTML = '';
-
-        if (modalSelectedFiles.length === 0) {
-            return;
-        }
-
-        modalSelectedFiles.forEach((file, index) => {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item d-flex justify-content-between align-items-center p-3 mb-2 border rounded bg-light';
-
-            const fileInfo = document.createElement('div');
-            fileInfo.className = 'd-flex align-items-center';
-            fileInfo.innerHTML = `
-                <i class="fas fa-file mr-3 text-primary"></i>
-                <div>
-                    <div class="font-weight-bold">${file.name}</div>
-                    <small class="text-muted">${formatFileSize(file.size)}</small>
-                </div>
-            `;
-
-            const removeBtn = document.createElement('button');
-            removeBtn.type = 'button';
-            removeBtn.className = 'btn btn-sm btn-outline-danger';
-            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-            removeBtn.onclick = () => removeFile(index);
-
-            fileItem.appendChild(fileInfo);
-            fileItem.appendChild(removeBtn);
-            fileListModal.appendChild(fileItem);
-        });
-    }
-
-    // Função para atualizar o input file
-    function updateFileInput() {
-        console.log('=== UPDATE FILE INPUT ===');
-        console.log('Selected files:', modalSelectedFiles.length);
-
-        // Usar DataTransfer para definir os arquivos
-        if (window.DataTransfer) {
-            try {
-                const dataTransfer = new DataTransfer();
-                modalSelectedFiles.forEach(file => {
-                    dataTransfer.items.add(file);
-                });
-                fileInputModal.files = dataTransfer.files;
-                console.log('DataTransfer method successful');
-            } catch (error) {
-                console.error('DataTransfer error:', error);
-            }
-        }
-
-        console.log('Arquivos no input modal:', fileInputModal.files.length);
-    }
-
-    // Função para remover arquivo da lista
-    function removeFile(index) {
-        modalSelectedFiles.splice(index, 1);
-        updateFileList();
-        updateFileInput();
-    }
-
-    // Função para formatar tamanho do arquivo
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    // Prevenir comportamento padrão em toda a página para drag & drop
-    document.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }, false);
-
-    document.addEventListener('dragenter', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }, false);
-
-    document.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }, false);
-
-    document.addEventListener('drop', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }, false);
-
-    // Desabilitar drag em imagens e outros elementos
-    document.querySelectorAll('img, a').forEach(element => {
-        element.draggable = false;
-    });
-
-    // Remover event listeners anteriores se existirem
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropZoneModal.removeEventListener(eventName, preventDefaults);
-        dropZoneModal.addEventListener(eventName, preventDefaults, false);
-    });
-
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZoneModal.removeEventListener(eventName, highlight);
-        dropZoneModal.addEventListener(eventName, highlight, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZoneModal.removeEventListener(eventName, unhighlight);
-        dropZoneModal.addEventListener(eventName, unhighlight, false);
-    });
-
-    // Event listener para drop
-    dropZoneModal.removeEventListener('drop', handleDrop);
-    dropZoneModal.addEventListener('drop', handleDrop, false);
-
-    function handleDrop(e) {
-        console.log('Drop event triggered');
-        const files = e.dataTransfer.files;
-        console.log('Files dropped:', files.length);
-        handleFiles(files);
-    }
-
-    // Event listener para clique na área de drop
-    dropZoneModal.removeEventListener('click', handleClick);
-    dropZoneModal.addEventListener('click', handleClick);
-
-    function handleClick(e) {
-        if (e.target === dropZoneModal || e.target.closest('.drop-zone')) {
-            fileInputModal.click();
-        }
-    }
-
-    // Event listener para mudança no input file
-    fileInputModal.removeEventListener('change', handleInputChange);
-    fileInputModal.addEventListener('change', handleInputChange);
-
-    function handleInputChange(e) {
-        console.log('Input change event triggered');
-        const files = e.target.files;
-        handleFiles(files);
-    }
-    });
-});
 </script>
 
 <style>

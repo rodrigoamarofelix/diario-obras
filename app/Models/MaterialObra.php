@@ -43,7 +43,7 @@ class MaterialObra extends Model
 
     public function atividade(): BelongsTo
     {
-        return $this->belongsTo(AtividadeObra::class);
+        return $this->belongsTo(AtividadeObra::class, 'atividade_id');
     }
 
     public function responsavel(): BelongsTo

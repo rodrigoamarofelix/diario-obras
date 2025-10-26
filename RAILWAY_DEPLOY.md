@@ -82,3 +82,4 @@ railway run php artisan migrate
 ✅ **Logs em tempo real**
 ✅ **Métricas de performance**
 
+

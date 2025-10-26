@@ -169,7 +169,7 @@
                                     @endif
                                     <div class="mb-1">
                                         <i class="fas fa-calendar"></i>
-                                        Criada em {{ $funcao->created_at->format('d/m/Y') }}
+                                        Criada em {{ is_object($funcao->created_at) ? $funcao->created_at->format('d/m/Y') : ($funcao->created_at ?? 'N/A') }}
                                     </div>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
                             <div class="card-footer bg-transparent">
                                 <div class="btn-group w-100">
                                     @if($funcao->trashed())
-                                        <a href="{{ route('funcoes.show', $funcao) }}" class="btn btn-info btn-sm" title="Visualizar">
+                                        <a href="{{ route('funcoes.show', $funcao->id) }}" class="btn btn-info btn-sm" title="Visualizar">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <form method="POST" action="{{ route('funcoes.restore', $funcao->id) }}" class="d-inline">
@@ -195,18 +195,18 @@
                                             </button>
                                         </form>
                                     @else
-                                        <a href="{{ route('funcoes.show', $funcao) }}" class="btn btn-primary btn-sm" title="Ver detalhes">
+                                        <a href="{{ route('funcoes.show', $funcao->id) }}" class="btn btn-primary btn-sm" title="Ver detalhes">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('funcoes.edit', $funcao) }}" class="btn btn-warning btn-sm" title="Editar">
+                                        <a href="{{ route('funcoes.edit', $funcao->id) }}" class="btn btn-warning btn-sm" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('funcoes.toggle-status', $funcao) }}" method="GET" class="d-inline">
+                                        <form action="{{ route('funcoes.toggle-status', $funcao->id) }}" method="GET" class="d-inline">
                                             <button type="submit" class="btn btn-{{ $funcao->ativo ? 'secondary' : 'success' }} btn-sm" title="{{ $funcao->ativo ? 'Inativar' : 'Ativar' }}">
                                                 <i class="fas fa-{{ $funcao->ativo ? 'pause' : 'play' }}"></i>
                                             </button>
                                         </form>
-                                        <form action="{{ route('funcoes.destroy', $funcao) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('funcoes.destroy', $funcao->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" title="Excluir">
@@ -274,11 +274,11 @@
                                             @endif
                                         </td>
                                         <td>{{ $funcao->pessoas->count() }}</td>
-                                        <td>{{ $funcao->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ is_object($funcao->created_at) ? $funcao->created_at->format('d/m/Y') : ($funcao->created_at ?? 'N/A') }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 @if($funcao->trashed())
-                                                    <a href="{{ route('funcoes.show', $funcao) }}" class="btn btn-sm btn-info" title="Visualizar">
+                                                    <a href="{{ route('funcoes.show', $funcao->id) }}" class="btn btn-sm btn-info" title="Visualizar">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                     <form method="POST" action="{{ route('funcoes.restore', $funcao->id) }}" class="d-inline">
@@ -289,18 +289,18 @@
                                                         </button>
                                                     </form>
                                                 @else
-                                                    <a href="{{ route('funcoes.show', $funcao) }}" class="btn btn-sm btn-primary" title="Ver detalhes">
+                                                    <a href="{{ route('funcoes.show', $funcao->id) }}" class="btn btn-sm btn-primary" title="Ver detalhes">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('funcoes.edit', $funcao) }}" class="btn btn-sm btn-warning" title="Editar">
+                                                    <a href="{{ route('funcoes.edit', $funcao->id) }}" class="btn btn-sm btn-warning" title="Editar">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <form action="{{ route('funcoes.toggle-status', $funcao) }}" method="GET" class="d-inline">
+                                                    <form action="{{ route('funcoes.toggle-status', $funcao->id) }}" method="GET" class="d-inline">
                                                         <button type="submit" class="btn btn-sm btn-{{ $funcao->ativo ? 'secondary' : 'success' }}" title="{{ $funcao->ativo ? 'Inativar' : 'Ativar' }}">
                                                             <i class="fas fa-{{ $funcao->ativo ? 'pause' : 'play' }}"></i>
                                                         </button>
                                                     </form>
-                                                    <form action="{{ route('funcoes.destroy', $funcao) }}" method="POST" class="d-inline">
+                                                    <form action="{{ route('funcoes.destroy', $funcao->id) }}" method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger" title="Excluir">

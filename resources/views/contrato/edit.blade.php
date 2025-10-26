@@ -15,7 +15,7 @@
             <div class="card-header">
                 <h3 class="card-title">Formulário de Edição de Contrato</h3>
             </div>
-            <form method="POST" action="{{ route('contrato.update', $contrato->id) }}" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="{{ route('contrato.update', $contrato->id) }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <div class="card-body">
@@ -59,13 +59,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="data_inicio">Data de Início:</label>
-                                <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ old('data_inicio', $contrato->data_inicio->format('Y-m-d')) }}" required>
+                                <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ old('data_inicio', is_object($contrato->data_inicio) ? $contrato->data_inicio->format('Y-m-d') : $contrato->data_inicio) }}" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="data_fim">Data de Fim:</label>
-                                <input type="date" class="form-control" id="data_fim" name="data_fim" value="{{ old('data_fim', $contrato->data_fim->format('Y-m-d')) }}" required>
+                                <input type="date" class="form-control" id="data_fim" name="data_fim" value="{{ old('data_fim', is_object($contrato->data_fim) ? $contrato->data_fim->format('Y-m-d') : $contrato->data_fim) }}" required>
                             </div>
                         </div>
                     </div>
@@ -98,6 +98,12 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label for="anexos">Adicionar Novos Anexos (opcional):</label>
+                        <input type="file" class="form-control-file" id="anexos" name="anexos[]" multiple accept="*/*">
+                        <small class="form-text text-muted">Tamanho máximo: 10MB por arquivo</small>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-warning">
@@ -115,6 +121,7 @@
 
 @section('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
     // Validação de datas
     document.getElementById('data_inicio').addEventListener('change', function() {
         const dataInicio = new Date(this.value);
@@ -141,7 +148,6 @@
             }
         }
     });
-
+    }); // fim DOMContentLoaded
 </script>
 
-@endsection

@@ -34,10 +34,14 @@
                         <div class="card-header">
                             <h3 class="card-title">
                                 <i class="fas fa-users text-primary"></i>
-                                {{ $equipe->funcionario->name ?? 'Funcionário' }}
+                                {{ $equipe->pessoa->nome ?? ($equipe->funcionario->name ?? 'Funcionário') }}
                             </h3>
                             <div class="card-tools">
-                                <a href="{{ route('diario-obras.equipe.edit', $equipe) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('diario-obras.equipe.index') }}" class="btn btn-secondary btn-sm mr-2">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Voltar
+                                </a>
+                                <a href="{{ route('diario-obras.equipe.edit', $equipe->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                     Editar
                                 </a>
@@ -49,7 +53,7 @@
                                     <table class="table table-striped">
                                         <tr>
                                             <td><strong>Funcionário:</strong></td>
-                                            <td>{{ $equipe->funcionario->name ?? 'N/A' }}</td>
+                                            <td>{{ $equipe->pessoa->nome ?? ($equipe->funcionario->name ?? 'N/A') }}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Projeto:</strong></td>
@@ -87,11 +91,92 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        @if($equipe->hora_saida_almoco || $equipe->hora_retorno_almoco)
+                                        <tr>
+                                            <td><strong>Almoço:</strong></td>
+                                            <td>
+                                                @if($equipe->hora_saida_almoco && $equipe->hora_retorno_almoco)
+                                                    {{ $equipe->hora_saida_almoco }} - {{ $equipe->hora_retorno_almoco }}
+                                                    <span class="badge badge-info ml-2">{{ ucfirst($equipe->tipo_almoco) }}</span>
+                                                @elseif($equipe->hora_saida_almoco)
+                                                    Saída: {{ $equipe->hora_saida_almoco }}
+                                                @elseif($equipe->hora_retorno_almoco)
+                                                    Retorno: {{ $equipe->hora_retorno_almoco }}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endif
                                         <tr>
                                             <td><strong>Horas Trabalhadas:</strong></td>
                                             <td>
+                                                @php
+                                                    $horasManha = 0;
+                                                    $horasTarde = 0;
+                                                    $total = $equipe->horas_trabalhadas ?? 0;
+
+                                                    if ($equipe->hora_entrada && $equipe->hora_saida) {
+                                                        // Parse times
+                                                        $entrada = is_string($equipe->hora_entrada) ? strtotime($equipe->hora_entrada) : strtotime($equipe->hora_entrada->format('H:i'));
+                                                        $saida = is_string($equipe->hora_saida) ? strtotime($equipe->hora_saida) : strtotime($equipe->hora_saida->format('H:i'));
+                                                        $entradaAlmoco = null;
+                                                        $retornoAlmoco = null;
+                                                        $meioDia = strtotime('12:00:00');
+
+                                                        if ($equipe->hora_saida_almoco) {
+                                                            $entradaAlmoco = is_string($equipe->hora_saida_almoco) ? strtotime($equipe->hora_saida_almoco) : strtotime($equipe->hora_saida_almoco->format('H:i'));
+                                                        }
+                                                        if ($equipe->hora_retorno_almoco) {
+                                                            $retornoAlmoco = is_string($equipe->hora_retorno_almoco) ? strtotime($equipe->hora_retorno_almoco) : strtotime($equipe->hora_retorno_almoco->format('H:i'));
+                                                        }
+
+                                                        // Calcular horas da manhã
+                                                        if ($entradaAlmoco) {
+                                                            $horasManha = ($entradaAlmoco - $entrada) / 3600;
+                                                        } else {
+                                                            // Se não houver almoço, assumir meio-dia
+                                                            $horasManha = ($meioDia - $entrada) / 3600;
+                                                            if ($horasManha < 0) $horasManha = 0;
+                                                        }
+
+                                                        // Calcular horas da tarde
+                                                        if ($retornoAlmoco) {
+                                                            $horasTarde = ($saida - $retornoAlmoco) / 3600;
+                                                        } else {
+                                                            // Se não houver retorno almoço, usar entrada almoço ou meio-dia até saída
+                                                            if ($entradaAlmoco) {
+                                                                $horasTarde = ($saida - $entradaAlmoco) / 3600;
+                                                            } else {
+                                                                $horasTarde = ($saida - $meioDia) / 3600;
+                                                                if ($horasTarde < 0) $horasTarde = 0;
+                                                            }
+                                                        }
+
+                                                        // Se as horas calculadas não correspondem ao total, distribuir proporcionalmente
+                                                        if ($equipe->horas_trabalhadas) {
+                                                            $somaCalculada = $horasManha + $horasTarde;
+                                                            if ($somaCalculada > 0) {
+                                                                $fator = $total / $somaCalculada;
+                                                                $horasManha = $horasManha * $fator;
+                                                                $horasTarde = $horasTarde * $fator;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
                                                 @if($equipe->horas_trabalhadas)
-                                                    {{ $equipe->horas_trabalhadas }} horas
+                                                    <div style="line-height: 1.8;">
+                                                        <div>
+                                                            <i class="fas fa-sun text-warning"></i>
+                                                            <strong>Manhã:</strong> {{ number_format($horasManha, 1) }}h
+                                                        </div>
+                                                        <div>
+                                                            <i class="fas fa-moon text-info"></i>
+                                                            <strong>Tarde:</strong> {{ number_format($horasTarde, 1) }}h
+                                                        </div>
+                                                        <div class="mt-2 pt-2" style="border-top: 2px solid #dee2e6;">
+                                                            <i class="fas fa-clock text-primary"></i>
+                                                            <strong>Total:</strong> {{ number_format($total, 1) }}h
+                                                        </div>
+                                                    </div>
                                                 @else
                                                     N/A
                                                 @endif

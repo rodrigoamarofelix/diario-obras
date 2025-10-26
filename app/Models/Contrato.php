@@ -100,7 +100,11 @@ class Contrato extends Model
      */
     public function getEstaVencidoAttribute(): bool
     {
-        return $this->data_fim < now()->toDateString();
+        if (!$this->data_fim) {
+            return false;
+        }
+        $dataFim = is_string($this->data_fim) ? \Carbon\Carbon::parse($this->data_fim) : $this->data_fim;
+        return $dataFim->lessThan(now());
     }
 
     /**
@@ -166,6 +170,10 @@ class Contrato extends Model
      */
     public function getDiasRestantesAttribute(): int
     {
-        return now()->diffInDays($this->data_fim, false);
+        if (!$this->data_fim) {
+            return 0;
+        }
+        $dataFim = is_string($this->data_fim) ? \Carbon\Carbon::parse($this->data_fim) : $this->data_fim;
+        return now()->diffInDays($dataFim, false);
     }
 }

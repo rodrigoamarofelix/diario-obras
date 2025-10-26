@@ -135,7 +135,7 @@
                                             <label for="hora_inicio">Hora de Início</label>
                                             <input type="time" class="form-control @error('hora_inicio') is-invalid @enderror"
                                                    id="hora_inicio" name="hora_inicio"
-                                                   value="{{ old('hora_inicio', $atividade->hora_inicio) }}">
+                                                   value="{{ old('hora_inicio', $atividade->hora_inicio ? (is_object($atividade->hora_inicio) ? $atividade->hora_inicio->format('H:i') : $atividade->hora_inicio) : '') }}">
                                             @error('hora_inicio')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -147,7 +147,7 @@
                                             <label for="hora_fim">Hora de Fim</label>
                                             <input type="time" class="form-control @error('hora_fim') is-invalid @enderror"
                                                    id="hora_fim" name="hora_fim"
-                                                   value="{{ old('hora_fim', $atividade->hora_fim) }}">
+                                                   value="{{ old('hora_fim', $atividade->hora_fim ? (is_object($atividade->hora_fim) ? $atividade->hora_fim->format('H:i') : $atividade->hora_fim) : '') }}">
                                             @error('hora_fim')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -159,9 +159,12 @@
                                     <label for="responsavel_id">Responsável *</label>
                                     <select class="form-control @error('responsavel_id') is-invalid @enderror" id="responsavel_id" name="responsavel_id" required>
                                         <option value="">Selecione o responsável</option>
-                                        @foreach($usuarios as $usuario)
-                                            <option value="{{ $usuario->id }}" {{ old('responsavel_id', $atividade->responsavel_id) == $usuario->id ? 'selected' : '' }}>
-                                                {{ $usuario->name }}
+                                        @foreach($pessoas as $pessoa)
+                                            <option value="{{ $pessoa->id }}" {{ old('responsavel_id', $atividade->responsavel_id) == $pessoa->id ? 'selected' : '' }}>
+                                                {{ $pessoa->nome }}
+                                                @if($pessoa->funcao)
+                                                    - {{ $pessoa->funcao->nome }}
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>

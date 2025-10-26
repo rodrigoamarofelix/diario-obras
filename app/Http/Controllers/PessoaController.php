@@ -68,6 +68,16 @@ class PessoaController extends Controller
      */
     public function store(Request $request)
     {
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM pessoas");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('pessoas_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => ['required', 'string', new CpfValido],

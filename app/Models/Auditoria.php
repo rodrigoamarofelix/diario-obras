@@ -19,14 +19,27 @@ class Auditoria extends Model
         'observacoes',
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'dados_anteriores' => 'array',
+        'dados_novos' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
+     * Mutator para salvar dados anteriores
+     */
+    public function setDadosAnterioresAttribute($value)
     {
-        return [
-            'dados_anteriores' => 'array',
-            'dados_novos' => 'array',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
+        $this->attributes['dados_anteriores'] = is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : $value;
+    }
+
+    /**
+     * Mutator para salvar dados novos
+     */
+    public function setDadosNovosAttribute($value)
+    {
+        $this->attributes['dados_novos'] = is_array($value) ? json_encode($value, JSON_UNESCAPED_UNICODE) : $value;
     }
 
     /**

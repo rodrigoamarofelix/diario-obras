@@ -35,6 +35,16 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM empresas");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('empresas_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         $validator = Validator::make($request->all(), [
             'nome' => 'required|string|max:255',
             'razao_social' => 'required|string|max:255',

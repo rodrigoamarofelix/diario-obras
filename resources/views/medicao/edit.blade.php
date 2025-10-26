@@ -12,7 +12,7 @@
                         <i class="fas fa-edit"></i> Editar Medição
                     </h3>
                 </div>
-                <form action="{{ route('medicao.update', $medicao) }}" method="POST">
+                <form action="{{ route('medicao.update', $medicao->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card-body">
@@ -94,7 +94,7 @@
                                 <div class="form-group">
                                     <label for="data_medicao">Data da Medição:</label>
                                     <input type="date" class="form-control" id="data_medicao" name="data_medicao"
-                                           value="{{ old('data_medicao', $medicao->data_medicao->format('Y-m-d')) }}" required>
+                                           value="{{ old('data_medicao', is_object($medicao->data_medicao) ? $medicao->data_medicao->format('Y-m-d') : $medicao->data_medicao) }}" required>
                                 </div>
                             </div>
                             <div class="col-md-4">

@@ -29,6 +29,16 @@ class CatalogoController extends Controller
      */
     public function store(Request $request)
     {
+        // Corrigir sequência do PostgreSQL
+        try {
+            $maxId = \DB::selectOne("SELECT MAX(id) as max_id FROM catalogos");
+            if ($maxId && $maxId->max_id) {
+                \DB::select("SELECT setval('catalogos_id_seq', {$maxId->max_id})");
+            }
+        } catch (\Exception $e) {
+            // Ignorar erro de sequência se não existir
+        }
+
         $request->validate([
             'nome' => 'required|string|max:255',
             'descricao' => 'nullable|string',

@@ -474,190 +474,213 @@
                             </ul>
                         </li>
 
-                        <!-- Usuários -->
-                        @if(auth()->user()->canManageUsers())
-                        <li class="nav-item">
-                            <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>Usuários</p>
-                            </a>
-                        </li>
-                        @endif
-
-                        <!-- Funções -->
-                        <li class="nav-item">
-                            <a href="{{ route('funcoes.index') }}" class="nav-link {{ request()->routeIs('funcoes.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-briefcase text-warning"></i>
-                                <p>Funções</p>
-                            </a>
-                        </li>
-
-                        <!-- Empresas -->
-                        <li class="nav-item">
-                            <a href="{{ route('empresas.index') }}" class="nav-link {{ request()->routeIs('empresas.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-building text-primary"></i>
-                                <p>Empresas</p>
-                            </a>
-                        </li>
-
-                        <!-- Lotações -->
-                        <li class="nav-item">
-                            <a href="{{ route('lotacao.index') }}" class="nav-link {{ request()->routeIs('lotacao.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-building"></i>
-                                <p>Lotações</p>
-                            </a>
-                        </li>
-
-                        <!-- Pessoas -->
-                        <li class="nav-item">
-                            <a href="{{ route('pessoa.index') }}" class="nav-link {{ request()->routeIs('pessoa.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>Pessoas</p>
-                            </a>
-                        </li>
-
-                        <!-- Contratos -->
-                        <li class="nav-item">
-                            <a href="{{ route('contrato.index') }}" class="nav-link {{ request()->routeIs('contrato.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-file-contract"></i>
-                                <p>Contratos</p>
-                            </a>
-                        </li>
-
-                        <!-- Catálogos -->
-                        <li class="nav-item">
-                            <a href="{{ route('catalogo.index') }}" class="nav-link {{ request()->routeIs('catalogo.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-list"></i>
-                                <p>Catálogos</p>
-                            </a>
-                        </li>
-
-                        <!-- Medições -->
-                        <li class="nav-item">
-                            <a href="{{ route('medicao.index') }}" class="nav-link {{ request()->routeIs('medicao.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>Medições</p>
-                            </a>
-                        </li>
-
-                        <!-- Pagamentos -->
-                        <li class="nav-item">
-                            <a href="{{ route('pagamento.index') }}" class="nav-link {{ request()->routeIs('pagamento.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-money-bill-wave"></i>
-                                <p>Pagamentos</p>
-                            </a>
-                        </li>
-
-                        <!-- Relatórios -->
-                        <li class="nav-item">
-                            <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-chart-bar"></i>
-                                <p>Relatórios</p>
-                            </a>
-                        </li>
-
-                        <!-- Exportação -->
-                        <li class="nav-item">
-                            <a href="{{ route('exports.index') }}" class="nav-link {{ request()->routeIs('exports.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-download"></i>
-                                <p>Exportação</p>
-                            </a>
-                        </li>
-
-                        <!-- Backup -->
-                        <li class="nav-item">
-                            <a href="{{ route('backup.index') }}" class="nav-link {{ request()->routeIs('backup.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-database"></i>
-                                <p>Backup</p>
-                            </a>
-                        </li>
-
-                        <!-- Autenticação 2FA -->
-                        <li class="nav-item">
-                            <a href="{{ route('two-factor.index') }}" class="nav-link {{ request()->routeIs('two-factor.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shield-alt"></i>
+                        <!-- Módulo: Administrador -->
+                        <li class="nav-item {{ request()->routeIs('users.*') || request()->routeIs('auditoria.*') || request()->routeIs('backup.*') || request()->routeIs('two-factor.*') || request()->routeIs('profile') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('auditoria.*') || request()->routeIs('backup.*') || request()->routeIs('two-factor.*') || request()->routeIs('profile') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-user-cog text-info"></i>
                                 <p>
-                                    Autenticação 2FA
-                                    @if(auth()->user()->hasTwoFactorEnabled())
-                                        <span class="badge badge-success ml-2">Ativo</span>
-                                    @else
-                                        <span class="badge badge-warning ml-2">Inativo</span>
-                                    @endif
-                                </p>
-                            </a>
-                        </li>
-
-                        <!-- Busca Avançada -->
-                        <li class="nav-item">
-                            <a href="{{ route('search.index') }}" class="nav-link {{ request()->routeIs('search.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-search"></i>
-                                <p>Busca Avançada</p>
-                            </a>
-                        </li>
-
-                        <!-- Workflow de Aprovação -->
-                        <li class="nav-item">
-                            <a href="{{ route('workflow.index') }}" class="nav-link {{ request()->routeIs('workflow.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tasks"></i>
-                                <p>Workflow</p>
-                            </a>
-                        </li>
-
-                        <!-- Auditoria -->
-                        <li class="nav-item {{ request()->routeIs('auditoria.*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->routeIs('auditoria.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-clipboard-list"></i>
-                                <p>
-                                    Auditoria
+                                    Administrador
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                @if(auth()->user()->canManageUsers())
                                 <li class="nav-item">
-                                    <a href="{{ route('auditoria.index') }}" class="nav-link {{ request()->routeIs('auditoria.index') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Todas as Auditorias</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('auditoria.pessoas') }}" class="nav-link {{ request()->routeIs('auditoria.pessoas') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Pessoas</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('auditoria.responsaveis') }}" class="nav-link {{ request()->routeIs('auditoria.responsaveis') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Responsáveis Contratos</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('auditoria.contratos') }}" class="nav-link {{ request()->routeIs('auditoria.contratos') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Contratos</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('auditoria.lotacoes') }}" class="nav-link {{ request()->routeIs('auditoria.lotacoes') ? 'active' : '' }}">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Lotações</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('auditoria.usuarios') }}" class="nav-link {{ request()->routeIs('auditoria.usuarios') ? 'active' : '' }}">
+                                    <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Usuários</p>
+                                    </a>
+                                </li>
+                                @endif
+
+                                <!-- Auditoria -->
+                                <li class="nav-item {{ request()->routeIs('auditoria.*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ request()->routeIs('auditoria.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Auditoria
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditoria.index') }}" class="nav-link {{ request()->routeIs('auditoria.index') ? 'active' : '' }}">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Todas as Auditorias</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditoria.pessoas') }}" class="nav-link {{ request()->routeIs('auditoria.pessoas') ? 'active' : '' }}">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Pessoas</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditoria.responsaveis') }}" class="nav-link {{ request()->routeIs('auditoria.responsaveis') ? 'active' : '' }}">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Responsáveis Contratos</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditoria.contratos') }}" class="nav-link {{ request()->routeIs('auditoria.contratos') ? 'active' : '' }}">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Contratos</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditoria.lotacoes') }}" class="nav-link {{ request()->routeIs('auditoria.lotacoes') ? 'active' : '' }}">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Lotações</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditoria.usuarios') }}" class="nav-link {{ request()->routeIs('auditoria.usuarios') ? 'active' : '' }}">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Usuários</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- Backup -->
+                                <li class="nav-item">
+                                    <a href="{{ route('backup.index') }}" class="nav-link {{ request()->routeIs('backup.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Backup</p>
+                                    </a>
+                                </li>
+
+                                <!-- Autenticação 2FA -->
+                                <li class="nav-item">
+                                    <a href="{{ route('two-factor.index') }}" class="nav-link {{ request()->routeIs('two-factor.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Autenticação 2FA
+                                            @if(auth()->user()->hasTwoFactorEnabled())
+                                                <span class="badge badge-success ml-2">Ativo</span>
+                                            @else
+                                                <span class="badge badge-warning ml-2">Inativo</span>
+                                            @endif
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <!-- Perfil -->
+                                <li class="nav-item">
+                                    <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Perfil</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-                        <!-- Perfil -->
-                        <li class="nav-item">
-                            <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-user"></i>
-                                <p>Perfil</p>
+                        <!-- Módulo: Parametrização -->
+                        <li class="nav-item {{ request()->routeIs('funcoes.*') || request()->routeIs('empresas.*') || request()->routeIs('lotacao.*') || request()->routeIs('pessoa.*') || request()->routeIs('contrato.*') || request()->routeIs('catalogo.*') || request()->routeIs('medicao.*') || request()->routeIs('pagamento.*') || request()->routeIs('reports.*') || request()->routeIs('exports.*') || request()->routeIs('search.*') || request()->routeIs('workflow.*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->routeIs('funcoes.*') || request()->routeIs('empresas.*') || request()->routeIs('lotacao.*') || request()->routeIs('pessoa.*') || request()->routeIs('contrato.*') || request()->routeIs('catalogo.*') || request()->routeIs('medicao.*') || request()->routeIs('pagamento.*') || request()->routeIs('reports.*') || request()->routeIs('exports.*') || request()->routeIs('search.*') || request()->routeIs('workflow.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-cogs text-success"></i>
+                                <p>
+                                    Parametrização
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <!-- Funções -->
+                                <li class="nav-item">
+                                    <a href="{{ route('funcoes.index') }}" class="nav-link {{ request()->routeIs('funcoes.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Funções</p>
+                                    </a>
+                                </li>
+
+                                <!-- Empresas -->
+                                <li class="nav-item">
+                                    <a href="{{ route('empresas.index') }}" class="nav-link {{ request()->routeIs('empresas.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Empresas</p>
+                                    </a>
+                                </li>
+
+                                <!-- Lotações -->
+                                <li class="nav-item">
+                                    <a href="{{ route('lotacao.index') }}" class="nav-link {{ request()->routeIs('lotacao.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Lotações</p>
+                                    </a>
+                                </li>
+
+                                <!-- Pessoas -->
+                                <li class="nav-item">
+                                    <a href="{{ route('pessoa.index') }}" class="nav-link {{ request()->routeIs('pessoa.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Pessoas</p>
+                                    </a>
+                                </li>
+
+                                <!-- Contratos -->
+                                <li class="nav-item">
+                                    <a href="{{ route('contrato.index') }}" class="nav-link {{ request()->routeIs('contrato.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Contratos</p>
+                                    </a>
+                                </li>
+
+                                <!-- Catálogos -->
+                                <li class="nav-item">
+                                    <a href="{{ route('catalogo.index') }}" class="nav-link {{ request()->routeIs('catalogo.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Catálogos</p>
+                                    </a>
+                                </li>
+
+                                <!-- Medições -->
+                                <li class="nav-item">
+                                    <a href="{{ route('medicao.index') }}" class="nav-link {{ request()->routeIs('medicao.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Medições</p>
+                                    </a>
+                                </li>
+
+                                <!-- Pagamentos -->
+                                <li class="nav-item">
+                                    <a href="{{ route('pagamento.index') }}" class="nav-link {{ request()->routeIs('pagamento.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Pagamentos</p>
+                                    </a>
+                                </li>
+
+                                <!-- Relatórios -->
+                                <li class="nav-item">
+                                    <a href="{{ route('reports.index') }}" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Relatórios</p>
+                                    </a>
+                                </li>
+
+                                <!-- Exportação -->
+                                <li class="nav-item">
+                                    <a href="{{ route('exports.index') }}" class="nav-link {{ request()->routeIs('exports.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Exportação</p>
+                                    </a>
+                                </li>
+
+                                <!-- Busca Avançada -->
+                                <li class="nav-item">
+                                    <a href="{{ route('search.index') }}" class="nav-link {{ request()->routeIs('search.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Busca Avançada</p>
+                                    </a>
+                                </li>
+
+                                <!-- Workflow de Aprovação -->
+                                <li class="nav-item">
+                                    <a href="{{ route('workflow.index') }}" class="nav-link {{ request()->routeIs('workflow.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Workflow</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </nav>

@@ -12,7 +12,7 @@
                         <i class="fas fa-edit"></i> Editar Catálogo
                     </h3>
                 </div>
-                <form action="{{ route('catalogo.update', $catalogo) }}" method="POST">
+                <form action="{{ route('catalogo.update', $catalogo->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="card-body">
