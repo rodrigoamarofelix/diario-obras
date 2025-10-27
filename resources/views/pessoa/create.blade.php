@@ -125,13 +125,63 @@
                                     <label for="status">Status *</label>
                                     <select class="form-control @error('status') is-invalid @enderror"
                                             id="status" name="status" required>
-                                        <option value="ativo" {{ old('status') == 'ativo' ? 'selected' : '' }}>Ativo</option>
+                                        <option value="ativo" {{ old('status') == 'ativo' ? 'selected' : 'selected' }}>Ativo</option>
                                         <option value="inativo" {{ old('status') == 'inativo' ? 'selected' : '' }}>Inativo</option>
-                                        <option value="pendente" {{ old('status') == 'pendente' ? 'selected' : '' }}>Pendente</option>
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                           id="email" name="email" value="{{ old('email') }}"
+                                           placeholder="email@exemplo.com">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="perfil">Perfil</label>
+                                    <select class="form-control @error('perfil') is-invalid @enderror"
+                                            id="perfil" name="perfil">
+                                        <option value="user" {{ old('perfil') == 'user' ? 'selected' : 'selected' }}>Usuário</option>
+                                        <option value="visualizador" {{ old('perfil') == 'visualizador' ? 'selected' : '' }}>Visualizador</option>
+                                        <option value="construtor" {{ old('perfil') == 'construtor' ? 'selected' : '' }}>Construtor</option>
+                                        <option value="fiscal" {{ old('perfil') == 'fiscal' ? 'selected' : '' }}>Fiscal</option>
+                                        <option value="gestor" {{ old('perfil') == 'gestor' ? 'selected' : '' }}>Gestor</option>
+                                        @if(auth()->user()->isMaster() || auth()->user()->isAdmin())
+                                        <option value="admin" {{ old('perfil') == 'admin' ? 'selected' : '' }}>Administrador</option>
+                                        @endif
+                                    </select>
+                                    @error('perfil')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">Senha</label>
+                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                           id="password" name="password"
+                                           placeholder="Deixe em branco para não alterar">
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">
+                                        Se preencher, a senha será gerada automaticamente
+                                    </small>
                                 </div>
                             </div>
                         </div>

@@ -58,6 +58,10 @@
                         <select class="form-control" name="profile" id="profile" required>
                             <option value="">Selecione o perfil</option>
                             <option value="user" {{ old('profile', $user->profile) == 'user' ? 'selected' : ''}}>Usuário</option>
+                            <option value="visualizador" {{ old('profile', $user->profile) == 'visualizador' ? 'selected' : ''}}>Visualizador/Consultor</option>
+                            <option value="construtor" {{ old('profile', $user->profile) == 'construtor' ? 'selected' : ''}}>Construtor/Fornecedor</option>
+                            <option value="fiscal" {{ old('profile', $user->profile) == 'fiscal' ? 'selected' : ''}}>Fiscal de Obra</option>
+                            <option value="gestor" {{ old('profile', $user->profile) == 'gestor' ? 'selected' : ''}}>Gestor de Contratos</option>
                             <option value="admin" {{ old('profile', $user->profile) == 'admin' ? 'selected' : ''}}>Administrador</option>
                             @if(auth()->user()->isMaster())
                                 <option value="master" {{ old('profile', $user->profile) == 'master' ? 'selected' : ''}}>Master</option>

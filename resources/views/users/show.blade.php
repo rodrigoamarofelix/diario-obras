@@ -38,6 +38,10 @@
                             <label for="profile">Perfil</label>
                             <select class="form-control bg-light" name="profile" id="profile" disabled>
                                 <option value="user" {{ $user->profile == 'user' ? 'selected' : ''}}>Usuário</option>
+                                <option value="visualizador" {{ $user->profile == 'visualizador' ? 'selected' : ''}}>Visualizador/Consultor</option>
+                                <option value="construtor" {{ $user->profile == 'construtor' ? 'selected' : ''}}>Construtor/Fornecedor</option>
+                                <option value="fiscal" {{ $user->profile == 'fiscal' ? 'selected' : ''}}>Fiscal de Obra</option>
+                                <option value="gestor" {{ $user->profile == 'gestor' ? 'selected' : ''}}>Gestor de Contratos</option>
                                 <option value="admin" {{ $user->profile == 'admin' ? 'selected' : ''}}>Administrador</option>
                                 <option value="master" {{ $user->profile == 'master' ? 'selected' : ''}}>Master</option>
                             </select>

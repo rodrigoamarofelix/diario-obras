@@ -58,7 +58,6 @@
                                 <tr>
                                     <th style="width: 10px">#</th>
                                     <th>Nome</th>
-                                    <th>Email</th>
                                     <th>CPF</th>
                                     <th>Lotação</th>
                                     <th>Status</th>
@@ -77,16 +76,8 @@
                                             @endif
                                             <br>
                                             <small class="text-muted">
-                                                Criado: {{ is_object($item->created_at) ? $item->created_at->format('d/m/Y H:i') : ($item->created_at ?? 'N/A') }}
+                                                Criado: {{ $item->created_at->format('d/m/Y H:i') }}
                                             </small>
-                                        </td>
-                                        <td>
-                                            @if($item->email)
-                                                <i class="fas fa-envelope"></i> {{ $item->email }}<br>
-                                                <small class="text-muted">Perfil: {{ ucfirst($item->perfil ?? 'user') }}</small>
-                                            @else
-                                                <span class="badge badge-secondary">Sem email</span>
-                                            @endif
                                         </td>
                                         <td>{{ $item->cpf_formatado }}</td>
                                         <td>
@@ -114,8 +105,8 @@
                                                 <span class="badge badge-success">
                                                     <i class="fas fa-check"></i> Validado
                                                 </span>
-                                                @if($item->data_validacao && is_object($item->data_validacao))
-                                                    <br><small class="text-muted">{{ $item->data_validacao->format('d/m/Y') }}</small>
+                                                @if($item->data_validacao)
+                                                    <br><small class="text-muted">{{ $item->data_validacao ? $item->data_validacao->format('d/m/Y') : '' }}</small>
                                                 @endif
                                             @elseif($item->status_validacao === 'pendente')
                                                 <span class="badge badge-warning">
@@ -128,8 +119,8 @@
                                                 <span class="badge badge-danger">
                                                     <i class="fas fa-times"></i> Rejeitado
                                                 </span>
-                                                @if($item->data_validacao && is_object($item->data_validacao))
-                                                    <br><small class="text-muted">{{ $item->data_validacao->format('d/m/Y') }}</small>
+                                                @if($item->data_validacao)
+                                                    <br><small class="text-muted">{{ $item->data_validacao ? $item->data_validacao->format('d/m/Y') : '' }}</small>
                                                 @endif
                                             @else
                                                 <span class="badge badge-secondary">N/A</span>

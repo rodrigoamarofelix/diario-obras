@@ -32,6 +32,7 @@ class User extends Authenticatable
         'two_factor_secret',
         'two_factor_backup_codes',
         'two_factor_enabled_at',
+        'pessoa_id',
     ];
 
     /**
@@ -88,6 +89,38 @@ class User extends Authenticatable
     }
 
     /**
+     * Verifica se o usuário é gestor
+     */
+    public function isGestor(): bool
+    {
+        return $this->profile === 'gestor';
+    }
+
+    /**
+     * Verifica se o usuário é fiscal
+     */
+    public function isFiscal(): bool
+    {
+        return $this->profile === 'fiscal';
+    }
+
+    /**
+     * Verifica se o usuário é construtor
+     */
+    public function isConstrutor(): bool
+    {
+        return $this->profile === 'construtor';
+    }
+
+    /**
+     * Verifica se o usuário é visualizador
+     */
+    public function isVisualizador(): bool
+    {
+        return $this->profile === 'visualizador';
+    }
+
+    /**
      * Verifica se o usuário pode gerenciar outros usuários
      */
     public function canManageUsers(): bool
@@ -111,9 +144,65 @@ class User extends Authenticatable
         return match($this->profile) {
             'master' => 'Master',
             'admin' => 'Administrador',
+            'gestor' => 'Gestor de Contratos',
+            'fiscal' => 'Fiscal de Obra',
+            'construtor' => 'Construtor/Fornecedor',
+            'visualizador' => 'Visualizador/Consultor',
             'user' => 'Usuário',
             default => 'Usuário'
         };
+    }
+
+    /**
+     * Verifica se tem acesso ao módulo de Administração
+     */
+    public function canAccessAdministration(): bool
+    {
+        return $this->isMaster() || $this->isAdmin();
+    }
+
+    /**
+     * Verifica se tem acesso ao módulo de Parametrização
+     */
+    public function canAccessParametrizacao(): bool
+    {
+        return $this->isMaster() || $this->isAdmin() || $this->isGestor()
+            || $this->isFiscal() || $this->isConstrutor() || $this->isVisualizador();
+    }
+
+    /**
+     * Verifica se tem acesso ao módulo de Diário de Obras
+     */
+    public function canAccessDiarioObras(): bool
+    {
+        return $this->isMaster() || $this->isAdmin() || $this->isGestor()
+            || $this->isFiscal() || $this->isConstrutor() || $this->isVisualizador();
+    }
+
+    /**
+     * Verifica se pode editar informações (não apenas visualizar)
+     */
+    public function canEdit(): bool
+    {
+        return $this->isMaster() || $this->isAdmin() || $this->isGestor()
+            || $this->isFiscal() || $this->isConstrutor();
+    }
+
+    /**
+     * Verifica se pode apenas visualizar (read-only)
+     */
+    public function canOnlyView(): bool
+    {
+        return $this->isVisualizador() || $this->isUser();
+    }
+
+    /**
+     * Verifica se pode exportar dados
+     */
+    public function canExport(): bool
+    {
+        return $this->isMaster() || $this->isAdmin() || $this->isGestor()
+            || $this->isVisualizador();
     }
 
     /**
@@ -159,6 +248,14 @@ class User extends Authenticatable
     public function approver()
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
+     * Relacionamento com Pessoa
+     */
+    public function pessoa()
+    {
+        return $this->belongsTo(Pessoa::class);
     }
 
     /**

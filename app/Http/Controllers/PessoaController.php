@@ -8,6 +8,7 @@ use App\Models\Lotacao;
 use App\Rules\CpfValido;
 use App\Services\ReceitaFederalService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PessoaController extends Controller
 {
@@ -82,7 +83,10 @@ class PessoaController extends Controller
             'nome' => 'required|string|max:255',
             'cpf' => ['required', 'string', new CpfValido],
             'lotacao_id' => 'required|exists:lotacoes,id',
-            'status' => 'required|in:ativo,inativo,pendente',
+            'status' => 'required|in:ativo,inativo',
+            'email' => 'nullable|email|max:255',
+            'perfil' => 'nullable|in:user,admin,gestor,fiscal,construtor,visualizador',
+            'password' => 'nullable|string|min:8',
         ]);
 
         // Validação customizada para CPF único apenas entre pessoas ativas
@@ -96,36 +100,49 @@ class PessoaController extends Controller
                 ->withInput();
         }
 
+        // VALIDAÇÃO DE CPF COMENTADA - Serviço pago desativado
         // Tentar validar CPF na Receita Federal
-        $receitaService = new ReceitaFederalService();
-        $resultadoReceita = $receitaService->consultarCpf($request->cpf);
+        // $receitaService = new ReceitaFederalService();
+        // $resultadoReceita = $receitaService->consultarCpf($request->cpf);
 
         $requestData = $request->all();
 
-        if ($resultadoReceita['success']) {
-            // CPF validado com sucesso
-            $requestData['status_validacao'] = 'validado';
-            $requestData['data_validacao'] = now();
-            $requestData['observacoes_validacao'] = 'CPF validado com sucesso na Receita Federal';
+        // Validação simplificada - apenas marca como validado matematicamente
+        $requestData['status_validacao'] = 'validado';
+        $requestData['data_validacao'] = now();
+        $requestData['observacoes_validacao'] = 'CPF validado matematicamente (validação da Receita Federal desativada - serviço pago)';
 
-            // Verificar se o nome informado corresponde ao da Receita Federal
-            if (strtoupper(trim($request->nome)) !== strtoupper(trim($resultadoReceita['nome']))) {
-                return redirect()->back()
-                    ->withErrors(['nome' => 'O nome informado não corresponde ao nome registrado na Receita Federal.'])
-                    ->withInput();
-            }
-        } else {
-            // API fora ou CPF irregular - cadastro pendente
-            $requestData['status_validacao'] = 'pendente';
-            $requestData['status'] = 'pendente'; // Status da pessoa também fica pendente
-            $requestData['observacoes_validacao'] = 'Cadastro pendente - CPF será validado posteriormente';
+        // Garantir que o status seja sempre 'ativo' (não aceita 'pendente')
+        if (!isset($requestData['status']) || $requestData['status'] === 'pendente') {
+            $requestData['status'] = 'ativo';
         }
+
+        // if ($resultadoReceita['success']) {
+        //     // CPF validado com sucesso
+        //     $requestData['status_validacao'] = 'validado';
+        //     $requestData['data_validacao'] = now();
+        //     $requestData['observacoes_validacao'] = 'CPF validado com sucesso na Receita Federal';
+
+        //     // Verificar se o nome informado corresponde ao da Receita Federal
+        //     if (strtoupper(trim($request->nome)) !== strtoupper(trim($resultadoReceita['nome']))) {
+        //         return redirect()->back()
+        //             ->withErrors(['nome' => 'O nome informado não corresponde ao nome registrado na Receita Federal.'])
+        //             ->withInput();
+        //     }
+        // } else {
+        //     // API fora ou CPF irregular - cadastro pendente
+        //     $requestData['status_validacao'] = 'pendente';
+        //     $requestData['status'] = 'pendente'; // Status da pessoa também fica pendente
+        //     $requestData['observacoes_validacao'] = 'Cadastro pendente - CPF será validado posteriormente';
+        // }
 
         Pessoa::create($requestData);
 
-        $mensagem = $resultadoReceita['success']
-            ? 'Pessoa cadastrada com sucesso!'
-            : 'Pessoa cadastrada com status pendente. A validação será realizada posteriormente.';
+        // $mensagem = $resultadoReceita['success']
+        //     ? 'Pessoa cadastrada com sucesso!'
+        //     : 'Pessoa cadastrada com status pendente. A validação será realizada posteriormente.';
+
+        $mensagem = 'Pessoa cadastrada com sucesso! (Validação da Receita Federal desativada)';
 
         return redirect('pessoa')->with('success', $mensagem);
     }
@@ -174,7 +191,15 @@ class PessoaController extends Controller
             'cpf' => ['required', 'string', new CpfValido],
             'lotacao_id' => 'required|exists:lotacoes,id',
             'status' => 'required|in:ativo,inativo,pendente',
+            'email' => 'nullable|email|max:255',
+            'perfil' => 'nullable|in:user,admin,gestor,fiscal,construtor,visualizador',
+            'password' => 'nullable|string|min:8',
         ]);
+
+        // Garantir que o status seja sempre 'ativo' ou 'inativo' (não aceita 'pendente')
+        if ($requestData['status'] === 'pendente') {
+            $requestData['status'] = 'ativo';
+        }
 
         // Validação customizada para CPF único apenas entre pessoas ativas (exceto a atual)
         $cpfExists = Pessoa::where('cpf', $request->cpf)
@@ -189,6 +214,14 @@ class PessoaController extends Controller
         }
 
         $requestData = $request->all();
+
+        // Se houver senha, fazer hash
+        if ($request->filled('password')) {
+            $requestData['password'] = Hash::make($request->password);
+        } else {
+            // Remover senha do array se não foi preenchida
+            unset($requestData['password']);
+        }
 
         $pessoa = Pessoa::findOrFail($id);
         $pessoa->update($requestData);

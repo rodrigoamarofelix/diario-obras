@@ -14,6 +14,9 @@ class Pessoa extends Model
 
     protected $fillable = [
         'nome',
+        'email',
+        'perfil',
+        'password',
         'cpf',
         'lotacao_id',
         'funcao_id',
@@ -33,7 +36,16 @@ class Pessoa extends Model
             'deleted_at' => 'datetime',
             'data_validacao' => 'datetime',
             'data_ultima_tentativa' => 'datetime',
+            'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relacionamento com User
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class, 'pessoa_id');
     }
 
     /**

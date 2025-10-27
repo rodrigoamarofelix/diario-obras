@@ -92,6 +92,57 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                       id="email" name="email" value="{{ old('email', $pessoa->email ?? '') }}"
+                                       placeholder="email@exemplo.com">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="perfil">Perfil</label>
+                                <select class="form-control @error('perfil') is-invalid @enderror"
+                                        id="perfil" name="perfil">
+                                    <option value="user" {{ old('perfil', $pessoa->perfil ?? 'user') == 'user' ? 'selected' : '' }}>Usuário</option>
+                                    <option value="visualizador" {{ old('perfil', $pessoa->perfil ?? '') == 'visualizador' ? 'selected' : '' }}>Visualizador</option>
+                                    <option value="construtor" {{ old('perfil', $pessoa->perfil ?? '') == 'construtor' ? 'selected' : '' }}>Construtor</option>
+                                    <option value="fiscal" {{ old('perfil', $pessoa->perfil ?? '') == 'fiscal' ? 'selected' : '' }}>Fiscal</option>
+                                    <option value="gestor" {{ old('perfil', $pessoa->perfil ?? '') == 'gestor' ? 'selected' : '' }}>Gestor</option>
+                                    @if(auth()->user()->isMaster() || auth()->user()->isAdmin())
+                                    <option value="admin" {{ old('perfil', $pessoa->perfil ?? '') == 'admin' ? 'selected' : '' }}>Administrador</option>
+                                    @endif
+                                </select>
+                                @error('perfil')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password">Senha</label>
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                       id="password" name="password"
+                                       placeholder="Deixe em branco para não alterar">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">
+                                    Deixe em branco para não alterar a senha
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> Atualizar

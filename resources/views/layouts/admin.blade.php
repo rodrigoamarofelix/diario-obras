@@ -474,7 +474,8 @@
                             </ul>
                         </li>
 
-                        <!-- Módulo: Administrador -->
+                        <!-- Módulo: Administrador (apenas master e admin) -->
+                        @if(auth()->user()->canAccessAdministration())
                         <li class="nav-item {{ request()->routeIs('users.*') || request()->routeIs('auditoria.*') || request()->routeIs('backup.*') || request()->routeIs('two-factor.*') || request()->routeIs('profile') ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ request()->routeIs('users.*') || request()->routeIs('auditoria.*') || request()->routeIs('backup.*') || request()->routeIs('two-factor.*') || request()->routeIs('profile') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-cog text-info"></i>
@@ -574,10 +575,12 @@
                                 </li>
                             </ul>
                         </li>
+                        @endif
 
                         <!-- Módulo: Parametrização -->
-                        <li class="nav-item {{ request()->routeIs('funcoes.*') || request()->routeIs('empresas.*') || request()->routeIs('lotacao.*') || request()->routeIs('pessoa.*') || request()->routeIs('contrato.*') || request()->routeIs('catalogo.*') || request()->routeIs('medicao.*') || request()->routeIs('pagamento.*') || request()->routeIs('reports.*') || request()->routeIs('exports.*') || request()->routeIs('search.*') || request()->routeIs('workflow.*') ? 'menu-open' : '' }}">
-                            <a href="#" class="nav-link {{ request()->routeIs('funcoes.*') || request()->routeIs('empresas.*') || request()->routeIs('lotacao.*') || request()->routeIs('pessoa.*') || request()->routeIs('contrato.*') || request()->routeIs('catalogo.*') || request()->routeIs('medicao.*') || request()->routeIs('pagamento.*') || request()->routeIs('reports.*') || request()->routeIs('exports.*') || request()->routeIs('search.*') || request()->routeIs('workflow.*') ? 'active' : '' }}">
+                        @if(auth()->user()->canAccessParametrizacao())
+                        <li class="nav-item {{ request()->routeIs('funcoes.*') || request()->routeIs('empresas.*') || request()->routeIs('lotacao.*') || request()->routeIs('pessoa.*') || request()->routeIs('contrato.*') || request()->routeIs('catalogo.*') || request()->routeIs('medicao.*') || request()->routeIs('pagamento.*') || request()->routeIs('reports.*') || request()->routeIs('exports.*') || request()->routeIs('search.*') || request()->routeIs('workflow.*') || request()->routeIs('notificacoes.*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->routeIs('funcoes.*') || request()->routeIs('empresas.*') || request()->routeIs('lotacao.*') || request()->routeIs('pessoa.*') || request()->routeIs('contrato.*') || request()->routeIs('catalogo.*') || request()->routeIs('medicao.*') || request()->routeIs('pagamento.*') || request()->routeIs('reports.*') || request()->routeIs('exports.*') || request()->routeIs('search.*') || request()->routeIs('workflow.*') || request()->routeIs('notificacoes.*') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-cogs text-success"></i>
                                 <p>
                                     Parametrização
@@ -678,6 +681,43 @@
                                     <a href="{{ route('workflow.index') }}" class="nav-link {{ request()->routeIs('workflow.*') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Workflow</p>
+                                    </a>
+                                </li>
+
+                                <!-- Notificações -->
+                                <li class="nav-item">
+                                    <a href="{{ route('notificacoes.index') }}" class="nav-link {{ request()->routeIs('notificacoes.*') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Notificações</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
+
+                        <!-- Módulo: Documentação -->
+                        <li class="nav-item {{ request()->routeIs('documentacao.*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ request()->routeIs('documentacao.*') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-book text-primary"></i>
+                                <p>
+                                    Documentação
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <!-- Telas do Sistema -->
+                                <li class="nav-item">
+                                    <a href="{{ route('documentacao.telas') }}" class="nav-link {{ request()->routeIs('documentacao.telas') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Telas do Sistema</p>
+                                    </a>
+                                </li>
+
+                                <!-- Perfis do Sistema -->
+                                <li class="nav-item">
+                                    <a href="{{ route('documentacao.perfis') }}" class="nav-link {{ request()->routeIs('documentacao.perfis') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Perfis do Sistema</p>
                                     </a>
                                 </li>
                             </ul>

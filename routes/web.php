@@ -35,10 +35,6 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
 Route::get('logout', function () {
     Auth::logout();
     request()->session()->invalidate();
@@ -48,6 +44,8 @@ Route::get('logout', function () {
 
 // Rotas para gerenciamento de usuários
 Route::middleware(['auth'])->group(function () {
+    Route::view('profile', 'profile')->name('profile');
+
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('users/{user}/edit-profile', [UserController::class, 'editProfile'])->name('users.edit-profile');
@@ -88,6 +86,15 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Rotas para documentação
+Route::get('documentacao/telas', function () {
+    return view('documentacao.telas');
+})->middleware(['auth'])->name('documentacao.telas');
+
+Route::get('documentacao/perfis', function () {
+    return view('documentacao.perfis');
+})->middleware(['auth'])->name('documentacao.perfis');
 
 Route::middleware(['auth'])->group(function () {
     // CRUD de Lotações
@@ -189,6 +196,14 @@ Route::middleware(['auth'])->group(function () {
 
         // Relatório Financeiro
         Route::get('/relatorio-financeiro/pdf', [App\Http\Controllers\ExportController::class, 'relatorioFinanceiroPdf'])->name('relatorio-financeiro.pdf');
+
+        // Usuários
+        Route::get('/usuarios/pdf', [App\Http\Controllers\ExportController::class, 'usuariosPdf'])->name('usuarios.pdf');
+        Route::get('/usuarios/excel', [App\Http\Controllers\ExportController::class, 'usuariosExcel'])->name('usuarios.excel');
+
+        // Auditoria
+        Route::get('/auditoria/pdf', [App\Http\Controllers\ExportController::class, 'auditoriaPdf'])->name('auditoria.pdf');
+        Route::get('/auditoria/excel', [App\Http\Controllers\ExportController::class, 'auditoriaExcel'])->name('auditoria.excel');
     });
 
     // Backup (apenas para administradores)

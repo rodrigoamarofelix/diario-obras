@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', '{{ config("app.name") }} - Exportação de Relatórios')
-@section('page-title', '{{ config("app.name") }} - Exportação de Relatórios')
+@section('title', config('app.name') . ' - Exportação de Relatórios')
+@section('page-title', config('app.name') . ' - Exportação de Relatórios')
 
 @section('breadcrumb')
 <li class="breadcrumb-item active">Exportação</li>
@@ -13,7 +13,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-download"></i> {{ config("app.name") }} - Sistema de Exportação
+                    <i class="fas fa-download"></i> {{ config('app.name') }} - Sistema de Exportação
                 </h3>
                 <div class="card-tools">
                     <span class="badge badge-info">PDF e Excel</span>
@@ -201,11 +201,8 @@
                             <div class="card-body">
                                 <p class="card-text">Log de atividades e alterações no sistema.</p>
                                 <div class="btn-group w-100" role="group">
-                                    <button type="button" class="btn btn-danger" onclick="exportar('auditoria', 'pdf')">
+                                    <button type="button" class="btn btn-danger w-100" onclick="exportar('auditoria', 'pdf')">
                                         <i class="fas fa-file-pdf"></i> PDF
-                                    </button>
-                                    <button type="button" class="btn btn-success" onclick="exportar('auditoria', 'excel')">
-                                        <i class="fas fa-file-excel"></i> Excel
                                     </button>
                                 </div>
                             </div>

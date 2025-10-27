@@ -13,7 +13,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::withTrashed()->orderBy('created_at', 'desc')->get();
+        // Buscar apenas usuários não deletados
+        $users = User::whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->get();
         $pendingUsers = User::pending()->orderBy('created_at', 'desc')->get();
 
         return view('users.index', compact('users', 'pendingUsers'));
@@ -83,7 +86,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:users,email,' . $user->id,
-            'profile' => 'required|in:user,admin,master'
+            'profile' => 'required|in:user,admin,master,gestor,fiscal,construtor,visualizador'
         ]);
 
         // Não permitir que usuários não-master alterem perfis para master
